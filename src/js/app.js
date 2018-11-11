@@ -5,7 +5,6 @@ var app = {
         $("#test").html("caricamento domande...");
         app.eventHandler();
         app.loadQuestions();
-        app.loadStudents();
     },
     eventHandler: function() {
         $("#student-list li").on('click', function() {
@@ -21,7 +20,9 @@ var app = {
     },
     onQuestionsSuccess: function(jsonData) {
         console.log(jsonData);
-        $("#questions").html(JSON.stringify(jsonData));
+        app.questions = jsonData.questionlist;
+        app.writeQuestions();
+        app.loadStudents();
     },
     // Students
     loadStudents: function() {
@@ -31,22 +32,44 @@ var app = {
     },
     onStudentsSuccess: function(jsonData) {
         console.log(jsonData);
-        app.writeStudents(jsonData.studentlist);
-        
+        app.students = jsonData.studentlist;
+        app.writeStudents();
+        app.composeQuestions();
     },
     // Generic error
     onError: function(e) {
         console.log(e);
     },
 
-    // Write students
-    writeStudents: function(data) {
+    // Write questions
+    writeQuestions: function() {
         let txt = "";
-        console.log(data.length);
-        for (i=0; i<data.length;i++) {
-            txt+=`<li data-id="`+i+`"><span>`+data[i].name+`</span>:<span>`+data[i].seed+`</span></li>`;
+        //console.log(questions.length);
+        for (i=0; i<app.questions.length;i++) {
+            txt+=`<li data-id="`+i+`"><span>`+app.questions[i].name+`</span></li>`;
+        }
+        $("#questions").html(txt);
+    },
+
+    // Write students
+    writeStudents: function() {
+        let txt = "";
+        //console.log(students.length);
+        for (i=0; i<app.students.length;i++) {
+            txt+=`<li data-id="`+i+`"><span>`+app.students[i].name+`</span>:<span>`+app.students[i].seed+`</span></li>`;
         }
         $("#student-list").html(txt);
+    },
+    
+
+    composeQuestions: function() {
+        console.log("compose questions");
+        var question = app.questions[0];
+         app.students.forEach(element => {
+            let q = composer.create(question,element.seed);
+            console.log(q);
+         });
+        
     }
 };
 
