@@ -1,0 +1,27 @@
+{
+  "name": "teacher-test-suite",
+  "version": "1.0.0",
+  "description": "This suite contains tools for teacher to create tests for high-school students, mainly for Computer Science and IT subjects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wbigger/teacher-test-suite.git"
+  },
+  "keywords": [
+    "education",
+    "quiz",
+    "test"
+  ],
+  "author": "Claudio Capobianco",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/wbigger/teacher-test-suite/issues"
+  },
+  "homepage": "https://github.com/wbigger/teacher-test-suite#readme",
+  "dependencies": {
+    "seedrandom": "^2.4.4"
+  }
+}
