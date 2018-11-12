@@ -1,0 +1,8 @@
+.question {
+    margin: 20px 0px 20px 0px;
+}
+@media print {
+    .question:nth-child(3n) {
+        page-break-after: always;
+    }
+}

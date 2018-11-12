@@ -2,7 +2,8 @@ var app = {
     questions: [],
     students: [],
     init: function(){
-        $("#test").html("caricamento domande...");
+        $("#students").hide();
+
         app.eventHandler();
         app.loadQuestions();
     },
@@ -65,10 +66,13 @@ var app = {
     composeQuestions: function() {
         console.log("compose questions");
         var question = app.questions[0];
-         app.students.forEach(element => {
-            let q = composer.create(question,element.seed);
+        let txt = "";
+         app.students.forEach(student => {    
+            let q = composer.create(question,student);
             console.log(q);
+            txt += q;
          });
+         $("#questions").html(txt);
         
     }
 };
