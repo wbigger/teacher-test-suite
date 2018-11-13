@@ -1,4 +1,6 @@
 var app = {
+    testURL : "test-repository/processing/questions.json",
+    studentsURL : "api/students/2Binf.json",
     questions: [],
     students: [],
     init: function(){
@@ -15,19 +17,18 @@ var app = {
     },
     // Questions
     loadQuestions: function() {
-        $.getJSON( "api/questions/questions.json")
+        $.getJSON(app.testURL)
         .done(app.onQuestionsSuccess)
         .fail(app.onError);
     },
     onQuestionsSuccess: function(jsonData) {
         console.log(jsonData);
         app.questions = jsonData.questionlist;
-        app.writeQuestions();
         app.loadStudents();
     },
     // Students
     loadStudents: function() {
-        $.getJSON( "api/students/2binf.json")
+        $.getJSON(app.studentsURL)
         .done(app.onStudentsSuccess)
         .fail(app.onError);
     },
@@ -40,16 +41,6 @@ var app = {
     // Generic error
     onError: function(e) {
         console.log(e);
-    },
-
-    // Write questions
-    writeQuestions: function() {
-        let txt = "";
-        //console.log(questions.length);
-        for (i=0; i<app.questions.length;i++) {
-            txt+=`<li data-id="`+i+`"><span>`+app.questions[i].name+`</span></li>`;
-        }
-        $("#questions").html(txt);
     },
 
     // Write students

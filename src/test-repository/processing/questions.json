@@ -1,0 +1,19 @@
+{
+    "questionlist": [
+        {
+            "name": "Processing",
+            "type":"programming",
+            "skills":["programming","understanding","processing"],
+            "points": 1,
+            "body": {
+                "sports":["calcio","tennis","basket"],
+                "figure": {
+                    "shapes":["quadrato","ellisse"],
+                    "sizes":["100x200","200x100","100x100","250x100"],                    
+                    "colors":["giallo","bianco","blu"]
+                },
+                "movements":["up","down","right","left"]
+            }
+        }
+    ]
+}
