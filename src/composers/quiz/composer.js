@@ -110,7 +110,8 @@ var composer = {
         txt += "Calcolo del punteggio (ogni elemento vale un punto):"
         txt+= "<ul>";
         items[0].evaluation.pointList.forEach((obj)=>{
-            txt+="<li>"+obj.descriprion+"</li>";
+            //txt+="<li>"+obj.description+" ("+obj.points+" punto)</li>";
+            txt+="<li>"+obj.description+"</li>";
         });
         txt+= "</ul>";
 

@@ -11,11 +11,11 @@
             "body": {
                 "text": ["Si vuole sviluppare un'applicazione videoludica dedicata al mondo di Harry Potter. {{character}} vuole fuggire {{place}}. Rappresentare {{character}} come un {{figureShape}} di dimensioni {{figureSize}} e di colore {{figureColor}}. Lo sfondo dell'ambiente inizialmente è di colore verde.",
         
-                "La posizione iniziale del personaggio è a {{origin}} {{dimension}} dello schermo. Far muovere la palla dalla sua origine verso {{direction}}.",
+                "La posizione iniziale del personaggio è a {{origin}} {{dimension}} dello schermo. Far muovere il personaggio dalla sua origine verso {{direction}}.",
         
                 "Quando il personaggio supera la metà (0.5) dello schermo, lo sfondo si colora di grigio,  per indicare che ci stiamo avvicinando all'uscita.",
         
-                "Quando il personaggio supera i tre quarti dello schermo, lo sfondo si colora di azzurro, per indicare che il personaggio è riuscito a liberarsi. Appena il personaggio entra in questa condizione, fermarne il movimento."],
+                "Quando il personaggio supera i tre quarti dello schermo, lo sfondo si colora di azzurro, per indicare che il personaggio è riuscito a fuggire. Appena il personaggio entra in questa condizione, fermarne il movimento."],
 
                 "characters": [
                     "Harry Potter",
@@ -31,14 +31,14 @@
                 ],
                 "figure": {
                     "shapes": [
-                        "quadrato",
+                        "rettangolo",
                         "ellisse"
                     ],
                     "sizes": [
-                        "100x200",
-                        "200x100",
-                        "100x100",
-                        "250x100"
+                        "100x180",
+                        "180x100",
+                        "120x150",
+                        "150x120"
                     ],
                     "colors": [
                         "giallo",
@@ -56,55 +56,55 @@
             "evaluation": {
                 "pointList": [
                     {
-                        "descriprion": "scrittura funzioni void e setup",
+                        "description": "scrittura funzioni void e setup",
                         "points": 1
                     },
                     {
-                        "descriprion": "forma del personaggio",
+                        "description": "forma del personaggio",
                         "points": 1
                     },
                     {
-                        "descriprion": "posizione iniziale del personaggio",
+                        "description": "posizione iniziale del personaggio",
                         "points": 1
                     },
                     {
-                        "descriprion": "colore del personaggio",
+                        "description": "colore del personaggio",
                         "points": 1
                     },
                     {
-                        "descriprion": "colore iniziale dello sfondo",
+                        "description": "colore iniziale dello sfondo",
                         "points": 1
                     },
                     {
-                        "descriprion": "direzione di movimento del personaggio",
+                        "description": "direzione di movimento del personaggio",
                         "points": 1
                     },
                     {
-                        "descriprion": "colore intermedio dello sfondo",
+                        "description": "colore intermedio dello sfondo",
                         "points": 1
                     },
                     {
-                        "descriprion": "colore finale dello sfondo",
+                        "description": "colore finale dello sfondo",
                         "points": 1
                     },
                     {
-                        "descriprion": "il personaggio si ferma",
+                        "description": "il personaggio si ferma",
                         "points": 1
                     },
                     {
-                        "descriprion": "corretta indentazione del codice ",
+                        "description": "corretta indentazione del codice ",
                         "points": 1
                     },
                     {
-                        "descriprion": "chiarezza del codice (commenti, identificativi, etc.)",
+                        "description": "chiarezza del codice (commenti, identificativi, etc.)",
                         "points": 1
                     },
                     {
-                        "descriprion": "codice che compila",
+                        "description": "codice che compila",
                         "points": 1
                     },
                     {
-                        "descriprion": "utilizzo di PShape (punto extra)",
+                        "description": "utilizzo di PShape (punto extra)",
                         "points": 1,
                         "extra": true
                     }
