@@ -3,17 +3,16 @@ var helper = {
         console.log("helper init");
         $("#file-input").change(helper.readSingleFile);
 
-        // test
-        var myString = "something format_abc";
-        var myRegexp = /format_/g;
-        var match = myRegexp.exec(myString);
-        console.log(match[0]); // abc
     },
 
-    convertMarks2Json: function () {
-
+    convertMarks2Json: function (marks) {
+        console.log(marks);
+        let reg = /^([A-Za-z]+)/g;
+        let match;
+        while (match = reg.exec(marks)) {
+            console.log(match);
+        }
     },
-
     readSingleFile: function (e) {
         var file = e.target.files[0];
         console.log(file);
@@ -23,6 +22,7 @@ var helper = {
         var reader = new FileReader();
         reader.onload = function (e) {
             var contents = e.target.result;
+            helper.convertMarks2Json(contents);
             helper.displayContents(contents);
         };
         reader.readAsText(file);
