@@ -1,6 +1,6 @@
 var app = {
-    testURL: "test-repository/quiz/questions.json",
-    studentsURL: "api/students/3ainf.json",
+    testURL: "composers/processing/questions.json",
+    studentsURL: "api/students/2binf.json",
     questions: [],
     students: [],
     init: function () {
@@ -39,6 +39,7 @@ var app = {
     },
     // Generic error
     onError: function (e) {
+        console.log("onError!");
         console.log(e);
     },
 
@@ -54,7 +55,7 @@ var app = {
 
 
     composeQuestions: function () {
-        //console.log("compose questions");
+        console.log("compose questions");
         var questions = app.questions;
         let txt = "";
         app.students.forEach(student => {
