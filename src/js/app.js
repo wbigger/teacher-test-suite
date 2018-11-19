@@ -1,28 +1,56 @@
 var app = {
-    testURL: "composers/processing/questions.json",
-    studentsURL: "api/students/2binf.json",
+    classworkURL: undefined,
+    studentsURL: undefined,
     questions: [],
     students: [],
+    className: undefined,
+    subject: undefined,
     init: function () {
         $("#students").hide();
         app.eventHandler();
-        app.loadQuestions();
+        //app.loadQuestions();
     },
     eventHandler: function () {
         $("#student-list li").on('click', function () {
             //  ret = DetailsView.GetProject($(this).attr("#data-id"), OnComplete, OnTimeOut, OnError);
             alert($(this).attr("#data-id"));
         });
+        $("#class-select").val("default");
+        $("#class-select").change(() => {
+            let str = "";
+            $("#class-select option:selected").each(function () {
+                str += $(this).val();
+            });
+            app.studentsURL = "api/students/" + str + ".json";
+        });
+        $("#classwork-select").val("default");
+        $("#classwork-select").change((el) => {
+            let str = "";
+            $("#classwork-select option:selected").each(function () {
+                str += $(this).val();
+            });
+            app.classworkURL = "api/classworks/" + str + ".json";
+        });
+
+        $("#create-button").click(() => {
+            if (app.studentsURL && app.classworkURL) {
+                app.loadQuestions();
+            } else {
+                console.log("class: " + app.studentsURL)
+                console.log("classwork: " + app.classworkURL)
+                alert("Please select class and classwork");
+            }
+        });
     },
     // Questions
     loadQuestions: function () {
-        $.getJSON(app.testURL)
+        $.getJSON(app.classworkURL)
             .done(app.onQuestionsSuccess)
             .fail(app.onError);
     },
     onQuestionsSuccess: function (jsonData) {
-        //console.log(jsonData);
         app.questions = jsonData.itemList;
+        app.subject = jsonData.subject;
         app.loadStudents();
     },
     // Students
@@ -33,13 +61,16 @@ var app = {
     },
     onStudentsSuccess: function (jsonData) {
         //console.log(jsonData);
-        app.students = jsonData.studentlist;
+        app.students = jsonData.studentList;
+        app.className = jsonData.className;
         app.writeStudents();
         app.composeQuestions();
     },
     // Generic error
     onError: function (e) {
         console.log("onError!");
+        console.log("class: " + app.studentsURL)
+        console.log("classwork: " + app.classworkURL)
         console.log(e);
     },
 
@@ -59,7 +90,7 @@ var app = {
         var questions = app.questions;
         let txt = "";
         app.students.forEach(student => {
-            let q = composer.create(questions, student);
+            let q = composer.create(questions, student,app.className,app.subject);
             txt += q;
         });
         $("#classworks").html(txt);

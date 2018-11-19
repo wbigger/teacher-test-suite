@@ -8,8 +8,16 @@
     margin: 0px 20px 0px 0px;
     white-space:nowrap;
 }
+#controls {
+        background: lightblue;
+        padding:10px;
+}
+
 @media print {
     .classwork {
         page-break-after: always;
     }
+    #controls {
+        display: none;
+    }    
 }
