@@ -6,15 +6,17 @@ var app = {
     className: undefined,
     subject: undefined,
     init: function () {
-        $("#students").hide();
         app.eventHandler();
+        if (typeof test !== "undefined") {
+            app.classworkURL = test.classworkURL;
+            app.studentsURL = test.studentsURL;
+            console.log("using test value");
+        } else {
+            console.log("please select students and classwork");
+        }
         //app.loadQuestions();
     },
     eventHandler: function () {
-        $("#student-list li").on('click', function () {
-            //  ret = DetailsView.GetProject($(this).attr("#data-id"), OnComplete, OnTimeOut, OnError);
-            alert($(this).attr("#data-id"));
-        });
         $("#class-select").val("default");
         $("#class-select").change(() => {
             let str = "";
@@ -34,6 +36,8 @@ var app = {
 
         $("#create-button").click(() => {
             if (app.studentsURL && app.classworkURL) {
+                console.log("class: " + app.studentsURL)
+                console.log("classwork: " + app.classworkURL)
                 app.loadQuestions();
             } else {
                 console.log("class: " + app.studentsURL)
@@ -60,10 +64,10 @@ var app = {
             .fail(app.onError);
     },
     onStudentsSuccess: function (jsonData) {
-        //console.log(jsonData);
+        console.log("onStudentSuccess");
+        console.log(jsonData);
         app.students = jsonData.studentList;
         app.className = jsonData.className;
-        app.writeStudents();
         app.composeQuestions();
     },
     // Generic error
@@ -73,17 +77,6 @@ var app = {
         console.log("classwork: " + app.classworkURL)
         console.log(e);
     },
-
-    // Write students
-    writeStudents: function () {
-        let txt = "";
-        //console.log(students.length);
-        for (i = 0; i < app.students.length; i++) {
-            txt += `<li data-id="` + i + `"><span>` + app.students[i].name + `</span>:<span>` + app.students[i].seed + `</span></li>`;
-        }
-        $("#student-list").html(txt);
-    },
-
 
     composeQuestions: function () {
         console.log("compose questions");

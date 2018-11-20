@@ -36,8 +36,18 @@ var composer = {
             txt += "</p>"
         } else if (item.type == "open-answer") {
             let itemBody = composer.randomPick(item.bodies);
-            let sum = composer.randomPick(itemBody.alternatives);
-            let question = itemBody.question + " " + sum;
+            let question = itemBody.question;
+            let regex = /{{([a-z]+)}}/g; //TODO: should match multiple
+            let match = regex.exec(question);
+            let token = match[1];
+            console.log(match);
+            console.log("itemBody: "+ itemBody[token]);
+            choice = composer.randomPick(itemBody[token]);
+            //question = question.replace(/{{+token+}}/g, choice);
+            question = question.replace("{{"+token+"}}", choice);
+            console.log(question);
+            console.log(choice);
+            //let sum = composer.randomPick(itemBody.alternatives);
             txt += "<p class='question'>" + composer.currentItem + ". " + question + "</p>";
             txt += "<p class='answers'>";
             // for (let i = 0; i < itemBody.nRows; i++) {
