@@ -18,7 +18,7 @@ var evaluator = {
             });
             let studentMark = 0;
             element.itemList.map((item, idx) => {
-                item.evaluation.responseAnswer === lockStudent.itemList[idx].evaluation.correctAnswer ?
+                item.evaluation.responseAnswer === lockStudent.itemList[idx].evaluation.correctAnswerId ?
                     studentMark += 1 : studentMark += 0;
             });
             studentMarkObj = {student:element.student,mark:studentMark};

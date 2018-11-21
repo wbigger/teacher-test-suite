@@ -19,15 +19,25 @@ var composer = {
     },
     createItem: function (item, student) {
         let txt = "<div class='item'>";
-        let correctAnswerId = undefined;
+        let lockItem = undefined;
 
         if (item.type == "multiple-choice") {
             let itemBody = composer.randomPick(item.bodies);
             
             // shuffle answer but remember the correct answer position
-            let correctAnswer = itemBody.answers[0]; //correct is always the first
+            let correctAnswerText = itemBody.correctAnswer;
             composer.shuffle(itemBody.answers);
-            correctAnswerId = itemBody.answers.indexOf(correctAnswer) + 1; // answer are 1 based
+            correctAnswerId = itemBody.answers.indexOf(correctAnswerText) + 1; // answer are 1 based
+
+            lockItem = {};
+            lockItem.type = item.type;
+            lockItem.skills = item.skills.slice();
+            lockItem.body = {};
+            lockItem.body.question = itemBody.question;
+            lockItem.body.answers = itemBody.answers.slice(); // copy values
+            lockItem.evaluation = {};
+            lockItem.evaluation.points = item.evaluation.points;
+            lockItem.evaluation.correctAnswerId = correctAnswerId;
 
             let idx = "A".charCodeAt(0);
 
@@ -39,6 +49,7 @@ var composer = {
                 idx += 1;
             });
             txt += "</p>"
+            
         } else if (item.type == "open-answer") {
             let itemBody = composer.randomPick(item.bodies);
             let question = itemBody.question;
@@ -99,8 +110,8 @@ var composer = {
             txt = txt.replace(/{{direction}}/g, direction);
         };
         txt += "</div>";
-        if (typeof correctAnswerId != "undefined") {
-            return [txt, correctAnswerId];
+        if (typeof lockItem != "undefined") {
+            return [txt, lockItem];
         }
         return txt;
     },
@@ -138,8 +149,7 @@ var composer = {
         quizArray.forEach(item => {
             let res = composer.createItem(item, student);
             txt += res[0];
-            let lockObj = { evaluation: { correctAnswer: res[1] } };
-            composer.lockList.push(lockObj);
+            composer.lockList.push(res[1]);
         }
         );
 
