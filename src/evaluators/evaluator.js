@@ -12,6 +12,7 @@ var evaluator = {
         $("#compare-button").click(evaluator.compare.bind(evaluator));
     },
     compare: function () {
+        this.marksList = [];
         this.responseObj.answers.forEach(element => {
             lockStudent = this.lockObj.answers.find((ans) => {
                 return ans.student == element.student;
@@ -21,10 +22,20 @@ var evaluator = {
                 item.evaluation.responseAnswer === lockStudent.itemList[idx].evaluation.correctAnswerId ?
                     studentMark += 1 : studentMark += 0;
             });
-            studentMarkObj = {student:element.student,mark:studentMark};
+            studentMarkObj = { student: element.student, mark: studentMark };
             this.marksList.push(studentMarkObj);
         });
+        this.writeMarkList();
+    },
+    writeMarkList() {
         console.log(this.marksList);
+        let txt = "";
+        txt += "<ul>";
+        this.marksList.forEach((element) => {
+            txt += `<li>${element.student}: ${element.mark}</li>`;
+        });
+        txt += "</ul>";
+        $("#results").html(txt);
     },
     readSingleFile: function (e) {
         // from stackoverflow
