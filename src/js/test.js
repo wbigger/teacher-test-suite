@@ -1,4 +1,4 @@
 var test = {
-    classworkURL: "api/classworks/webapp.json",
-    studentsURL: "api/students/4binf.json",
+    classworkURL: "api/classworks/archcpu.json",
+    studentsURL: "api/students/3ainf.json",
 }

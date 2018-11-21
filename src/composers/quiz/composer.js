@@ -1,5 +1,6 @@
 var composer = {
     currentItem: 0,
+    lockList: [],
     randomPick: function (list) {
         let n = Math.floor(Math.random() * list.length);
         return list[n];
@@ -18,11 +19,15 @@ var composer = {
     },
     createItem: function (item, student) {
         let txt = "<div class='item'>";
+        let correctAnswerId = undefined;
 
         if (item.type == "multiple-choice") {
             let itemBody = composer.randomPick(item.bodies);
-            //console.log(itemBody.answers);
+            
+            // shuffle answer but remember the correct answer position
+            let correctAnswer = itemBody.answers[0]; //correct is always the first
             composer.shuffle(itemBody.answers);
+            correctAnswerId = itemBody.answers.indexOf(correctAnswer) + 1; // answer are 1 based
 
             let idx = "A".charCodeAt(0);
 
@@ -37,17 +42,11 @@ var composer = {
         } else if (item.type == "open-answer") {
             let itemBody = composer.randomPick(item.bodies);
             let question = itemBody.question;
-            let regex = /{{([a-z]+)}}/g; //TODO: should match multiple
+            let regex = /{{([a-z]+)}}/g; //TODO: should match multiple with while
             let match = regex.exec(question);
             let token = match[1];
-            console.log(match);
-            console.log("itemBody: "+ itemBody[token]);
             choice = composer.randomPick(itemBody[token]);
-            //question = question.replace(/{{+token+}}/g, choice);
-            question = question.replace("{{"+token+"}}", choice);
-            console.log(question);
-            console.log(choice);
-            //let sum = composer.randomPick(itemBody.alternatives);
+            question = question.replace("{{" + token + "}}", choice);
             txt += "<p class='question'>" + composer.currentItem + ". " + question + "</p>";
             txt += "<p class='answers'>";
             // for (let i = 0; i < itemBody.nRows; i++) {
@@ -63,14 +62,13 @@ var composer = {
             let figureColor = composer.randomPick(qBody.figure.colors);
             let movement = composer.randomPick(qBody.movements);
 
-            // TODO make this condition more functional
+            // TODO: make this condition more functional
             for (let i = 0; i < character.length; i++) {
                 if (qBody.characters[i] == character) {
                     place = qBody.places[i];
                 }
             }
 
-            console.log("processing create");
             if (movement == "up") {
                 origin = composer.randomPick(["tre quarti", "quattro quinti"]);
                 dimension = "dell'altezza";
@@ -101,14 +99,16 @@ var composer = {
             txt = txt.replace(/{{direction}}/g, direction);
         };
         txt += "</div>";
+        if (typeof correctAnswerId != "undefined") {
+            return [txt, correctAnswerId];
+        }
         return txt;
     },
     create: function (items, student, studentClass, subject) {
+        // init composer (maybe use as a class?)
         composer.currentItem = 1;
+        composer.lockList = [];
         Math.seedrandom(student.seed);
-
-        //let studentClass = "2Binf"; // TODO: move elsewhere in a JSON
-        //let subject = "TPSI"; // TODO: move elsewhere in a JSON
 
         let txt = "<div class='classwork'>";
 
@@ -135,7 +135,13 @@ var composer = {
         // Put multiple choice first
         let quizArray = items.filter(item => { return item.type == "multiple-choice"; })
         composer.shuffle(quizArray);
-        quizArray.forEach(item => txt += composer.createItem(item, student));
+        quizArray.forEach(item => {
+            let res = composer.createItem(item, student);
+            txt += res[0];
+            let lockObj = { evaluation: { correctAnswer: res[1] } };
+            composer.lockList.push(lockObj);
+        }
+        );
 
         // Then put open answer
         let openAnswerArray = items.filter(item => { return item.type == "open-answer"; })
@@ -150,8 +156,8 @@ var composer = {
         txt += "</div>"; // items
 
         txt += "</div>"; // classwork
-
-        return txt;
+        
+        return [txt, composer.lockList];
     }
 }
 //`+xxx+`

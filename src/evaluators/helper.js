@@ -1,5 +1,6 @@
 var helper = {
     answerObj: [],
+    filename: "",
     init: function () {
         console.log("helper init");
         helper.eventHandler();
@@ -21,7 +22,7 @@ var helper = {
             [...answerText].forEach(c => {
                 let item = {};
                 item.evaluation = {};
-                item.evaluation.correctAnswer = c;
+                item.evaluation.responseAnswer = parseInt(c);
                 itemList.push(item);
             });
             helper.answerObj.push({ student: studentName, itemList });
@@ -30,7 +31,7 @@ var helper = {
     },
     saveToFile: function () {
         let data = JSON.stringify({answers:helper.answerObj});
-        let filename = "results.json";
+        let filename = helper.filename.replace("txt","json");
         let type = "application/json";
         // from stackoverflow
         var file = new Blob([data], { type: type });
@@ -56,6 +57,7 @@ var helper = {
         if (!file) {
             return;
         }
+        helper.filename = file.name;
         var reader = new FileReader();
         reader.onload = function (e) {
             var contents = e.target.result;

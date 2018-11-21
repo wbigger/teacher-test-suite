@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Evaluator</title>
+    <script src="libs/jquery-3.3.1.min.js"></script>
+    <script src="evaluators/evaluator.js"></script>
+</head>
+
+<body>
+    <div id="controls">
+        <!-- <select id="classwork-lock-select">
+            <option value="default">--Select a lock file--</option>
+            <option value="archcpu">arch-cpu</option>
+        </select>
+        <select id="classwork-response-select">
+            <option value="default">--Select a response file--</option>
+            <option value="archcpu">arch-cpu</option>
+        </select> -->
+        <form>
+            Lock file:
+            <input type="file" id="lock-input" />
+            Response file:
+            <input type="file" id="response-input" />
+        </form>
+        <button type="button" id="compare-button">Compare</button>
+    </div>
+
+    <div id="classworks">
+    </div>
+</body>
+
+</html>
