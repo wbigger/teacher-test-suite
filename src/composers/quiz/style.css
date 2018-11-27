@@ -13,6 +13,18 @@
         padding:10px;
 }
 
+.points {
+    margin-top: 2px;
+    font-size: small;
+}
+.open-answer {
+    margin-bottom: 2px;
+}
+
+.hr {
+    border-bottom: 1px solid black;
+}
+
 @media print {
     .classwork {
         page-break-after: always;

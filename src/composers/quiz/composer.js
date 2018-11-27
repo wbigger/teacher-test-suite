@@ -58,11 +58,20 @@ var composer = {
             let token = match[1];
             choice = composer.randomPick(itemBody[token]);
             question = question.replace("{{" + token + "}}", choice);
-            txt += "<p class='question'>" + composer.currentItem + ". " + question + "</p>";
+            txt += "<p class='question open-answer'>" + composer.currentItem + ". " + question + "</p>";
+            
+            // Add point list
+            txt += `<p class='points'>Punti: `;
+            item.evaluation.pointList.forEach(p=>{
+                txt+=`${p.description} (${p.points}p), `
+            });
+            txt = txt.replace(/, $/,".");
+            txt += `</p>`;
+
             txt += "<p class='answers'>";
-            // for (let i = 0; i < itemBody.nRows; i++) {
-            //     txt += "______________________________________________________________________________<br>";
-            // }
+            for (let i = 0; i < itemBody.nRows; i++) {
+                txt += "<p class='hr'>></p>";
+            }
             txt += "</p>"
         } else if (item.type == "text-shuffle") {
             let qBody = item.body;
@@ -142,7 +151,6 @@ var composer = {
 
         txt += "<div class='items'>"
 
-        txt += "<h3 class='classwork-items'>Risolvere il seguente esercizio in Processing</h2>";
         // Put multiple choice first
         let quizArray = items.filter(item => { return item.type == "multiple-choice"; })
         composer.shuffle(quizArray);
