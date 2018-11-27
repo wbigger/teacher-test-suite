@@ -8,7 +8,7 @@ var composer = {
     create: function (questions, student) {
         let question = questions[0];
         let qBody = question.body;
-        Math.seedrandom(student.seed);
+        Math.seedrandom(student.id);
         let figureShape = composer.randomPick(qBody.figure.shapes);
         let figureSize = composer.randomPick(qBody.figure.sizes);
         let figureColor = composer.randomPick(qBody.figure.colors);
@@ -34,7 +34,7 @@ var composer = {
         }
 
         let qText = qBody.text;
-        console.log("composer: " + question.name + " " + student.seed);
+        console.log("composer: " + question.name + " " + student.id);
         let txt = "<div class='question'>";
         txt += "<h1>" + student.name + "</h1>";
         qText.forEach((t)=>{txt+=txt += `<p>`+t+`</p>`});

@@ -32,7 +32,7 @@ var appStudents = {
         let txt = "";
         //console.log(students.length);
         for (i = 0; i < appStudents.students.length; i++) {
-            txt += `<li data-id="` + i + `"><span>` + appStudents.students[i].name + `</span>:<span>` + appStudents.students[i].seed + `</span></li>`;
+            txt += `<li data-id="` + i + `"><span>` + appStudents.students[i].name + `</span>:<span>` + appStudents.students[i].id + `</span></li>`;
         }
         $("#student-list").html(txt);
     },

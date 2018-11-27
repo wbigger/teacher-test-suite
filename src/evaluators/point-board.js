@@ -1,6 +1,12 @@
+sayHello = function () {
+    console.log("hello");
+    return false;
+}
 var pointBoard = {
     lockObj: {},
-    marksList: [1],
+    marksList: [],
+    idCounter: 0,
+    lockFilename: "",
     init: function () {
         console.log("point board init");
         this.eventHandler();
@@ -8,49 +14,49 @@ var pointBoard = {
     eventHandler: function () {
         $("#lock-input").change(this.readSingleFile.bind(this));
         $("#create-board").click(this.create.bind(this));
+        $("#save-button").click(this.saveCorrections);
+    },
+    saveCorrections: function () {
+        console.log(this);
+        let form_data = $("#board-form").serializeArray();
+        for (var input of form_data) {
+            console.log("ok:");
+            console.log(input);
+            let element = input['name'];
+            console.log(element);
+            // TODO: save the correction file
+
+            // var element = $("#contact_" + form_data[input]['name']);
+            // var valid = element.hasClass("valid");
+            // var error_element = $("span", element.parent());
+            // if (!valid) {
+            //     error_element.removeClass("error").addClass("error_show"); error_free = false;
+            // }
+            // else {
+            //     error_element.removeClass("error_show").addClass("error");
+            // }
+        }
+        return false;
+    },
+    sayHello: function () {
+        console.log("hello");
+        return false;
     },
     create: function () {
-        console.log("this.marksList: ");
-        console.log(this);
         let txt = "";
-        txt += "<ul>";
         this.lockObj.answers.forEach(element => {
-            txt += "<li>";
-            txt+=`${element.student}`
-            txt+=`
-            <form>
-            <input type="text" id="lock-input" />
-            </form>`;
-            txt += "</li>";
+            txt += "<fieldset>";
+            txt += `<legend>${element.student.name}</legend>`
+            txt += `<input type="text" name="mq-${element.student.id}" id="mq-${element.student.id}"/>`;
+            let openAnswerArray = element.itemList.filter(item => {return item.type == "open-answer"; })
+            openAnswer = openAnswerArray[0];
+            openAnswer.evaluation.pointList.forEach(point => {
+                txt += `<span><input type="checkbox" name="oa-${point.short}-${element.student.id}" id="oa-${point.short}-${element.student.id}" value="${point.short}">${point.short}</span>`;
+            });
+            txt += "</fieldset>";
         });
-        txt += "</ul>";
         $("#results").html(txt);
-
-        // this.marksList = [];
-        // this.responseObj.answers.forEach(element => {
-        //     lockStudent = this.lockObj.answers.find((ans) => {
-        //         return ans.student == element.student;
-        //     });
-        //     let studentMark = 0;
-        //     element.itemList.map((item, idx) => {
-        //         item.evaluation.responseAnswer === lockStudent.itemList[idx].evaluation.correctAnswerId ?
-        //             studentMark += 1 : studentMark += 0;
-        //     });
-        //     studentMarkObj = { student: element.student, mark: studentMark };
-        //     this.marksList.push(studentMarkObj);
-        // });
-        // this.writeMarkList();
     },
-    // writeMarkList() {
-    //     console.log(this.marksList);
-    //     let txt = "";
-    //     txt += "<ul>";
-    //     this.marksList.forEach((element) => {
-    //         txt += `<li>${element.student}: ${element.mark}</li>`;
-    //     });
-    //     txt += "</ul>";
-    //     $("#results").html(txt);
-    // },
     readSingleFile: function (e) {
         // from stackoverflow
         var file = e.target.files[0];
@@ -58,12 +64,11 @@ var pointBoard = {
         if (!file) {
             return;
         }
+        this.lockFilename = file.name;
         var reader = new FileReader();
         reader.onload = function (e) {
             var contents = e.target.result;
             pointBoard.lockObj = JSON.parse(contents);
-            console.log("lock:");
-            //console.log(this);
         };
         reader.readAsText(file);
     },

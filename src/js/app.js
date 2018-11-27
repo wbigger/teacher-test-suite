@@ -110,7 +110,7 @@ var app = {
         app.students.forEach(student => {
             let ret = composer.create(itemList, student, app.className, app.subject);
             txt += ret[0];
-            app.lockList.push({ student: student.name, itemList: ret[1] });
+            app.lockList.push({ student: student, itemList: ret[1] });
         });
         
         $("#classworks").html(txt);
