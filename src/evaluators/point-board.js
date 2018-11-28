@@ -20,21 +20,9 @@ var pointBoard = {
         console.log(this);
         let form_data = $("#board-form").serializeArray();
         for (var input of form_data) {
-            console.log("ok:");
             console.log(input);
             let element = input['name'];
-            console.log(element);
-            // TODO: save the correction file
-
-            // var element = $("#contact_" + form_data[input]['name']);
-            // var valid = element.hasClass("valid");
-            // var error_element = $("span", element.parent());
-            // if (!valid) {
-            //     error_element.removeClass("error").addClass("error_show"); error_free = false;
-            // }
-            // else {
-            //     error_element.removeClass("error_show").addClass("error");
-            // }
+            // TODO: put logic here
         }
         return false;
     },
@@ -45,17 +33,33 @@ var pointBoard = {
     create: function () {
         let txt = "";
         this.lockObj.answers.forEach(element => {
-            txt += "<fieldset>";
-            txt += `<legend>${element.student.name}</legend>`
-            txt += `<input type="text" name="mq-${element.student.id}" id="mq-${element.student.id}"/>`;
+            let fieldset = $('<fieldset>');
+            let legend = $('<legend>').text(element.student.name);
+            fieldset.append(legend);
+            let textbox = $('<input>',{
+                type:'text',
+                name:`mq-${element.student.id}`,
+                id:`mq-${element.student.id}`//,
+                //value: "hello"
+            });
+            fieldset.append(textbox);
+            
             let openAnswerArray = element.itemList.filter(item => {return item.type == "open-answer"; })
             openAnswer = openAnswerArray[0];
             openAnswer.evaluation.pointList.forEach(point => {
-                txt += `<span><input type="checkbox" name="oa-${point.short}-${element.student.id}" id="oa-${point.short}-${element.student.id}" value="${point.short}">${point.short}</span>`;
+                txt += `<span><input type="checkbox" name="" id="oa-${point.short}-${element.student.id}" value="${point.short}">${point.short}</span>`;
+                let checkbox = $('<input>',{
+                    type:'checkbox',
+                    name:`oa-${point.short}-${element.student.id}`,
+                    id:`oa-${point.short}-${element.student.id}`,
+                    value: `${point.short}`//,
+//                    checked: true
+                });
+                let checkspan = $('<span>').append(checkbox).append(point.short);
+                fieldset.append(checkspan);
             });
-            txt += "</fieldset>";
+            $("#results").append(fieldset);
         });
-        $("#results").html(txt);
     },
     readSingleFile: function (e) {
         // from stackoverflow
