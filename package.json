@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/wbigger/teacher-test-suite#readme",
   "dependencies": {
+    "json-google-docs": "^0.2.1",
     "seedrandom": "^2.4.4"
   }
 }
