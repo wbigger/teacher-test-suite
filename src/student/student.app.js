@@ -1,8 +1,11 @@
-var appStudents = {
+var studentApp = {
     students: [],
+    currentClass: "2binf",
+    studentData: "",
     init: function () {
-        appStudents.eventHandler();
-        appStudents.loadStudents();
+        this.studentData = `../api/students/${this.currentClass}.json`;
+        this.eventHandler();
+        this.loadStudents();
     },
     eventHandler: function() {
         $("#student-list li").on('click', function() {
@@ -13,17 +16,18 @@ var appStudents = {
     },
     // Students
     loadStudents: function () {
-        $.getJSON("api/students/2binf.json")
-            .done(appStudents.onStudentsSuccess)
-            .fail(appStudents.onError);
+        $.getJSON(this.studentData)
+            .done(this.onStudentsSuccess.bind(this))
+            .fail(this.onError);
     },
     onStudentsSuccess: function (jsonData) {
         console.log(jsonData);
-        appStudents.students = jsonData.studentlist;
-        appStudents.writeStudents();
+        this.students = jsonData.studentList;
+        this.writeStudents();
     },
     // Generic error
     onError: function (e) {
+        console.log("Error getting student data");
         console.log(e);
     },
 
@@ -31,11 +35,11 @@ var appStudents = {
     writeStudents: function () {
         let txt = "";
         //console.log(students.length);
-        for (i = 0; i < appStudents.students.length; i++) {
-            txt += `<li data-id="` + i + `"><span>` + appStudents.students[i].name + `</span>:<span>` + appStudents.students[i].id + `</span></li>`;
+        for (i = 0; i < this.students.length; i++) {
+            txt += `<li data-id="` + i + `"><span>` + this.students[i].name + `</span>:<span>` + this.students[i].seed + `</span></li>`;
         }
         $("#student-list").html(txt);
     },
 };
 
-$(document).ready(appStudents.init);
+$(document).ready(studentApp.init.bind(studentApp));
