@@ -11,9 +11,9 @@ var app = {
         if (typeof test !== "undefined") {
             app.classworkURL = test.classworkURL;
             app.studentsURL = test.studentsURL;
-            console.log("using test value");
-            console.log("class: " + app.studentsURL)
-            console.log("classwork: " + app.classworkURL)
+            console.log("Using test values");
+            console.log("- class: " + app.studentsURL)
+            console.log("- classwork: " + app.classworkURL)
         } else {
             console.log("please select students and classwork");
         }
@@ -26,7 +26,7 @@ var app = {
             $("#class-select option:selected").each(function () {
                 str += $(this).val();
             });
-            app.studentsURL = "api/students/" + str + ".json";
+            app.studentsURL = "../api/students/" + str + ".json";
         });
         $("#classwork-select").val("default");
         $("#classwork-select").change((el) => {
@@ -34,7 +34,7 @@ var app = {
             $("#classwork-select option:selected").each(function () {
                 str += $(this).val();
             });
-            app.classworkURL = "api/classworks/" + str + ".json";
+            app.classworkURL = "../api/classworks/" + str + ".json";
         });
 
         $("#create-button").click(() => {
