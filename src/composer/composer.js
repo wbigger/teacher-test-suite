@@ -17,6 +17,10 @@ var composer = {
         }
         return a;
     },
+    md2html: function(txt) {
+        txt = txt.replace(/\*\*(.*)\*\*/,"<strong>$1</strong>");
+        return txt;
+    },
     createItem: function (item, student) {
         let txt = "<div class='item'>";
         let lockItem = undefined;
@@ -28,7 +32,6 @@ var composer = {
             let correctAnswerText = itemBody.correctAnswer;
             composer.shuffle(itemBody.answers);
             correctAnswerId = itemBody.answers.indexOf(correctAnswerText) + 1; // answer are 1 based
-
             lockItem = {};
             lockItem.type = item.type;
             lockItem.skills = item.skills.slice();
@@ -40,8 +43,9 @@ var composer = {
             lockItem.evaluation.correctAnswerId = correctAnswerId;
 
             let idx = "A".charCodeAt(0);
+            let question = composer.md2html(itemBody.question);
 
-            txt += "<p class='question'>" + composer.currentItem + ". " + itemBody.question + "</p>";
+            txt += "<p class='question'>" + composer.currentItem + ". " + question + "</p>";
             composer.currentItem++;
             txt += "<p class='answers'>";
             itemBody.answers.forEach(answer => {
@@ -79,7 +83,7 @@ var composer = {
 
             txt += "<p class='answers'>";
             for (let i = 0; i < itemBody.nRows; i++) {
-                txt += "<p class='hr'>></p>";
+                txt += "<p class='hr'></p>";
             }
             txt += "</p>"
         };
@@ -138,7 +142,7 @@ var composer = {
         // init composer (maybe use as a class?)
         composer.currentItem = 1;
         composer.lockList = [];
-        Math.seedrandom(student.id);
+        Math.seedrandom(student.seed);
 
         let txt = "<div class='classwork'>";
 
