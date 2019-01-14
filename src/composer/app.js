@@ -11,7 +11,7 @@ var app = {
         if (typeof test !== "undefined") {
             app.classworkURL = test.classworkURL;
             app.studentsURL = test.studentsURL;
-            console.log("Using test values");
+            console.log("Loading test values:");
             console.log("- class: " + app.studentsURL)
             console.log("- classwork: " + app.classworkURL)
         } else {
@@ -38,8 +38,8 @@ var app = {
         });
 
         $("#create-button").click(() => {
-            console.log("class: " + app.studentsURL)
-            console.log("classwork: " + app.classworkURL)
+            console.log("using class: " + app.studentsURL)
+            console.log("using classwork: " + app.classworkURL)
             if (app.studentsURL && app.classworkURL) {
                 app.loadQuestions();
             } else {
@@ -68,8 +68,6 @@ var app = {
             .fail(app.onError);
     },
     onStudentsSuccess: function (jsonData) {
-        console.log("onStudentSuccess");
-        console.log(jsonData);
         app.students = jsonData.studentList;
         app.className = jsonData.className;
         app.composeQuestions();
@@ -104,7 +102,6 @@ var app = {
         }
     },
     composeQuestions: function () {
-        console.log("compose itemList");
         var itemList = app.itemList;
         let txt = "";
         app.students.forEach(student => {
