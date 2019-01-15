@@ -1,3 +1,4 @@
+// convert custom txt format of answers int json (legacy)
 var helper = {
     answerObj: [],
     filename: "",

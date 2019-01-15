@@ -4,11 +4,6 @@
     display: none;
 }
 
-#controls {
-    background: lightblue;
-    padding:10px;
-}
-
 .openAnswer {
     border-left: 1px solid black;
     margin:0 5px 0 5px;

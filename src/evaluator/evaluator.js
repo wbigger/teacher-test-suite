@@ -1,28 +1,32 @@
 var evaluator = {
     lockObj: {},
-    responseObj: {},
     marksList: [],
     init: function () {
         console.log("evaluator init");
-        evaluator.eventHandler();
+        this.eventHandler();
     },
     eventHandler: function () {
-        $("#lock-input").change(evaluator.readSingleFile);
-        $("#response-input").change(evaluator.readSingleFile);
-        $("#compare-button").click(evaluator.compare.bind(evaluator));
+        $("#lock-input").change(this.readSingleFile).bind(this);
+        $("#evaluate-button").click(this.evaluate.bind(this));
     },
-    compare: function () {
+    evaluate: function () {
         this.marksList = [];
-        this.responseObj.answers.forEach(element => {
-            lockStudent = this.lockObj.answers.find((ans) => {
-                return ans.student == element.student;
-            });
+        this.lockObj.answers.forEach(classwork => {
             let studentMark = 0;
-            element.itemList.map((item, idx) => {
-                item.evaluation.responseAnswer === lockStudent.itemList[idx].evaluation.correctAnswerId ?
-                    studentMark += 1 : studentMark += 0;
-            });
-            studentMarkObj = { student: element.student, mark: studentMark };
+            classwork.itemList.filter(item => item.type == "multiple-choice")
+                .forEach(item => {
+                    item.evaluation.responseAnswer === item.evaluation.correctAnswerId ?
+                        studentMark += 1 : studentMark += 0;
+                });
+            classwork.itemList.filter(item => item.type == "open-answer")
+                .forEach(item => {
+                    item.evaluation.pointList.forEach(point => {
+                        point.studentAnswer === true ?
+                            studentMark += 1 : studentMark += 0;
+                    });
+                    studentMarkObj = { student: classwork.student, mark: studentMark };
+
+                });
             this.marksList.push(studentMarkObj);
         });
         this.writeMarkList();
@@ -32,7 +36,7 @@ var evaluator = {
         let txt = "";
         txt += "<ul>";
         this.marksList.forEach((element) => {
-            txt += `<li>${element.student}: ${element.mark}</li>`;
+            txt += `<li>${element.student.name}: ${element.mark}</li>`;
         });
         txt += "</ul>";
         $("#results").html(txt);
@@ -47,20 +51,10 @@ var evaluator = {
         var reader = new FileReader();
         reader.onload = function (e) {
             var contents = e.target.result;
-            if (inputId == "lock-input") {
-                evaluator.lockObj = JSON.parse(contents);
-                console.log("lock:");
-                console.log(evaluator.lockObj);
-            } else if (inputId == "response-input") {
-                evaluator.responseObj = JSON.parse(contents);
-                console.log("response:");
-                console.log(evaluator.responseObj);
-            }
-            // helper.convertAnswer2Json(contents);
-            // helper.displayContents(contents);
+            evaluator.lockObj = JSON.parse(contents);
         };
         reader.readAsText(file);
     },
 }
 
-$(document).ready(evaluator.init);
+$(document).ready(evaluator.init.bind(evaluator));

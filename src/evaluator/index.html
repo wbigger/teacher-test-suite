@@ -6,19 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Evaluator</title>
-    <script src="libs/jquery-3.3.1.min.js"></script>
-    <script src="evaluators/evaluator.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../libs/jquery-3.3.1.min.js"></script>
+    <script src="evaluator.js"></script>
 </head>
 
 <body>
     <div id="controls">
         <form>
-            Lock file:
+            Lock file with answers:
             <input type="file" id="lock-input" />
-            Response file:
-            <input type="file" id="response-input" />
+            <button type="button" id="evaluate-button">Evaluate</button>
         </form>
-        <button type="button" id="compare-button">Compare</button>
     </div>
 
     <div id="results">

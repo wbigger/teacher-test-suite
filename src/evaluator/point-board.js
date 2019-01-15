@@ -34,12 +34,13 @@ var pointBoard = {
                         .evaluation.studentAnswer = parseInt(c);
                 });
             } else if (itemType === "oa") {
-                let short = splitName[2].trim();
+                let oaIdx = splitName[2].trim();
+                let short = splitName[3].trim();
                 // find this element and set it to true
                 classwork.itemList
-                .find(e => e.type == "open-answer")
+                .filter(e => e.type == "open-answer")[oaIdx]
                 .evaluation.pointList
-                .find(e => e.short === short)
+                .find(p => p.short === short)
                 .studentAnswer = true;
             }
 
@@ -96,13 +97,13 @@ var pointBoard = {
             fieldset.append(textbox);
 
             let openAnswerArray = element.itemList.filter(item => { return item.type == "open-answer"; })
-            openAnswerArray.forEach(openAnswer => {
+            openAnswerArray.forEach((openAnswer,idx) => {
                 let openAnswerElement = $('<span>').addClass('openAnswer');
-                openAnswer.evaluation.pointList.forEach(point => {
+                openAnswer.evaluation.pointList.forEach((point) => {
                     let checkbox = $('<input>', {
                         type: 'checkbox',
-                        name: `oa-${element.student.id}-${point.short}`,
-                        id: `oa-${element.student.id}-${point.short}`,
+                        name: `oa-${element.student.id}-${idx}-${point.short}`,
+                        id: `oa-${element.student.id}-${idx}-${point.short}`,
                         value: `${point.short}`,
                         checked: (point.studentAnswer === true)
                     });
