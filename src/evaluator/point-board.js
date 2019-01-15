@@ -38,7 +38,7 @@ var pointBoard = {
                 // find this element and set it to true
                 classwork.itemList
                 .find(e => e.type == "open-answer")
-                .item.evaluation.pointList
+                .evaluation.pointList
                 .find(e => e.short === short)
                 .studentAnswer = true;
             }
@@ -103,9 +103,9 @@ var pointBoard = {
                         type: 'checkbox',
                         name: `oa-${element.student.id}-${point.short}`,
                         id: `oa-${element.student.id}-${point.short}`,
-                        value: `${point.short}`//,
-                        // TODO add checked true only if actually checked
-                        //                    checked: true
+                        value: `${point.short}`,
+                        // TODO: verify checked true only if actually checked
+                        checked: (point.studentAnswer === true)
                     });
                     let checkspan = $('<span>')
                         .append(checkbox)
