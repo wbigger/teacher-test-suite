@@ -1,1 +1,3 @@
 - lock file name should contains subject and class
+- should not shuffle open answers order
+- move student.seed to student.id

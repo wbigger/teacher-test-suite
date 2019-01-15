@@ -1,4 +1,7 @@
 var app = {
+    apiPath: "../api/",
+    classworkID: "default",
+    studentsID: "default",
     classworkURL: undefined,
     studentsURL: undefined,
     itemList: [],
@@ -7,34 +10,35 @@ var app = {
     subject: undefined,
     lockList: [],
     init: function () {
-        app.eventHandler();
         if (typeof test !== "undefined") {
-            app.classworkURL = test.classworkURL;
-            app.studentsURL = test.studentsURL;
+            app.classworkID = test.classworkID;
+            app.studentsID = test.studentsID;
             console.log("Loading test values:");
-            console.log("- class: " + app.studentsURL)
-            console.log("- classwork: " + app.classworkURL)
+            console.log("- students: " + app.studentsID)
+            console.log("- classwork: " + app.classworkID)
+            app.classworkURL = app.apiPath + "classworks/" + app.classworkID + ".json";
+            app.studentsURL = app.apiPath + "students/" + app.studentsID + ".json";
         } else {
             console.log("please select students and classwork");
         }
-        //app.loadQuestions();
+        app.eventHandler();
     },
     eventHandler: function () {
-        $("#class-select").val("default");
+        $("#class-select").val(app.studentsID);
         $("#class-select").change(() => {
             let str = "";
             $("#class-select option:selected").each(function () {
                 str += $(this).val();
             });
-            app.studentsURL = "../api/students/" + str + ".json";
+            app.studentsURL = app.apiPath + "students/" + str + ".json";
         });
-        $("#classwork-select").val("default");
+        $("#classwork-select").val(app.classworkID);
         $("#classwork-select").change((el) => {
             let str = "";
             $("#classwork-select option:selected").each(function () {
                 str += $(this).val();
             });
-            app.classworkURL = "../api/classworks/" + str + ".json";
+            app.classworkURL = app.apiPath + "classworks/" + str + ".json";
         });
 
         $("#create-button").click(() => {

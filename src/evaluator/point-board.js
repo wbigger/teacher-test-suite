@@ -17,17 +17,16 @@ var pointBoard = {
         $("#save-button").click(this.saveCorrections.bind(this));
     },
     saveCorrections: function () {
-        //console.log(this);
+        console.log(this);
         let form_data = $("#board-form").serializeArray();
         for (var input of form_data) {
             let inputName = input['name'];
-            let splitName =  inputName.split('-'); 
+            let splitName = inputName.split('-');
             let itemType = splitName[0];
             let studentId = splitName[1];
             let classwork = this.lockObj.answers
                 .find(e => e.student.id == studentId);
-            // TODO: add an unique identifier to items and find it with it
-            //console.log(studentId);
+            console.log(studentId);
             if (itemType === "mq") {
                 let answerText = input['value'].replace(/ /g, '');
                 [...answerText].forEach((c, idx) => {
@@ -36,17 +35,18 @@ var pointBoard = {
                 });
             } else if (itemType === "oa") {
                 let short = splitName[2].trim();
-                let item = classwork.itemList.find(e=>e.type=="open-answer");
-                let eval = item.evaluation.pointList.find(e=>
-                    e.short === short
-                );
-                eval.studentAnswer = true;
+                // find this element and set it to true
+                classwork.itemList
+                .find(e => e.type == "open-answer")
+                .item.evaluation.pointList
+                .find(e => e.short === short)
+                .studentAnswer = true;
             }
 
         };
         console.log(this.lockObj);
-        this.sayHello();
-        //this.saveTofile(); // why doesnt work with this function name????
+        this.sayHello(); // sayHello works
+        //this.saveTofile(); // TODO: why doesnt work with this function name????
         return false; // do not continue the submit chain
     },
     sayHello: function () { //TODO: rename this function
@@ -74,34 +74,50 @@ var pointBoard = {
         return false;
     },
     create: function () {
-        let txt = "";
         this.lockObj.answers.forEach(element => {
             let fieldset = $('<fieldset>');
             let legend = $('<legend>').text(element.student.name);
             fieldset.append(legend);
+            // populate value for multiple choice questions
+            let multipleChoiceArray = element.itemList.filter(item => { return item.type == "multiple-choice"; })
+            let textboxValue = '';
+            multipleChoiceArray.forEach(item => {
+                console.log(item);
+                if (typeof item.evaluation.studentAnswer != "undefined") {
+                    textboxValue += item.evaluation.studentAnswer;
+                }
+            });
             let textbox = $('<input>', {
                 type: 'text',
                 name: `mq-${element.student.id}`,
-                id: `mq-${element.student.id}`//,
-                //value: "hello"
+                id: `mq-${element.student.id}`,
+                value: textboxValue
             });
             fieldset.append(textbox);
 
             let openAnswerArray = element.itemList.filter(item => { return item.type == "open-answer"; })
-            openAnswer = openAnswerArray[0];
-            openAnswer.evaluation.pointList.forEach(point => {
-                txt += `<span><input type="checkbox" name="" id="oa-${point.short}-${element.student.id}" value="${point.short}">${point.short}</span>`;
-                let checkbox = $('<input>', {
-                    type: 'checkbox',
-                    name: `oa-${element.student.id}-${point.short}`,
-                    id: `oa-${element.student.id}-${point.short}`,
-                    value: `${point.short}`//,
-                    //                    checked: true
+            openAnswerArray.forEach(openAnswer => {
+                let openAnswerElement = $('<span>').addClass('openAnswer');
+                openAnswer.evaluation.pointList.forEach(point => {
+                    let checkbox = $('<input>', {
+                        type: 'checkbox',
+                        name: `oa-${element.student.id}-${point.short}`,
+                        id: `oa-${element.student.id}-${point.short}`,
+                        value: `${point.short}`//,
+                        // TODO add checked true only if actually checked
+                        //                    checked: true
+                    });
+                    let checkspan = $('<span>')
+                        .append(checkbox)
+                        .append(point.short)
+                        .addClass('openAnserPoint');
+                    openAnswerElement.append(checkspan);
                 });
-                let checkspan = $('<span>').append(checkbox).append(point.short);
-                fieldset.append(checkspan);
+                fieldset.append(openAnswerElement);
             });
+
             $("#results").append(fieldset);
+            $("#board-form").show();
         });
     },
     readSingleFile: function (e) {

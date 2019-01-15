@@ -72,6 +72,7 @@ var composer = {
             lockItem.evaluation.pointList = item.evaluation.pointList.slice();
 
             txt += "<p class='question open-answer'>" + composer.currentItem + ". " + question + "</p>";
+            composer.currentItem++;
             
             // Add point list
             txt += `<p class='points'>Punti: `;
