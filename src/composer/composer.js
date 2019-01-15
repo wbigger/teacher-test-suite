@@ -29,9 +29,10 @@ var composer = {
             let itemBody = composer.randomPick(item.bodies);
             
             // shuffle answer but remember the correct answer position
-            let correctAnswerText = itemBody.correctAnswer;
+            // please note that answers are 1 based
+            let correctAnswerText = itemBody.answers[item.evaluation.correctAnswer - 1];
             composer.shuffle(itemBody.answers);
-            correctAnswerId = itemBody.answers.indexOf(correctAnswerText) + 1; // answer are 1 based
+            correctAnswerId = itemBody.answers.indexOf(correctAnswerText) + 1;
             lockItem = {};
             lockItem.type = item.type;
             lockItem.skills = item.skills.slice();
@@ -88,51 +89,6 @@ var composer = {
             }
             txt += "</p>"
         };
-        // else if (item.type == "text-shuffle") {
-        //     let qBody = item.body;
-        //     let character = composer.randomPick(qBody.characters);
-        //     let place = composer.randomPick(qBody.places);
-        //     let figureShape = composer.randomPick(qBody.figure.shapes);
-        //     let figureSize = composer.randomPick(qBody.figure.sizes);
-        //     let figureColor = composer.randomPick(qBody.figure.colors);
-        //     let movement = composer.randomPick(qBody.movements);
-
-        //     // TODO: make this condition more functional
-        //     for (let i = 0; i < character.length; i++) {
-        //         if (qBody.characters[i] == character) {
-        //             place = qBody.places[i];
-        //         }
-        //     }
-
-        //     if (movement == "up") {
-        //         origin = composer.randomPick(["tre quarti", "quattro quinti"]);
-        //         dimension = "dell'altezza";
-        //         direction = "l'alto";
-        //     } else if (movement == "down") {
-        //         origin = composer.randomPick(["un quarto", "un quinto"]);
-        //         dimension = "dell'altezza";
-        //         direction = "il basso";
-        //     } else if (movement == "left") {
-        //         origin = composer.randomPick(["tre quarti", "quattro quinti"]);
-        //         dimension = "della larghezza";
-        //         direction = "sinistra";
-        //     } else if (movement == "right") {
-        //         origin = composer.randomPick(["un quarto", "un quinto"]);
-        //         dimension = "della larghezza";
-        //         direction = "destra";
-        //     }
-        //     let qText = qBody.text;
-        //     //console.log("composer: " + item.name + " " + student.id);
-        //     qText.forEach((t) => { txt += `<p>` + t + `</p>` });
-        //     txt = txt.replace(/{{character}}/g, character);
-        //     txt = txt.replace(/{{place}}/g, place);
-        //     txt = txt.replace(/{{figureShape}}/g, figureShape);
-        //     txt = txt.replace(/{{figureSize}}/g, figureSize);
-        //     txt = txt.replace(/{{figureColor}}/g, figureColor);
-        //     txt = txt.replace(/{{origin}}/g, origin);
-        //     txt = txt.replace(/{{dimension}}/g, dimension);
-        //     txt = txt.replace(/{{direction}}/g, direction);
-        // };
         txt += "</div>";
         if (typeof lockItem != "undefined") {
             return [txt, lockItem];
@@ -143,7 +99,7 @@ var composer = {
         // init composer (maybe use as a class?)
         composer.currentItem = 1;
         composer.lockList = [];
-        Math.seedrandom(student.seed);
+        Math.seedrandom(student.id);
 
         let txt = "<div class='classwork'>";
 

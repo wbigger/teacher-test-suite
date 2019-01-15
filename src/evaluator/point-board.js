@@ -104,7 +104,6 @@ var pointBoard = {
                         name: `oa-${element.student.id}-${point.short}`,
                         id: `oa-${element.student.id}-${point.short}`,
                         value: `${point.short}`,
-                        // TODO: verify checked true only if actually checked
                         checked: (point.studentAnswer === true)
                     });
                     let checkspan = $('<span>')
