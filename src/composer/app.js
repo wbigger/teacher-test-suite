@@ -84,7 +84,11 @@ var app = {
         console.log(e);
     },
     saveToFile: function () { //TODO: do not replicate, there is this function also in helper
-        let data = JSON.stringify({answers:app.lockList});
+        let data = JSON.stringify({
+            classworks:app.lockList,
+            className: app.className,
+            subject: app.subject
+        });
         let filename = `lock-${app.className}-${app.subject}.json`;
         let type = "application/json";
         console.log(`Saving file: ${filename}`); // use string template :)

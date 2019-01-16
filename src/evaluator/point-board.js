@@ -24,7 +24,7 @@ var pointBoard = {
             let splitName = inputName.split('-');
             let itemType = splitName[0];
             let studentId = splitName[1];
-            let classwork = this.lockObj.answers
+            let classwork = this.lockObj.classworks
                 .find(e => e.student.id == studentId);
             console.log(studentId);
             if (itemType === "mq") {
@@ -75,7 +75,7 @@ var pointBoard = {
         return false;
     },
     create: function () {
-        this.lockObj.answers.forEach(element => {
+        this.lockObj.classworks.forEach(element => {
             let fieldset = $('<fieldset>');
             let legend = $('<legend>').text(element.student.name);
             fieldset.append(legend);

@@ -35,6 +35,7 @@ var composer = {
             correctAnswerId = itemBody.answers.indexOf(correctAnswerText) + 1;
             lockItem = {};
             lockItem.type = item.type;
+            lockItem.idx = composer.currentItem;
             lockItem.skills = item.skills.slice();
             lockItem.body = {};
             lockItem.body.question = itemBody.question;
@@ -66,6 +67,7 @@ var composer = {
 
             lockItem = {};
             lockItem.type = item.type;
+            lockItem.idx = composer.currentItem;
             lockItem.skills = item.skills.slice();
             lockItem.body = {};
             lockItem.body.question = question;
@@ -106,19 +108,18 @@ var composer = {
         txt += "<h1 class='classwork-title'>Verifica scritta di " + subject + "</h1>";
         txt += "<h2 class='classwork-subtitle'>" + student.name + ", classe: " + studentClass + ", data: ___/___/______</h2>";
 
-        if (items[0].evaluation.pointList) { // TODO: set a better condition :)
-            txt += "<div class='points'>"
-            // TODO: Set number of points according to JSON
-            txt += "Calcolo del punteggio (ogni elemento vale un punto):"
-            txt += "<ul>";
-            items[0].evaluation.pointList.forEach((obj) => {
-                //txt+="<li>"+obj.description+" ("+obj.points+" punto)</li>";
-                txt += "<li>" + obj.description + "</li>";
-            });
-            txt += "</ul>";
+        // if (items[0].evaluation.pointList) { // TODO: set a better condition :)
+        //     txt += "<div class='points'>"
+        //     // TODO: Set number of points according to JSON
+        //     txt += "Calcolo del punteggio (ogni elemento vale un punto):"
+        //     txt += "<ul>";
+        //     items[0].evaluation.pointList.forEach((obj) => {
+        //         txt += "<li>" + obj.description + "</li>";
+        //     });
+        //     txt += "</ul>";
 
-            txt += "</div>"
-        }
+        //     txt += "</div>"
+        // }
 
         txt += "<div class='items'>"
 

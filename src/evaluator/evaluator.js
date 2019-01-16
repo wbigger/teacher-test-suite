@@ -1,6 +1,5 @@
 var evaluator = {
     lockObj: {},
-    marksList: [],
     init: function () {
         console.log("evaluator init");
         this.eventHandler();
@@ -9,37 +8,70 @@ var evaluator = {
         $("#lock-input").change(this.readSingleFile).bind(this);
         $("#evaluate-button").click(this.evaluate.bind(this));
     },
+    idx2abc: function (n) {
+        let str = String(n);
+        str = str.replace("1", "A");
+        str = str.replace("2", "B");
+        str = str.replace("3", "C");
+        str = str.replace("4", "D");
+        return str;
+    },
     evaluate: function () {
-        this.marksList = [];
-        this.lockObj.answers.forEach(classwork => {
-            let studentMark = 0;
+        this.lockObj.classworks.forEach(classwork => {
+            let studentScore = 0;
             classwork.itemList.filter(item => item.type == "multiple-choice")
                 .forEach(item => {
-                    item.evaluation.responseAnswer === item.evaluation.correctAnswerId ?
-                        studentMark += 1 : studentMark += 0;
+                    item.evaluation.studentAnswer === item.evaluation.correctAnswerId ?
+                        studentScore += 1 : studentScore += 0;
                 });
             classwork.itemList.filter(item => item.type == "open-answer")
                 .forEach(item => {
                     item.evaluation.pointList.forEach(point => {
                         point.studentAnswer === true ?
-                            studentMark += 1 : studentMark += 0;
+                            studentScore += 1 : studentScore += 0;
                     });
-                    studentMarkObj = { student: classwork.student, mark: studentMark };
-
                 });
-            this.marksList.push(studentMarkObj);
+            classwork.student.score = studentScore;
         });
         this.writeMarkList();
     },
     writeMarkList() {
-        console.log(this.marksList);
-        let txt = "";
-        txt += "<ul>";
-        this.marksList.forEach((element) => {
-            txt += `<li>${element.student.name}: ${element.mark}</li>`;
+        console.log(this.lockObj);
+        let cardList = $('<ul>').addClass('cards');
+        this.lockObj.classworks.forEach((classwork) => {
+            let name = $('<h2>').text(`${classwork.student.name}`);
+            let scoreList = $('<ul>').addClass('scores');
+            classwork.itemList.filter(it => it.type === "multiple-choice").forEach(item => {
+                // Convert numeric idx (1234) to character (ABCD)
+                let studentAns = this.idx2abc(item.evaluation.studentAnswer);
+                let correctAns = this.idx2abc(item.evaluation.correctAnswerId);
+                // Create the list of student and correct answers
+                let idxElement = $('<span>').addClass("score-idx").text(`${item.idx}.`);
+                let studentElement = $('<span>').addClass("score-student").text(`${studentAns}`);
+                let correctElement = $('<span>').addClass("score-correct").text(`(${correctAns})`);
+                let score = $('<li>')
+                    .append(idxElement)
+                    .append(studentElement)
+                    .append(correctElement);
+                scoreList.append(score);
+            });
+            classwork.itemList.filter(it => it.type === "open-answer").forEach(item => {
+                let idxElement = $('<span>').addClass("score-idx").text(`${item.idx}.`);
+                let score = $('<li>').append(idxElement);
+                item.evaluation.pointList.forEach(p => {
+                    console.log(p);
+                    let shortDesc = $('<span>').addClass("score-short-desc").text(`${p.short}`);
+                    let val = $('<span>').addClass("score-correct").text(`(${p.studentAnswer?1:0}p)`);
+                    score.append(shortDesc).append(val);
+                });
+                scoreList.append(score);
+            });
+            //let card = $('<li>').text(`${classwork.student.name}: ${classwork.student.score}`);
+            let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.score}`)
+            let card = $('<li>').append(name).append(scoreList).append(totalScore);
+            cardList.append(card);
         });
-        txt += "</ul>";
-        $("#results").html(txt);
+        $("#results").append(cardList);
     },
     readSingleFile: function (e) {
         // from stackoverflow
