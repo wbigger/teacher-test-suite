@@ -10,6 +10,9 @@ var evaluator = {
     },
     idx2abc: function (n) {
         let str = String(n);
+        if (str === "undefined") {
+            return undefined;
+        }
         str = str.replace("1", "A");
         str = str.replace("2", "B");
         str = str.replace("3", "C");
@@ -39,6 +42,7 @@ var evaluator = {
         console.log(this.lockObj);
         let cardList = $('<ul>').addClass('cards');
         this.lockObj.classworks.forEach((classwork) => {
+            let hasUndefined = false;
             let name = $('<h2>').text(`${classwork.student.name}`);
             let scoreList = $('<ul>').addClass('scores');
             classwork.itemList.filter(it => it.type === "multiple-choice").forEach(item => {
@@ -53,23 +57,28 @@ var evaluator = {
                     .append(idxElement)
                     .append(studentElement)
                     .append(correctElement);
+                    (studentAns === correctAns)? score.addClass("isCorrect") : score.addClass("isWrong") ;
                 scoreList.append(score);
+                console.log(studentAns);
+                if (typeof studentAns === "undefined") {hasUndefined = true;};
             });
             classwork.itemList.filter(it => it.type === "open-answer").forEach(item => {
                 let idxElement = $('<span>').addClass("score-idx").text(`${item.idx}.`);
                 let score = $('<li>').append(idxElement);
                 item.evaluation.pointList.forEach(p => {
-                    console.log(p);
+                    //console.log(p);
                     let shortDesc = $('<span>').addClass("score-short-desc").text(`${p.short}`);
                     let val = $('<span>').addClass("score-correct").text(`(${p.studentAnswer?1:0}p)`);
                     score.append(shortDesc).append(val);
                 });
-                scoreList.append(score);
+                //append only if has not undefined answers
             });
             //let card = $('<li>').text(`${classwork.student.name}: ${classwork.student.score}`);
             let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.score}`)
             let card = $('<li>').append(name).append(scoreList).append(totalScore);
+            if (hasUndefined) {card.addClass("hasUndefined")};
             cardList.append(card);
+            
         });
         $("#results").append(cardList);
     },

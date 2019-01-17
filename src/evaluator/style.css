@@ -33,7 +33,7 @@ ul.cards {
 ul.cards>li {
     margin: 5px 0px 3px 5px;
     border-radius: 5px;
-    border: 1px solid gray;
+    border-bottom: 1px solid gray;
     list-style-type: none;
 }
 
@@ -53,12 +53,19 @@ ul.scores li span {
     margin: 0 2px 0 1px;
 }
 
+ul.scores li.isWrong {
+    font-weight: bold;
+}
 .total-score {
     font-weight: bold;
     margin: 5px 2px 2px 8px;
 
 }
 
+.hasUndefined {
+    background-color: beige;
+    display: none;
+}
 
 @media print {
     #controls {
