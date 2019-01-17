@@ -31,15 +31,16 @@ var composer = {
             // shuffle answer but remember the correct answer position
             // please note that answers are 1 based
             let correctAnswerText = itemBody.answers[item.evaluation.correctAnswer - 1];
-            composer.shuffle(itemBody.answers);
-            correctAnswerId = itemBody.answers.indexOf(correctAnswerText) + 1;
+            let itemBodyAnswers = itemBody.answers.slice(); // do not modify original itemBody
+            composer.shuffle(itemBodyAnswers); // FIXshuffle
+            correctAnswerId = itemBodyAnswers.indexOf(correctAnswerText) + 1;
             lockItem = {};
             lockItem.type = item.type;
             lockItem.idx = composer.currentItem;
-            lockItem.skills = item.skills.slice();
+            lockItem.skills = item.skills.slice(); // slices: copy values
             lockItem.body = {};
             lockItem.body.question = itemBody.question;
-            lockItem.body.answers = itemBody.answers.slice(); // copy values
+            lockItem.body.answers = itemBodyAnswers.slice(); // slices: copy values
             lockItem.evaluation = {};
             lockItem.evaluation.points = item.evaluation.points;
             lockItem.evaluation.correctAnswerId = correctAnswerId;
@@ -50,7 +51,7 @@ var composer = {
             txt += "<p class='question'>" + composer.currentItem + ". " + question + "</p>";
             composer.currentItem++;
             txt += "<p class='answers'>";
-            itemBody.answers.forEach(answer => {
+            itemBodyAnswers.forEach(answer => {
                 txt += "<span class='answer'>" + String.fromCharCode(idx) + ". " + answer + "</span> ";
                 idx += 1;
             });
@@ -124,8 +125,8 @@ var composer = {
         txt += "<div class='items'>"
 
         // Put multiple choice first
-        let quizArray = items.filter(item => { return item.type == "multiple-choice"; })
-        composer.shuffle(quizArray);
+        let quizArray = items.filter(item => { return item.type == "multiple-choice";}).slice();
+        composer.shuffle(quizArray); //FIXshuffle
         quizArray.forEach(item => {
             let res = composer.createItem(item, student);
             txt += res[0];
@@ -134,8 +135,8 @@ var composer = {
         );
 
         // Then put open answer
-        let openAnswerArray = items.filter(item => { return item.type == "open-answer"; })
-        composer.shuffle(openAnswerArray);
+        let openAnswerArray = items.filter(item => { return item.type == "open-answer"; }).slice();
+        composer.shuffle(openAnswerArray); //FIXshuffle
         openAnswerArray.forEach(item => {
             let res = composer.createItem(item, student);
             txt += res[0];
