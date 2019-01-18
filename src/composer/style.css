@@ -22,6 +22,10 @@
     height: 17px;
 }
 
+.highlight {
+    border-bottom: 1px solid black;
+}
+
 @media print {
     .classwork {
         page-break-after: always;

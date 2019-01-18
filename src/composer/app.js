@@ -83,6 +83,7 @@ var app = {
         app.students = jsonData.studentList;
         app.className = jsonData.className;
         app.composeQuestions();
+        app.updateTitle();
     },
     // Generic error
     onError: function (e) {
@@ -115,6 +116,12 @@ var app = {
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
             }, 0);
+        }
+    },
+    updateTitle: function () {
+        $("title").text(`${app.className}-${app.subject}`);
+        if ($("#show-correct")[0].checked) {
+            $("title").append("-correttore")
         }
     },
     composeQuestions: function () {

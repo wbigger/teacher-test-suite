@@ -44,17 +44,19 @@ var composer = {
             lockItem.evaluation.points = item.evaluation.points;
             lockItem.evaluation.correctAnswerId = correctAnswerId;
 
-            let idx = "A".charCodeAt(0);
+            let baseChar = "A".charCodeAt(0);
             let question = composer.md2html(itemBody.question);
 
             let htmlQuestion = $("<p>").addClass("question").text(`${composer.currentItem}. ${question}`);
             composer.currentItem++;
             let htmlAnswer = $("<p>").addClass("answers");
-            itemBodyAnswers.forEach(answer => {
-                let htmlSpan = $("<span>").addClass("answer").text(`${String.fromCharCode(idx)}. ${answer}`)
+            itemBodyAnswers.forEach((answer,idx) => {
+                let htmlSpan = $("<span>").addClass("answer").text(`${String.fromCharCode(baseChar+idx)}. ${answer}`);
+                if (idx === correctAnswerId-1) {
+                    htmlSpan.addClass("correct-answer");
+                }
                 // add a space to allow line wrap
                 htmlAnswer.append(htmlSpan," ");
-                idx += 1;
             });            
             htmlItem.append(htmlQuestion, htmlAnswer);
         } else if (item.type == "open-answer") {
