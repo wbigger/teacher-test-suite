@@ -50,6 +50,14 @@ var app = {
                 alert("Please select class and classwork");
             }
         });
+        $("#show-correct").click((e) => {
+            let isChecked = e.target.checked;
+            if (isChecked) {
+                $(".correct-answer").addClass("highlight");
+            } else {
+                $(".correct-answer").removeClass("highlight");
+            }
+        });
         $("#save-button").click(() => {
             app.saveToFile();
         });
