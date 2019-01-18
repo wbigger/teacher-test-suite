@@ -118,16 +118,13 @@ var app = {
         }
     },
     composeQuestions: function () {
-        let txt = "";
+
         app.students.forEach(student => {
             var itemList = app.itemList.slice(); // copy values
             let ret = composer.create(itemList, student, app.className, app.subject);
-            txt += ret[0];
+            $("#classworks").append(ret[0]);
             app.lockList.push({ student: student, itemList: ret[1] });
         });
-        
-        $("#classworks").html(txt);
-
     }
 };
 

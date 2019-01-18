@@ -22,9 +22,8 @@ var composer = {
         return txt;
     },
     createItem: function (item, student) {
-        let txt = "<div class='item'>";
         let lockItem = undefined;
-
+        let htmlItem = $("<div>").addClass("item");
         if (item.type == "multiple-choice") {
             let itemBody = composer.randomPick(item.bodies);
             
@@ -32,7 +31,7 @@ var composer = {
             // please note that answers are 1 based
             let correctAnswerText = itemBody.answers[item.evaluation.correctAnswer - 1];
             let itemBodyAnswers = itemBody.answers.slice(); // do not modify original itemBody
-            composer.shuffle(itemBodyAnswers); // FIXshuffle
+            composer.shuffle(itemBodyAnswers);
             correctAnswerId = itemBodyAnswers.indexOf(correctAnswerText) + 1;
             lockItem = {};
             lockItem.type = item.type;
@@ -48,15 +47,16 @@ var composer = {
             let idx = "A".charCodeAt(0);
             let question = composer.md2html(itemBody.question);
 
-            txt += "<p class='question'>" + composer.currentItem + ". " + question + "</p>";
+            let htmlQuestion = $("<p>").addClass("question").text(`${composer.currentItem}. ${question}`);
             composer.currentItem++;
-            txt += "<p class='answers'>";
+            let htmlAnswer = $("<p>").addClass("answers");
             itemBodyAnswers.forEach(answer => {
-                txt += "<span class='answer'>" + String.fromCharCode(idx) + ". " + answer + "</span> ";
+                let htmlSpan = $("<span>").addClass("answer").text(`${String.fromCharCode(idx)}. ${answer}`)
+                // add a space to allow line wrap
+                htmlAnswer.append(htmlSpan," ");
                 idx += 1;
-            });
-            txt += "</p>"
-            
+            });            
+            htmlItem.append(htmlQuestion, htmlAnswer);
         } else if (item.type == "open-answer") {
             let itemBody = composer.randomPick(item.bodies);
             let question = itemBody.question;
@@ -75,28 +75,30 @@ var composer = {
             lockItem.evaluation = {};
             lockItem.evaluation.pointList = item.evaluation.pointList.slice();
 
-            txt += "<p class='question open-answer'>" + composer.currentItem + ". " + question + "</p>";
+            let htmlQuestion = $("<p>").addClass("question open-answer").text(`${composer.currentItem}. ${question}`);
             composer.currentItem++;
             
             // Add point list
-            txt += `<p class='points'>Punti: `;
+            let htmlPoints = $("<p>").addClass("points");
+            let txt = "";
+            txt += `Punti: `;
             item.evaluation.pointList.forEach(p=>{
                 txt+=`${p.description} (${p.points}p), `
             });
             txt = txt.replace(/, $/,".");
-            txt += `</p>`;
+            htmlPoints.text(txt);
 
-            txt += "<p class='answers'>";
+            let htmlAnswer = $("<p>").addClass("answers");
             for (let i = 0; i < itemBody.nRows; i++) {
-                txt += "<p class='hr'></p>";
+                let row = $("<p>").addClass("hr");
+                htmlAnswer.append(row);
             }
-            txt += "</p>"
+            htmlItem.append(htmlQuestion,htmlPoints,htmlAnswer);
         };
-        txt += "</div>";
         if (typeof lockItem != "undefined") {
-            return [txt, lockItem];
+            return [htmlItem, lockItem];
         }
-        return txt;
+        return htmlItem;
     },
     create: function (items, student, studentClass, subject) {
         // init composer (maybe use as a class?)
@@ -104,56 +106,32 @@ var composer = {
         composer.lockList = [];
         Math.seedrandom(student.id);
 
-        let txt = "<div class='classwork'>";
+        let htmlClasswork = $("<div>").addClass('classwork');
+        let htmlTitle = $("<h1>").addClass('classwork-title').text("Verifica scritta di " + subject);
+        let htmlSubTitle = $("<h2>").addClass('classwork-subtitle').text(student.name + ", classe: " + studentClass + ", data: ___/___/______");
 
-        txt += "<h1 class='classwork-title'>Verifica scritta di " + subject + "</h1>";
-        txt += "<h2 class='classwork-subtitle'>" + student.name + ", classe: " + studentClass + ", data: ___/___/______</h2>";
-
-        // if (items[0].evaluation.pointList) { // TODO: set a better condition :)
-        //     txt += "<div class='points'>"
-        //     // TODO: Set number of points according to JSON
-        //     txt += "Calcolo del punteggio (ogni elemento vale un punto):"
-        //     txt += "<ul>";
-        //     items[0].evaluation.pointList.forEach((obj) => {
-        //         txt += "<li>" + obj.description + "</li>";
-        //     });
-        //     txt += "</ul>";
-
-        //     txt += "</div>"
-        // }
-
-        txt += "<div class='items'>"
+        let htmlItems = $("<div>").addClass('items');
 
         // Put multiple choice first
         let quizArray = items.filter(item => { return item.type == "multiple-choice";}).slice();
-        composer.shuffle(quizArray); //FIXshuffle
+        composer.shuffle(quizArray);
         quizArray.forEach(item => {
             let res = composer.createItem(item, student);
-            txt += res[0];
+            htmlItems.append(res[0]);
             composer.lockList.push(res[1]);
         }
         );
 
         // Then put open answer
         let openAnswerArray = items.filter(item => { return item.type == "open-answer"; }).slice();
-        composer.shuffle(openAnswerArray); //FIXshuffle
+        composer.shuffle(openAnswerArray);
         openAnswerArray.forEach(item => {
             let res = composer.createItem(item, student);
-            txt += res[0];
+            htmlItems.append(res[0]);
             composer.lockList.push(res[1]);
         });
-
-        // Then put text-shuffle
-        // DEPRACATED: this is replaced by open answer
-        // let textShuffleArray = items.filter(item => { return item.type == "text-shuffle"; })
-        // composer.shuffle(textShuffleArray);
-        // textShuffleArray.forEach(item => txt += composer.createItem(item, student));
-
-        txt += "</div>"; // items
-
-        txt += "</div>"; // classwork
+        htmlClasswork.append(htmlTitle,htmlSubTitle,htmlItems);
         
-        return [txt, composer.lockList];
+        return [htmlClasswork, composer.lockList];
     }
 }
-//`+xxx+`
