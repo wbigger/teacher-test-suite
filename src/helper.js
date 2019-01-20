@@ -1,6 +1,5 @@
 // convert custom txt format of answers int json (legacy)
 var helper = {
-    //answerObj: [],
     contentObj: [],
     filename: "",
     init: function () {
@@ -9,35 +8,13 @@ var helper = {
     },
     eventHandler: function () {
         $("#file-input").change(helper.readSingleFile);
-        $("#save-content").click(helper.saveToFile);
-    },
-    // convert answers from txt 2 JSON (legacy)
-    convertAnswer2Json: function (answers) {
-        let reg = new RegExp("^([A-Za-z ]+) ([0-9 ]+)+", "gm");
-        let match;
-        while (match = reg.exec(answers)) {
-            let itemList = [];
-            let studentName = match[1].trim();
-            // get the student name
-            // eliminate whitespace
-            let answerText = match[2].replace(/ /g, '');
-            // use spread operator to convert string in array of char
-            [...answerText].forEach(c => {
-                let item = {};
-                item.evaluation = {};
-                item.evaluation.responseAnswer = parseInt(c);
-                itemList.push(item);
-            });
-            helper.answerObj.push({ student: studentName, itemList });
-        }
-        console.log(helper.answerObj);
+        $("#save-student-json").click(helper.saveToFile);
     },
     // convert from txt with names of student to json
     convertName2Json: function (students) {
         let reg = new RegExp("^(.*)$", "gm");
         let match;
         while (match = reg.exec(students)) {
-            console.log(match);
             let studentName = match[1].trim();            
             if (!studentName) break;
             // Take the first two capital letters as ID
@@ -49,8 +26,7 @@ var helper = {
         console.log(helper.contentObj);
     },
     saveToFile: function () {
-        //let data = JSON.stringify({answers:helper.answerObj});
-        let data = JSON.stringify({className:"XXXX",studentList:helper.contentObj});
+        let data = JSON.stringify({className:"Put-class-name-here (es. 1Binf)",studentList:helper.contentObj});
 
         let filename = helper.filename.replace("txt","json");
         let type = "application/json";
@@ -82,10 +58,7 @@ var helper = {
         var reader = new FileReader();
         reader.onload = function (e) {
             var contents = e.target.result;
-
-            //helper.convertAnswer2Json(contents);
             helper.convertName2Json(contents);
-            
             helper.displayContents(contents);
         };
         reader.readAsText(file);
@@ -96,7 +69,5 @@ var helper = {
         element.textContent = contents;
     }
 }
-
-
 
 $(document).ready(helper.init);
