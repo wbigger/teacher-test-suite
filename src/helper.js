@@ -28,7 +28,8 @@ var helper = {
     saveToFile: function () {
         let data = JSON.stringify({className:"Put-class-name-here (es. 1Binf)",studentList:helper.contentObj});
 
-        let filename = helper.filename.replace("txt","json");
+        let filename = helper.filename.replace(".txt","");
+        filename += ".json";
         let type = "application/json";
         // from stackoverflow
         var file = new Blob([data], { type: type });
