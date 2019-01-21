@@ -17,8 +17,8 @@ var composer = {
         }
         return a;
     },
-    md2html: function(txt) {
-        txt = txt.replace(/\*\*(.*)\*\*/,"<strong>$1</strong>");
+    md2html: function (txt) {
+        txt = txt.replace(/\*\*(.*)\*\*/, "<strong>$1</strong>");
         return txt;
     },
     createItem: function (item, student) {
@@ -26,7 +26,7 @@ var composer = {
         let htmlItem = $("<div>").addClass("item");
         if (item.type == "multiple-choice") {
             let itemBody = composer.randomPick(item.bodies);
-            
+
             // shuffle answer but remember the correct answer position
             // please note that answers are 1 based
             let correctAnswerText = itemBody.answers[item.evaluation.correctAnswer - 1];
@@ -50,23 +50,25 @@ var composer = {
             let htmlQuestion = $("<p>").addClass("question").text(`${composer.currentItem}. ${question}`);
             composer.currentItem++;
             let htmlAnswer = $("<p>").addClass("answers");
-            itemBodyAnswers.forEach((answer,idx) => {
-                let htmlSpan = $("<span>").addClass("answer").text(`${String.fromCharCode(baseChar+idx)}. ${answer}`);
-                if (idx === correctAnswerId-1) {
+            itemBodyAnswers.forEach((answer, idx) => {
+                let htmlSpan = $("<span>").addClass("answer").text(`${String.fromCharCode(baseChar + idx)}. ${answer}`);
+                if (idx === correctAnswerId - 1) {
                     htmlSpan.addClass("correct-answer");
                 }
                 // add a space to allow line wrap
-                htmlAnswer.append(htmlSpan," ");
-            });            
+                htmlAnswer.append(htmlSpan, " ");
+            });
             htmlItem.append(htmlQuestion, htmlAnswer);
         } else if (item.type == "open-answer") {
             let itemBody = composer.randomPick(item.bodies);
             let question = itemBody.question;
             let regex = /{{([a-z]+)}}/g; //TODO: should match multiple with while
             let match = regex.exec(question);
-            let token = match[1];
-            choice = composer.randomPick(itemBody[token]);
-            question = question.replace("{{" + token + "}}", choice);
+            if (match !== null) {
+                let token = match[1];
+                choice = composer.randomPick(itemBody[token]);
+                question = question.replace("{{" + token + "}}", choice);
+            }
 
             lockItem = {};
             lockItem.type = item.type;
@@ -79,23 +81,30 @@ var composer = {
 
             let htmlQuestion = $("<p>").addClass("question open-answer").text(`${composer.currentItem}. ${question}`);
             composer.currentItem++;
-            
+
             // Add point list
             let htmlPoints = $("<p>").addClass("points");
             let txt = "";
             txt += `Punti: `;
-            item.evaluation.pointList.forEach(p=>{
-                txt+=`${p.description} (${p.points}p), `
+            item.evaluation.pointList.forEach(p => {
+                txt += `${p.description} (${p.points}p), `
             });
-            txt = txt.replace(/, $/,".");
+            txt = txt.replace(/, $/, ".");
             htmlPoints.text(txt);
 
             let htmlAnswer = $("<p>").addClass("answers");
-            for (let i = 0; i < itemBody.nRows; i++) {
-                let row = $("<p>").addClass("hr");
-                htmlAnswer.append(row);
+            if (typeof itemBody.nRows !== "undefined") {
+                for (let i = 0; i < itemBody.nRows; i++) {
+                    let row = $("<p>").addClass("hr");
+                    htmlAnswer.append(row);
+                }
+            } else if (typeof itemBody.imgUrls !== "undefined") {
+                let imgUrls = itemBody.imgUrls.slice();
+                composer.shuffle(imgUrls);
+                let img = $("<img>").attr("src",composer.randomPick(imgUrls));
+                htmlAnswer.append(img);
             }
-            htmlItem.append(htmlQuestion,htmlPoints,htmlAnswer);
+            htmlItem.append(htmlQuestion, htmlPoints, htmlAnswer);
         };
         if (typeof lockItem != "undefined") {
             return [htmlItem, lockItem];
@@ -115,7 +124,7 @@ var composer = {
         let htmlItems = $("<div>").addClass('items');
 
         // Put multiple choice first
-        let quizArray = items.filter(item => { return item.type == "multiple-choice";}).slice();
+        let quizArray = items.filter(item => { return item.type == "multiple-choice"; }).slice();
         composer.shuffle(quizArray);
         quizArray.forEach(item => {
             let res = composer.createItem(item, student);
@@ -132,8 +141,8 @@ var composer = {
             htmlItems.append(res[0]);
             composer.lockList.push(res[1]);
         });
-        htmlClasswork.append(htmlTitle,htmlSubTitle,htmlItems);
-        
+        htmlClasswork.append(htmlTitle, htmlSubTitle, htmlItems);
+
         return [htmlClasswork, composer.lockList];
     }
 }
