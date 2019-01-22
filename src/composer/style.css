@@ -3,10 +3,15 @@
 }
 .question {
     font-weight: bold;
+    margin: 0px 15px 0px 0px;
 }
 .answer {
-    margin: 0px 15px 0px 0px;
+    margin: 0px 0px 0px 0px;
     white-space:nowrap;
+}
+
+.answers {
+    margin: 10px 0px 0px 0px;
 }
 
 .points {
@@ -24,6 +29,27 @@
 
 .highlight {
     border-bottom: 1px solid black;
+}
+
+.hide {
+    display: none;
+}
+
+.open-answer-hint {
+    display: none;
+}
+.show-hint {
+    border-bottom: 1px solid black;
+    display: block;
+}
+.open-answer-img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 50px;
+        margin-bottom: 70px;
+        border: 1px solid lightGray;
+        width:70%
 }
 
 @media print {

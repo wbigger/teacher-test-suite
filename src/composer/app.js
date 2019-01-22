@@ -44,18 +44,24 @@ var app = {
         $("#create-button").click(() => {
             console.log("using class: " + app.studentsURL)
             console.log("using classwork: " + app.classworkURL)
+
             if (app.studentsURL && app.classworkURL) {
                 app.loadQuestions();
             } else {
                 alert("Please select class and classwork");
             }
+            $("#show-correct").prop('checked', false);
         });
         $("#show-correct").click((e) => {
             let isChecked = e.target.checked;
             if (isChecked) {
                 $(".correct-answer").addClass("highlight");
+                $(".open-answer-hint").addClass("show-hint");
+                $(".hr").addClass("hide");
             } else {
                 $(".correct-answer").removeClass("highlight");
+                $(".open-answer-hint").removeClass("show-hint");
+                $(".hr").removeClass("hide");
             }
         });
         $("#save-button").click(() => {

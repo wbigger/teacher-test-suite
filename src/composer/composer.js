@@ -93,16 +93,21 @@ var composer = {
             htmlPoints.text(txt);
 
             let htmlAnswer = $("<p>").addClass("answers");
+            if (typeof itemBody.imgUrls !== "undefined") {
+                let imgUrls = itemBody.imgUrls.slice();
+                composer.shuffle(imgUrls);
+                let img = $("<img>")
+                    .attr("src", composer.randomPick(imgUrls))
+                    .addClass("open-answer-img");
+                htmlAnswer.append(img);
+            }
             if (typeof itemBody.nRows !== "undefined") {
                 for (let i = 0; i < itemBody.nRows; i++) {
                     let row = $("<p>").addClass("hr");
                     htmlAnswer.append(row);
                 }
-            } else if (typeof itemBody.imgUrls !== "undefined") {
-                let imgUrls = itemBody.imgUrls.slice();
-                composer.shuffle(imgUrls);
-                let img = $("<img>").attr("src",composer.randomPick(imgUrls));
-                htmlAnswer.append(img);
+                let hint = $("<p>").addClass("open-answer-hint").text(item.evaluation.hint);
+                htmlAnswer.append(hint);
             }
             htmlItem.append(htmlQuestion, htmlPoints, htmlAnswer);
         };
