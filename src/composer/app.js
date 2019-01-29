@@ -21,7 +21,34 @@ var app = {
         } else {
             console.log("please select students and classwork");
         }
+        // Load classworks list
+        $.getJSON(app.apiPath + "classworks.json")
+            .done(app.onClassworkSuccess)
+            .fail(app.onError);
+        // Load student classes list
+        $.getJSON(app.apiPath + "students.json")
+            .done(app.onStudentSuccess)
+            .fail(app.onError);
         app.eventHandler();
+    },
+    onClassworkSuccess: function (jsonData) {
+        jsonData.classworks.forEach((classwork) => {
+            let opt = $("<option>")
+                .attr("value", classwork.value)
+                .html(classwork.name);
+            $("#classwork-select").append(opt);
+        }
+        );
+    },
+    onStudentSuccess: function (jsonData) {
+        jsonData.studentClasses.forEach((studentClass) => {
+            let opt = $("<option>")
+                .attr("value", studentClass.value)
+                .html(studentClass.name);
+            $("#class-select").append(opt);
+        }
+        );
+
     },
     eventHandler: function () {
         $("#class-select").val(app.studentsID);
@@ -100,7 +127,7 @@ var app = {
     },
     saveToFile: function () { //TODO: do not replicate, there is this function also in helper
         let data = JSON.stringify({
-            classworks:app.lockList,
+            classworks: app.lockList,
             className: app.className,
             subject: app.subject
         });
