@@ -6,7 +6,7 @@
     margin: 0px 15px 0px 0px;
 }
 .answer {
-    margin: 0px 0px 0px 0px;
+    margin: 0px 10px 0px 0px;
     white-space:nowrap;
 }
 
@@ -59,4 +59,7 @@
     #controls {
         display: none;
     }    
+    .item {
+        page-break-inside: avoid;
+    }
 }

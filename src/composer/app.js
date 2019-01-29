@@ -10,17 +10,6 @@ var app = {
     subject: undefined,
     lockList: [],
     init: function () {
-        if (typeof test !== "undefined") {
-            app.classworkID = test.classworkID;
-            app.studentsID = test.studentsID;
-            console.log("Loading test values:");
-            console.log("- students: " + app.studentsID)
-            console.log("- classwork: " + app.classworkID)
-            app.classworkURL = app.apiPath + "classworks/" + app.classworkID + ".json";
-            app.studentsURL = app.apiPath + "students/" + app.studentsID + ".json";
-        } else {
-            console.log("please select students and classwork");
-        }
         // Load classworks list
         $.getJSON(app.apiPath + "classworks.json")
             .done(app.onClassworkSuccess)
@@ -31,6 +20,25 @@ var app = {
             .fail(app.onError);
         app.eventHandler();
     },
+    loadTestValues: function () {
+        if (typeof test !== "undefined") {
+            app.classworkID = test.classworkID;
+            app.studentsID = test.studentsID;
+            console.log("Loading test values:");
+            console.log("- students: " + app.studentsID)
+            console.log("- classwork: " + app.classworkID)
+            app.classworkURL = app.apiPath + "classworks/" + app.classworkID + ".json";
+            app.studentsURL = app.apiPath + "students/" + app.studentsID + ".json";
+            if (typeof app.studentsID !== "undefined") {
+                $("#class-select").val(app.studentsID);
+            }
+            if (typeof app.classworkID !== "undefined") {
+                $("#classwork-select").val(app.classworkID);
+            }
+        } else {
+            console.log("please select students and classwork");
+        }
+    },
     onClassworkSuccess: function (jsonData) {
         jsonData.classworks.forEach((classwork) => {
             let opt = $("<option>")
@@ -39,6 +47,7 @@ var app = {
             $("#classwork-select").append(opt);
         }
         );
+        app.loadTestValues();
     },
     onStudentSuccess: function (jsonData) {
         jsonData.studentClasses.forEach((studentClass) => {
@@ -48,10 +57,9 @@ var app = {
             $("#class-select").append(opt);
         }
         );
-
+        app.loadTestValues();
     },
     eventHandler: function () {
-        $("#class-select").val(app.studentsID);
         $("#class-select").change(() => {
             let str = "";
             $("#class-select option:selected").each(function () {
@@ -59,7 +67,6 @@ var app = {
             });
             app.studentsURL = app.apiPath + "students/" + str + ".json";
         });
-        $("#classwork-select").val(app.classworkID);
         $("#classwork-select").change((el) => {
             let str = "";
             $("#classwork-select option:selected").each(function () {
