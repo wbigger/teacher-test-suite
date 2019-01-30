@@ -9,6 +9,7 @@ var pointBoard = {
     lockFilename: "",
     init: function () {
         console.log("point board init");
+        $("#nav-container").load("../nav.html");
         this.eventHandler();
     },
     eventHandler: function () {

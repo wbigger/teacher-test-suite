@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="style.css">
     <title>Teacher Test Suite</title>
+    <script src="libs/jquery-3.3.1.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            $("#nav-container").load("nav.html");
+        });
+    </script>
 </head>
+
 <body>
-    <nav>
-    <ul>
-        <li class="nav-brand"><a href="./index.html">Teacher Test Suite</a></li>
-        <li><a href="./student/index.html">Students</a></li>
-        <li><a href="./composer/index.html">Composer</a></li>
-        <li><a href="./evaluator/point-board.html">Point Board</a></li>
-        <li><a href="./evaluator/index.html">Evaluator</a></li>
-        <li><a href="./helper.html">Helper</a></li>
-    </ul>
-</nav>
+    <div id="nav-container"></div>
 </body>
+
 </html>
