@@ -81,6 +81,7 @@ var app = {
             console.log("using classwork: " + app.classworkURL)
 
             if (app.studentsURL && app.classworkURL) {
+                $("#classworks").html("");
                 app.loadQuestions();
             } else {
                 alert("Please select class and classwork");
