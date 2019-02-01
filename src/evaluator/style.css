@@ -56,6 +56,12 @@ ul.scores li span {
 ul.scores li.isWrong {
     font-weight: bold;
 }
+
+ul.scores li.isCorrect .score-correct {
+    display: none;
+}
+
+
 .total-score {
     font-weight: bold;
     margin: 5px 2px 2px 8px;
