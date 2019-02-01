@@ -84,7 +84,7 @@ var pointBoard = {
             let multipleChoiceArray = element.itemList.filter(item => { return item.type == "multiple-choice"; })
             let textboxValue = '';
             multipleChoiceArray.forEach(item => {
-                console.log(item);
+                //console.log(item);
                 if (typeof item.evaluation.studentAnswer != "undefined") {
                     textboxValue += item.evaluation.studentAnswer;
                 }
@@ -93,6 +93,7 @@ var pointBoard = {
                 type: 'text',
                 name: `mq-${element.student.id}`,
                 id: `mq-${element.student.id}`,
+                maxlength: `${multipleChoiceArray.length}`,
                 value: textboxValue
             });
             fieldset.append(textbox);
