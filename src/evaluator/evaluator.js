@@ -2,7 +2,7 @@ var evaluator = {
     lockObj: {},
     init: function () {
         console.log("evaluator init");
-        $("#nav-container").load("../nav.html");
+        $("#nav-container").load("../index.html #nav-container>nav");
         this.eventHandler();
     },
     eventHandler: function () {

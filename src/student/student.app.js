@@ -3,7 +3,7 @@ var studentApp = {
     currentClass: "2binf",
     studentData: "",
     init: function () {
-        $("#nav-container").load("../nav.html");
+        $("#nav-container").load("../index.html #nav-container>nav");
         this.studentData = `../api/students/${this.currentClass}.json`;
         this.eventHandler();
         this.loadStudents();

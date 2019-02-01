@@ -10,7 +10,7 @@ var app = {
     subject: undefined,
     lockList: [],
     init: function () {
-        $("#nav-container").load("../nav.html");
+        $("#nav-container").load("../index.html #nav-container>nav");
         // Load classworks list
         $.getJSON(app.apiPath + "classworks.json")
             .done(app.onClassworkSuccess)
