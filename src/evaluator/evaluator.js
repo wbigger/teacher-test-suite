@@ -72,7 +72,8 @@ var evaluator = {
                     let val = $('<span>').addClass("score-correct").text(`(${p.studentAnswer ? 1 : 0}p)`);
                     score.append(shortDesc).append(val);
                 });
-                //append only if has not undefined answers
+                //TODO: append only if has not undefined answers
+                scoreList.append(score);
             });
             //let card = $('<li>').text(`${classwork.student.name}: ${classwork.student.score}`);
             let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.score}`)

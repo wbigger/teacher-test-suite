@@ -75,10 +75,13 @@ ul.scores li.isCorrect .score-correct {
 }
 
 @media print {
+    #nav-container {
+        display: none;
+    }
     #controls {
         display: none;
     }    
-    ul.cards>li:nth-child(7n) {
-            page-break-after: always;
+    ul.cards>li {
+        page-break-inside: avoid;
     }
 }
