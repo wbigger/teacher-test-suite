@@ -7,7 +7,6 @@ var evaluator = {
     },
     eventHandler: function () {
         $("#lock-input").change(this.readSingleFile).bind(this);
-        $("#evaluate-button").click(this.evaluate.bind(this));
     },
     idx2abc: function (n) {
         let str = String(n);
@@ -95,6 +94,7 @@ var evaluator = {
         reader.onload = function (e) {
             var contents = e.target.result;
             evaluator.lockObj = JSON.parse(contents);
+            (evaluator.evaluate.bind(evaluator))();
         };
         reader.readAsText(file);
     },

@@ -14,7 +14,6 @@ var pointBoard = {
     },
     eventHandler: function () {
         $("#lock-input").change(this.readSingleFile.bind(this));
-        $("#create-board").click(this.create.bind(this));
         $("#save-button").click(this.saveCorrections.bind(this));
     },
     saveCorrections: function () {
@@ -134,6 +133,7 @@ var pointBoard = {
         reader.onload = function (e) {
             var contents = e.target.result;
             pointBoard.lockObj = JSON.parse(contents);
+            (pointBoard.create.bind(pointBoard))();
         };
         reader.readAsText(file);
     },
