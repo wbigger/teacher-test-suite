@@ -101,13 +101,15 @@ var pointBoard = {
             openAnswerArray.forEach((openAnswer,idx) => {
                 let openAnswerElement = $('<span>').addClass('openAnswer');
                 openAnswer.evaluation.pointList.forEach((point) => {
-                    let checkbox = $('<input>', {
-                        type: 'checkbox',
-                        name: `oa-${element.student.id}-${idx}-${point.short}`,
-                        id: `oa-${element.student.id}-${idx}-${point.short}`,
-                        value: `${point.short}`,
-                        checked: (point.studentAnswer === true)
-                    });
+                    let checkID = `oa-${element.student.id}-${idx}-${point.short}`; 
+                    // let checkbox = $('<input>', {
+                    //     type: 'checkbox',
+                    //     name: `oa-${element.student.id}-${idx}-${point.short}`,
+                    //     id:   `oa-${element.student.id}-${idx}-${point.short}`,
+                    //     value: `${point.short}`,
+                    //     checked: (point.studentAnswer === true)
+                    // });
+                    let checkbox = new OACheck(checkID).getElement();
                     let checkspan = $('<span>')
                         .append(checkbox)
                         .append(point.short)

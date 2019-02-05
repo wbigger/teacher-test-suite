@@ -18,9 +18,7 @@
     <script src="../libs/jquery-3.3.1.min.js"></script>
     <script src="oa-check.js"></script>
     <script>
-        //$("#test").html("ciaone!!!");
-        let oacheck = new OACheck();
-        $("#test").append(oacheck.getElement());
+        $("#test").append(new OACheck("myID").getElement());
     </script>
 </body>
 
