@@ -1,13 +1,26 @@
 function OACheck(id) {
     this.goNext = function () {
         this.index = (this.index + 1) % 3;
-        this.element.html(this.contentSet[this.index]);
-        this.element.attr("value", this.valueSet[this.index]);
+        this.element.find(".oa-check-symbol").html(this.contentSet[this.index]);
+        this.element.find("input").attr("value", this.valueSet[this.index]);
     };
     // init the element
     this.element = $('<span>')
         .addClass("oa-check")
-        .attr({ "name": id, "id": id });
+        .attr({
+            "name": id,
+            "id": id,
+        });
+    let symbol = $('<span>')
+        .addClass('oa-check-symbol');
+    let input =
+        $('<input>')
+            .attr({
+                "name": id,
+                "id": id,
+                type: "hidden"
+            });
+    this.element.append(symbol, input);
     // init the sets
     this.valueSet = [0, 1, 0.5];
     this.contentSet = ["🌑", "🌕", "🌓"];

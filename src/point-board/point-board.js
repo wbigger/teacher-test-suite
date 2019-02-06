@@ -24,11 +24,12 @@ var pointBoard = {
             let splitName = inputName.split('-');
             let itemType = splitName[0];
             let studentId = splitName[1];
+            let itemValue = input['value'];
             let classwork = this.lockObj.classworks
                 .find(e => e.student.id == studentId);
             console.log(studentId);
             if (itemType === "mq") {
-                let answerText = input['value'].replace(/ /g, '');
+                let answerText = itemValue.replace(/ /g, '');
                 [...answerText].forEach((c, idx) => {
                     classwork.itemList[idx]
                         .evaluation.studentAnswer = parseInt(c);
@@ -36,12 +37,12 @@ var pointBoard = {
             } else if (itemType === "oa") {
                 let oaIdx = splitName[2].trim();
                 let short = splitName[3].trim();
-                // find this element and set it to true
+                // find this element and set it to value
                 classwork.itemList
                 .filter(e => e.type == "open-answer")[oaIdx]
                 .evaluation.pointList
                 .find(p => p.short === short)
-                .studentAnswer = true;
+                .studentAnswer = itemValue;
             }
 
         };
@@ -101,19 +102,12 @@ var pointBoard = {
             openAnswerArray.forEach((openAnswer,idx) => {
                 let openAnswerElement = $('<span>').addClass('openAnswer');
                 openAnswer.evaluation.pointList.forEach((point) => {
-                    let checkID = `oa-${element.student.id}-${idx}-${point.short}`; 
-                    // let checkbox = $('<input>', {
-                    //     type: 'checkbox',
-                    //     name: `oa-${element.student.id}-${idx}-${point.short}`,
-                    //     id:   `oa-${element.student.id}-${idx}-${point.short}`,
-                    //     value: `${point.short}`,
-                    //     checked: (point.studentAnswer === true)
-                    // });
+                    let checkID = `oa-${element.student.id}-${idx}-${point.short}`;
                     let checkbox = new OACheck(checkID).getElement();
                     let checkspan = $('<span>')
                         .append(checkbox)
                         .append(point.short)
-                        .addClass('openAnserPoint');
+                        .addClass('openAnswerPoint');
                     openAnswerElement.append(checkspan);
                 });
                 fieldset.append(openAnswerElement);
