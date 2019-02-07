@@ -111,6 +111,16 @@ var pointBoard = {
                     openAnswerElement.append(checkspan);
                 });
                 fieldset.append(openAnswerElement);
+                let checkAll = $("<input>")
+                .attr({
+                    type: "button",
+                    value: "check all"
+                })
+                .on("click", (el) => {
+                    console.log(`Work in progress ${el}`);
+                });
+                fieldset.append(checkAll);
+
             });
 
             $("#results").append(fieldset);
@@ -129,6 +139,7 @@ var pointBoard = {
         reader.onload = function (e) {
             var contents = e.target.result;
             pointBoard.lockObj = JSON.parse(contents);
+            $("#results").html("");
             (pointBoard.create.bind(pointBoard))();
         };
         reader.readAsText(file);
