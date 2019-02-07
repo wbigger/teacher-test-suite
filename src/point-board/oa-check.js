@@ -31,7 +31,7 @@ function OACheck(id) {
     // set the event handlers
     this.element.on("click", (el) => {
         this.goNext();
-    })
+    });
     // return the element
     this.getElement = function () {
         return this.element;
