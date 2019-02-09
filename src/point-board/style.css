@@ -9,14 +9,23 @@
     margin:0 5px 0 5px;
 }
 
-#save-button {
-    width: 100%;
+.fab {
+    width: 70px;
+    height: 70px;
     background-color: #4CAF50;
-    border: none;
+    border-radius: 50%;
+    
+    font-size: 24px;
     color: white;
-    padding: 15px 32px;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
+  
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+ }
+
+.openAnswerPoint {
+
+    margin: 0 3px 0 3px;
+
 }
