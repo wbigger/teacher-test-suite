@@ -94,6 +94,9 @@ var pointBoard = {
                 name: `mq-${element.student.id}`,
                 id: `mq-${element.student.id}`,
                 maxlength: `${multipleChoiceArray.length}`,
+                pattern: `[0-4]{${multipleChoiceArray.length}}`,
+                size: `${multipleChoiceArray.length}`,
+                title: `pattern: [0-4]{${multipleChoiceArray.length}}`,
                 value: textboxValue
             });
             fieldset.append(textbox);
@@ -103,7 +106,7 @@ var pointBoard = {
                 let openAnswerElement = $('<span>').addClass('openAnswer');
                 openAnswer.evaluation.pointList.forEach((point) => {
                     let checkID = `oa-${element.student.id}-${idx}-${point.short}`;
-                    let checkbox = new OACheck(checkID).getElement();
+                    let checkbox = new OACheck(checkID,point).getElement();
                     let checkspan = $('<span>')
                         .append(checkbox)
                         .append(point.short)

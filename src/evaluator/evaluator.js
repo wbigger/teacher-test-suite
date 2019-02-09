@@ -30,8 +30,7 @@ var evaluator = {
             classwork.itemList.filter(item => item.type == "open-answer")
                 .forEach(item => {
                     item.evaluation.pointList.forEach(point => {
-                        point.studentAnswer === true ?
-                            studentScore += 1 : studentScore += 0;
+                        studentScore += parseFloat(point.studentAnswer);
                     });
                 });
             classwork.student.score = studentScore;
@@ -68,7 +67,7 @@ var evaluator = {
                 item.evaluation.pointList.forEach(p => {
                     //console.log(p);
                     let shortDesc = $('<span>').addClass("score-short-desc").text(`${p.short}`);
-                    let val = $('<span>').addClass("score-correct").text(`(${p.studentAnswer ? 1 : 0}p)`);
+                    let val = $('<span>').addClass("score-correct").text(`(${p.studentAnswer}p)`);
                     score.append(shortDesc).append(val);
                 });
                 //TODO: append only if has not undefined answers
