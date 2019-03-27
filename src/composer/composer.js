@@ -129,7 +129,11 @@ var composer = {
         let htmlItems = $("<div>").addClass('items');
 
         // Put multiple choice first
-        let quizArray = items.filter(item => { return item.type == "multiple-choice"; }).slice();
+        let quizArray = items.filter(item => {
+            return (item.type == "multiple-choice") &&
+            ((student.cert !== item.skipCert) || (typeof student.cert === "undefined") );
+        })
+            .slice();
         composer.shuffle(quizArray);
         quizArray.forEach(item => {
             let res = composer.createItem(item, student);
