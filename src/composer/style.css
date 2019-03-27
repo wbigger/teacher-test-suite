@@ -56,7 +56,7 @@
     .classwork {
         page-break-after: always;
     }
-    #controls {
+    nav, #controls {
         display: none;
     }    
     .item {
