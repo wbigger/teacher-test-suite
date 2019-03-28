@@ -8,7 +8,7 @@
     <title>Test OACheck</title>
     <link rel="stylesheet" href="oa-check.css">
 
-    
+
 </head>
 
 <body>
@@ -17,9 +17,19 @@
     </div>
     <script src="../libs/jquery-3.3.1.min.js"></script>
     <script src="oa-check.js"></script>
+    <style>
+        #test {
+            width: 100px;
+            clear: both;
+        }
+    </style>
     <script>
-        point = {studentAnswer: 1,points:1};
-        $("#test").append(new OACheck("myID",point).getElement());
+        for (var v = 0; v <= 3; v += 0.5) {
+            point = { studentAnswer: v, points: 3 };
+            $("#test")
+                .append(new OACheck("myID", point).getElement())
+                .append("<p></p>");
+        }
     </script>
 </body>
 
