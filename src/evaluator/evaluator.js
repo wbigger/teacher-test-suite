@@ -24,8 +24,13 @@ var evaluator = {
             let studentScore = 0;
             classwork.itemList.filter(item => item.type == "multiple-choice")
                 .forEach(item => {
-                    item.evaluation.studentAnswer === item.evaluation.correctAnswerId ?
-                        studentScore += 1 : studentScore += 0;
+                    // TODO: to be tested
+                    if (item.evaluation.studentAnswer != '-') {
+                        let correctScore = item.evaluation.points;
+                        let wrongScore = item.evaluation.pointsWrong;
+                        item.evaluation.studentAnswer === item.evaluation.correctAnswerId ?
+                            studentScore += correctScore : studentScore += wrongScore;
+                    }
                 });
             classwork.itemList.filter(item => item.type == "open-answer")
                 .forEach(item => {
@@ -37,8 +42,21 @@ var evaluator = {
         });
         this.writeMarkList();
     },
+    computeVote: function (score, maxScore) {
+        //let vote = Math.round((score/maxScore)*10*2)/2;
+        let vote = Math.round((score / maxScore) * 10);
+        // add exceptions! :D
+        // max vote only if max score
+        if ((score !== maxScore) && (vote == 10)) {
+            vote = 9.5;
+        }
+        // do not assign 9.5 (evil!)
+        // if (vote > 9 && vote < 10) {
+        //     vote = 9;
+        // }
+        return vote;
+    },
     writeMarkList() {
-        console.log(this.lockObj);
         let cardList = $('<ul>').addClass('cards');
         this.lockObj.classworks.forEach((classwork) => {
             let hasUndefined = false;
@@ -58,14 +76,12 @@ var evaluator = {
                     .append(correctElement);
                 (studentAns === correctAns) ? score.addClass("isCorrect") : score.addClass("isWrong");
                 scoreList.append(score);
-                console.log(studentAns);
                 if (typeof studentAns === "undefined") { hasUndefined = true; };
             });
             classwork.itemList.filter(it => it.type === "open-answer").forEach(item => {
                 let idxElement = $('<span>').addClass("score-idx").text(`${item.idx}.`);
                 let score = $('<li>').append(idxElement);
                 item.evaluation.pointList.forEach(p => {
-                    //console.log(p);
                     let shortDesc = $('<span>').addClass("score-short-desc").text(`${p.short}`);
                     let val = $('<span>').addClass("score-correct").text(`(${p.studentAnswer}p)`);
                     score.append(shortDesc).append(val);
@@ -74,13 +90,25 @@ var evaluator = {
                 scoreList.append(score);
             });
             //let card = $('<li>').text(`${classwork.student.name}: ${classwork.student.score}`);
-            let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.score}`)
+            let maxScore = classwork.itemList.reduce((accumulator, currentItem) => {
+                if (typeof currentItem.evaluation.points !== "undefined") {
+                    return accumulator + currentItem.evaluation.points;
+                } else {
+                    let points = currentItem.evaluation.pointList.reduce((accumulator, pointItem) => accumulator + pointItem.points, 0);
+                    return accumulator + points;
+                }
+            }, 0);
+            let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.score}/${maxScore}`);
+            // print the vote rounded to half decimal (6, 6.5, 7, etc)
+            console.log(`${classwork.student.name} vote: ${this.computeVote(classwork.student.score, maxScore)}`); //TODO: move this in statistics or other place?
             let card = $('<li>').append(name).append(scoreList).append(totalScore);
-            if (hasUndefined) { card.addClass("hasUndefined") };
+            if (hasUndefined) {
+                card.addClass("hasUndefined");
+                console.log(`${classwork.student.name} has undefined answers.`);
+            };
             cardList.append(card);
-
         });
-        $("#results").append(cardList);
+        $("#results").html(cardList);
     },
     readSingleFile: function (e) {
         // from stackoverflow
