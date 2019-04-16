@@ -8,6 +8,7 @@ var app = {
     students: [],
     className: undefined,
     subject: undefined,
+    notes: undefined,
     lockList: [],
     init: function () {
         $("#nav-container").load("../index.html #nav-container>nav");
@@ -113,6 +114,7 @@ var app = {
     onQuestionsSuccess: function (jsonData) {
         app.itemList = jsonData.itemList;
         app.subject = jsonData.subject;
+        app.notes = jsonData.notes;
         app.loadStudents();
     },
     // Students
@@ -170,7 +172,7 @@ var app = {
 
         app.students.forEach(student => {
             var itemList = app.itemList.slice(); // copy values
-            let ret = composer.create(itemList, student, app.className, app.subject);
+            let ret = composer.create(itemList, student, app.className, app.subject,app.notes);
             $("#classworks").append(ret[0]);
             app.lockList.push({ student: student, itemList: ret[1] });
         });

@@ -116,7 +116,7 @@ var composer = {
         }
         return htmlItem;
     },
-    create: function (items, student, studentClass, subject) {
+    create: function (items, student, studentClass, subject, notes) {
         // init composer (maybe use as a class?)
         composer.currentItem = 1;
         composer.lockList = [];
@@ -125,6 +125,7 @@ var composer = {
         let htmlClasswork = $("<div>").addClass('classwork');
         let htmlTitle = $("<h1>").addClass('classwork-title').text("Verifica scritta di " + subject);
         let htmlSubTitle = $("<h2>").addClass('classwork-subtitle').text(student.name + ", classe: " + studentClass + ", data: ___/___/______");
+        let htmlNotes = $("<p>").addClass('classwork-notes').text(notes);
 
         let htmlItems = $("<div>").addClass('items');
 
@@ -150,7 +151,7 @@ var composer = {
             htmlItems.append(res[0]);
             composer.lockList.push(res[1]);
         });
-        htmlClasswork.append(htmlTitle, htmlSubTitle, htmlItems);
+        htmlClasswork.append(htmlTitle, htmlSubTitle, htmlNotes, htmlItems);
 
         return [htmlClasswork, composer.lockList];
     }
