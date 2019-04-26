@@ -31,8 +31,10 @@ var pointBoard = {
             if (itemType === "mq") {
                 let answerText = itemValue.replace(/ /g, '');
                 [...answerText].forEach((c, idx) => {
+                    // if omissis, put the student Answer to null
+                    let val = RegExp("[1234]").test(c)?parseInt(c):null;
                     classwork.itemList[idx]
-                        .evaluation.studentAnswer = parseInt(c);
+                        .evaluation.studentAnswer = val;
                 });
             } else if (itemType === "oa") {
                 let oaIdx = splitName[2].trim();
@@ -86,7 +88,7 @@ var pointBoard = {
             multipleChoiceArray.forEach(item => {
                 //console.log(item);
                 if (typeof item.evaluation.studentAnswer != "undefined") {
-                    textboxValue += item.evaluation.studentAnswer;
+                    textboxValue += (item.evaluation.studentAnswer != null) ? item.evaluation.studentAnswer : 0;
                 }
             });
             let textbox = $('<input>', {

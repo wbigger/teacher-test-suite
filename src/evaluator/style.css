@@ -22,26 +22,43 @@ ul.scores {
     margin-left: 5px;
     padding-left: 5px;
 }
-ul.scores li {
+ul.scores>li {
     list-style-type: none;
-    display: inline;
+    display: inline-block;
     margin: 0 8px 0 3px;
-    overflow-wrap: break-word;
 }
 
 
-ul.scores li span {
+ul.scores>li span {
     margin: 0 2px 0 1px;
 }
 
-ul.scores li.isWrong {
+ul.scores>li.isWrong {
+    font-weight: bold
+}
+
+ul.scores>li.isOmissis {
     font-weight: bold;
 }
 
-ul.scores li.isCorrect .score-correct {
-    display: none;
+.score-correct::before {
+    content: "(";
+}
+.score-correct::after {
+    content: ")";
 }
 
+ul.scores>li.isOmissis .score-correct::after {
+    content: ",0p)";
+}
+
+ul.scores>li.isWrong .score-correct::after {
+    content: ",-.25p)";
+}
+
+ul.scores>li.isCorrect .score-correct {
+    display: none;
+}
 
 .total-score {
     font-weight: bold;
@@ -64,6 +81,14 @@ ul.scores li.isCorrect .score-correct {
     ul.cards>li {
         page-break-inside: avoid;
     }
+    ul.scores>li {
+        white-space: nowrap; 
+    }
+
+    ul.scores .oa-point {
+        white-space: nowrap; 
+    }
+    
     div#results {
         margin-top: 0px;
     }

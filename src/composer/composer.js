@@ -43,6 +43,7 @@ var composer = {
             lockItem.evaluation = {};
             lockItem.evaluation.points = item.evaluation.points;
             lockItem.evaluation.correctAnswerId = correctAnswerId;
+            lockItem.evaluation.pointsWrong = item.evaluation.pointsWrong;
 
             let baseChar = "A".charCodeAt(0);
             let question = composer.md2html(itemBody.question);

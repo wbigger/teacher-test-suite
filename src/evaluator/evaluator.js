@@ -1,5 +1,6 @@
 var evaluator = {
     lockObj: {},
+    lockFilename: "",
     init: function () {
         console.log("evaluator init");
         $("#nav-container").load("../index.html #nav-container>nav");
@@ -24,10 +25,11 @@ var evaluator = {
             let studentScore = 0;
             classwork.itemList.filter(item => item.type == "multiple-choice")
                 .forEach(item => {
-                    // TODO: to be tested
-                    if (item.evaluation.studentAnswer != '-') {
-                        let correctScore = item.evaluation.points;
-                        let wrongScore = item.evaluation.pointsWrong;
+                    // Check if student answer is in the range
+                    if (item.evaluation.studentAnswer != null) {
+                        // TODO: these default should be moved to compose when assignign lock object
+                        let correctScore = (item.evaluation.points !== undefined) ? item.evaluation.points : 1;
+                        let wrongScore = (item.evaluation.pointsWrong !== undefined) ? item.evaluation.pointsWrong : -0.25;
                         item.evaluation.studentAnswer === item.evaluation.correctAnswerId ?
                             studentScore += correctScore : studentScore += wrongScore;
                     }
@@ -43,8 +45,9 @@ var evaluator = {
         this.writeMarkList();
     },
     computeVote: function (score, maxScore) {
-        //let vote = Math.round((score/maxScore)*10*2)/2;
         let vote = Math.round((score / maxScore) * 10);
+        let voteHalf = Math.round((score/maxScore)*10*2)/2; // consider half points
+        
         // add exceptions! :D
         // max vote only if max score
         if ((score !== maxScore) && (vote == 10)) {
@@ -54,7 +57,7 @@ var evaluator = {
         // if (vote > 9 && vote < 10) {
         //     vote = 9;
         // }
-        return vote;
+        return `${vote} (${voteHalf})`;
     },
     writeMarkList() {
         let cardList = $('<ul>').addClass('cards');
@@ -68,24 +71,34 @@ var evaluator = {
                 let correctAns = this.idx2abc(item.evaluation.correctAnswerId);
                 // Create the list of student and correct answers
                 let idxElement = $('<span>').addClass("score-idx").text(`${item.idx}.`);
-                let studentElement = $('<span>').addClass("score-student").text(`${studentAns}`);
-                let correctElement = $('<span>').addClass("score-correct").text(`(${correctAns})`);
+                let studentElement = $('<span>').addClass("score-student").text(`${studentAns!=="null"?studentAns:'-'}`);
+                let correctElement = $('<span>').addClass("score-correct").text(`${correctAns}`);
                 let score = $('<li>')
                     .append(idxElement)
                     .append(studentElement)
                     .append(correctElement);
-                (studentAns === correctAns) ? score.addClass("isCorrect") : score.addClass("isWrong");
+                switch (studentAns) {
+                    case correctAns:
+                        score.addClass("isCorrect");
+                        break;
+                    case "null":
+                        score.addClass("isOmissis");
+                        break;
+                    default: score.addClass("isWrong");
+                }
                 scoreList.append(score);
                 if (typeof studentAns === "undefined") { hasUndefined = true; };
             });
             classwork.itemList.filter(it => it.type === "open-answer").forEach(item => {
                 let idxElement = $('<span>').addClass("score-idx").text(`${item.idx}.`);
-                let score = $('<li>').append(idxElement);
+                let scoreSpan = $('<span>').addClass("oa-all-points");
                 item.evaluation.pointList.forEach(p => {
                     let shortDesc = $('<span>').addClass("score-short-desc").text(`${p.short}`);
-                    let val = $('<span>').addClass("score-correct").text(`(${p.studentAnswer}p)`);
-                    score.append(shortDesc).append(val);
+                    let val = $('<span>').addClass("score-correct").text(`${p.studentAnswer}p`);
+                    let pSpan = $('<span>').addClass("oa-point").append(shortDesc).append(val);
+                    scoreSpan.append(pSpan);
                 });
+                let score = $('<li>').append(idxElement).append(scoreSpan);
                 //TODO: append only if has not undefined answers
                 scoreList.append(score);
             });
@@ -110,6 +123,9 @@ var evaluator = {
         });
         $("#results").html(cardList);
     },
+    updateTitle: function() {
+        $("title").text(`evaluator-${this.lockFilename}`);
+    },
     readSingleFile: function (e) {
         // from stackoverflow
         var file = e.target.files[0];
@@ -117,10 +133,12 @@ var evaluator = {
         if (!file) {
             return;
         }
+        evaluator.lockFilename = file.name;
         var reader = new FileReader();
         reader.onload = function (e) {
             var contents = e.target.result;
             evaluator.lockObj = JSON.parse(contents);
+            (evaluator.updateTitle.bind(evaluator))();
             (evaluator.evaluate.bind(evaluator))();
         };
         reader.readAsText(file);
