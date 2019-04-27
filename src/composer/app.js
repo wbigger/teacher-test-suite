@@ -161,6 +161,8 @@ var app = {
                 window.URL.revokeObjectURL(url);
             }, 0);
         }
+        // Save also to local storage
+        localStorage.setItem("lockObj", data);
     },
     updateTitle: function () {
         $("title").text(`${app.className}-${app.subject}`);

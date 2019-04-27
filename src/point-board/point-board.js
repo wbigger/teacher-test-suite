@@ -10,7 +10,17 @@ var pointBoard = {
     init: function () {
         console.log("point board init");
         $("#nav-container").load("../index.html #nav-container>nav");
+        this.loadLockObj();
         this.eventHandler();
+    },
+    loadLockObj: function () {
+        if (localStorage.getItem("lockObj")) {
+            this.lockObj = JSON.parse(localStorage.getItem("lockObj"));
+            $("#results").html("");
+            (pointBoard.create.bind(pointBoard))();
+        } else {
+            this.lockObj = {};
+        }
     },
     eventHandler: function () {
         $("#lock-input").change(this.readSingleFile.bind(this));
@@ -32,7 +42,7 @@ var pointBoard = {
                 let answerText = itemValue.replace(/ /g, '');
                 [...answerText].forEach((c, idx) => {
                     // if omissis, put the student Answer to null
-                    let val = RegExp("[1234]").test(c)?parseInt(c):null;
+                    let val = RegExp("[1234]").test(c) ? parseInt(c) : null;
                     classwork.itemList[idx]
                         .evaluation.studentAnswer = val;
                 });
@@ -41,10 +51,10 @@ var pointBoard = {
                 let short = splitName[3].trim();
                 // find this element and set it to value
                 classwork.itemList
-                .filter(e => e.type == "open-answer")[oaIdx]
-                .evaluation.pointList
-                .find(p => p.short === short)
-                .studentAnswer = itemValue;
+                    .filter(e => e.type == "open-answer")[oaIdx]
+                    .evaluation.pointList
+                    .find(p => p.short === short)
+                    .studentAnswer = itemValue;
             }
 
         };
@@ -53,7 +63,7 @@ var pointBoard = {
         //this.saveTofile(); // TODO: why doesnt work with this function name????
         return false; // do not continue the submit chain
     },
-    sayHello: function () { //TODO: rename this function
+    sayHello: function () { //TODO: rename this function to saveToFile
         console.log("hello");
         let data = JSON.stringify(this.lockObj);
         let filename = this.lockFilename;//`lock-${app.className}-${app.subject}.json`;
@@ -104,11 +114,11 @@ var pointBoard = {
             fieldset.append(textbox);
 
             let openAnswerArray = element.itemList.filter(item => { return item.type == "open-answer"; })
-            openAnswerArray.forEach((openAnswer,idx) => {
+            openAnswerArray.forEach((openAnswer, idx) => {
                 let openAnswerElement = $('<span>').addClass('openAnswer');
                 openAnswer.evaluation.pointList.forEach((point) => {
                     let checkID = `oa-${element.student.id}-${idx}-${point.short}`;
-                    let checkbox = new OACheck(checkID,point).getElement();
+                    let checkbox = new OACheck(checkID, point).getElement();
                     let checkspan = $('<span>')
                         .append(checkbox)
                         .append(point.short)
@@ -117,13 +127,13 @@ var pointBoard = {
                 });
                 fieldset.append(openAnswerElement);
                 let checkAll = $("<input>")
-                .attr({
-                    type: "button",
-                    value: "check all"
-                })
-                .on("click", (el) => {
-                    console.log(`Work in progress ${el}`);
-                });
+                    .attr({
+                        type: "button",
+                        value: "check all"
+                    })
+                    .on("click", (el) => {
+                        console.log(`Work in progress ${el}`);
+                    });
                 fieldset.append(checkAll);
 
             });
