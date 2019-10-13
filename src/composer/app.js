@@ -8,7 +8,8 @@ var app = {
     students: [],
     className: undefined,
     subject: undefined,
-    notes: undefined,
+    info: undefined,
+
     lockList: [],
     init: function () {
         $("#nav-container").load("../index.html #nav-container>nav");
@@ -100,6 +101,7 @@ var app = {
                 $(".open-answer-hint").removeClass("show-hint");
                 $(".hr").removeClass("hide");
             }
+            app.updateTitle();
         });
         $("#save-button").click(() => {
             app.saveToFile();
@@ -114,7 +116,7 @@ var app = {
     onQuestionsSuccess: function (jsonData) {
         app.itemList = jsonData.itemList;
         app.subject = jsonData.subject;
-        app.notes = jsonData.notes;
+        app.info = jsonData.info;
         app.loadStudents();
     },
     // Students
@@ -140,7 +142,9 @@ var app = {
         let data = JSON.stringify({
             classworks: app.lockList,
             className: app.className,
-            subject: app.subject
+            subject: app.subject,
+            info: app.info,
+            numberOfQuestions:app.itemList.length // FIXME: how to know array length?
         });
         let filename = `lock-${app.className}-${app.subject}.json`;
         let type = "application/json";
@@ -174,7 +178,7 @@ var app = {
 
         app.students.forEach(student => {
             var itemList = app.itemList.slice(); // copy values
-            let ret = composer.create(itemList, student, app.className, app.subject,app.notes);
+            let ret = composer.create(itemList, student, app.className, app.subject, app.info);
             $("#classworks").append(ret[0]);
             app.lockList.push({ student: student, itemList: ret[1] });
         });

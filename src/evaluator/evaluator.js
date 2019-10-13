@@ -22,7 +22,8 @@ var evaluator = {
     },
     evaluate: function () {
         this.lockObj.classworks.forEach(classwork => {
-            let studentScore = 0;
+            let studentScoreMC = 0; // multiple choice
+            let studentScoreOA = 0; // open answer
             classwork.itemList.filter(item => item.type == "multiple-choice")
                 .forEach(item => {
                     // Check if student answer is in the range
@@ -31,33 +32,38 @@ var evaluator = {
                         let correctScore = (item.evaluation.points !== undefined) ? item.evaluation.points : 1;
                         let wrongScore = (item.evaluation.pointsWrong !== undefined) ? item.evaluation.pointsWrong : -0.25;
                         item.evaluation.studentAnswer === item.evaluation.correctAnswerId ?
-                            studentScore += correctScore : studentScore += wrongScore;
+                            studentScoreMC += correctScore : studentScoreMC += wrongScore;
                     }
                 });
             classwork.itemList.filter(item => item.type == "open-answer")
                 .forEach(item => {
                     item.evaluation.pointList.forEach(point => {
-                        studentScore += parseFloat(point.studentAnswer);
+                        // TODO: separate score for multiple answer and open answer
+                        studentScoreOA += parseFloat(point.studentAnswer);
                     });
                 });
-            classwork.student.score = studentScore;
+            classwork.student.scoreMC = studentScoreMC;
+            classwork.student.scoreOA = studentScoreOA;
+            classwork.student.score = studentScoreMC+studentScoreOA;
         });
         this.writeMarkList();
     },
     computeVote: function (score, maxScore) {
         let vote = Math.round((score / maxScore) * 10);
-        let voteHalf = Math.round((score/maxScore)*10*2)/2; // consider half points
-        
+        let voteHalf = Math.round((score / maxScore) * 10 * 2) / 2; // consider half points
+
         // add exceptions! :D
         // max vote only if max score
         if ((score !== maxScore) && (vote == 10)) {
             vote = 9.5;
+            voteHalf = 9.5;
         }
         // do not assign 9.5 (evil!)
         // if (vote > 9 && vote < 10) {
         //     vote = 9;
         // }
-        return `${vote} (${voteHalf})`;
+        //return `${vote} (${voteHalf})`;
+        return voteHalf;
     },
     writeMarkList() {
         let cardList = $('<ul>').addClass('cards');
@@ -71,7 +77,7 @@ var evaluator = {
                 let correctAns = this.idx2abc(item.evaluation.correctAnswerId);
                 // Create the list of student and correct answers
                 let idxElement = $('<span>').addClass("score-idx").text(`${item.idx}.`);
-                let studentElement = $('<span>').addClass("score-student").text(`${studentAns!=="null"?studentAns:'-'}`);
+                let studentElement = $('<span>').addClass("score-student").text(`${studentAns !== "null" ? studentAns : '-'}`);
                 let correctElement = $('<span>').addClass("score-correct").text(`${correctAns}`);
                 let score = $('<li>')
                     .append(idxElement)
@@ -111,9 +117,9 @@ var evaluator = {
                     return accumulator + points;
                 }
             }, 0);
-            let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.score}/${maxScore}`);
+            let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.scoreMC}+${classwork.student.scoreOA}=${classwork.student.score}/${maxScore}`);
             // print the vote rounded to half decimal (6, 6.5, 7, etc)
-            console.log(`${classwork.student.name} vote: ${this.computeVote(classwork.student.score, maxScore)}`); //TODO: move this in statistics or other place?
+            console.log(`${classwork.student.name} vote: ${this.computeVote(classwork.student.score, maxScore)} (${(classwork.student.score / maxScore * 10).toFixed(2)})`); //TODO: move this in statistics or other place?
             let card = $('<li>').append(name).append(scoreList).append(totalScore);
             if (hasUndefined) {
                 card.addClass("hasUndefined");
@@ -123,7 +129,7 @@ var evaluator = {
         });
         $("#results").html(cardList);
     },
-    updateTitle: function() {
+    updateTitle: function () {
         $("title").text(`evaluator-${this.lockFilename}`);
     },
     readSingleFile: function (e) {
