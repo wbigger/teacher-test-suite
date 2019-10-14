@@ -117,7 +117,7 @@ var evaluator = {
                     return accumulator + points;
                 }
             }, 0);
-            let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.scoreMC}+${classwork.student.scoreOA}=${classwork.student.score}/${maxScore}`);
+            let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.scoreMC} + ${classwork.student.scoreOA} = ${classwork.student.score} / ${maxScore}`);
             // print the vote rounded to half decimal (6, 6.5, 7, etc)
             console.log(`${classwork.student.name} vote: ${this.computeVote(classwork.student.score, maxScore)} (${(classwork.student.score / maxScore * 10).toFixed(2)})`); //TODO: move this in statistics or other place?
             let card = $('<li>').append(name).append(scoreList).append(totalScore);
