@@ -99,7 +99,7 @@ var evaluator = {
                 let idxElement = $('<span>').addClass("score-idx").text(`${item.idx}.`);
                 let scoreSpan = $('<span>').addClass("oa-all-points");
                 item.evaluation.pointList.forEach(p => {
-                    let shortDesc = $('<span>').addClass("score-short-desc").text(`${p.short}`);
+                    let shortDesc = $('<span>').addClass("score-short-desc").text(`${p.short}`.replace("-","").replace(" ",""));
                     let val = $('<span>').addClass("score-correct").text(`${p.studentAnswer}p`);
                     let pSpan = $('<span>').addClass("oa-point").append(shortDesc).append(val);
                     scoreSpan.append(pSpan);
