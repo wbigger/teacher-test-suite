@@ -1,4 +1,4 @@
 var test = {
-    classworkID: "programming.2",
-    studentsID: "2binf",
+    classworkID: "networks-4y",
+    studentsID: "4ainf",
 }
