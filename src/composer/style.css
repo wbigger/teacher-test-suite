@@ -2,16 +2,19 @@
     font-style: italic;
     font-size: small;
 }
+
 .item {
     margin: 20px 0px 0px 0px;
 }
+
 .question {
     font-weight: bold;
     margin: 0px 15px 0px 0px;
 }
+
 .answer {
     margin: 0px 10px 0px 0px;
-    white-space:nowrap;
+    white-space: nowrap;
 }
 
 .answers {
@@ -22,6 +25,7 @@
     margin-top: 2px;
     font-size: small;
 }
+
 .open-answer {
     margin-bottom: 2px;
 }
@@ -42,18 +46,20 @@
 .open-answer-hint {
     display: none;
 }
+
 .show-hint {
     border-bottom: 1px solid black;
     display: block;
 }
+
 .open-answer-img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 50px;
-        margin-bottom: 70px;
-        border: 1px solid lightGray;
-        width:80%
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    margin-bottom: 70px;
+    border: 1px solid lightGray;
+    width: 99%
 }
 
 @media print {
@@ -62,7 +68,7 @@
     }
     nav, #controls {
         display: none;
-    }    
+    }
     .item {
         page-break-inside: avoid;
     }
