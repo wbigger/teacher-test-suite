@@ -4,10 +4,49 @@ var evaluator = {
     init: function () {
         console.log("evaluator init");
         $("#nav-container").load("../index.html #nav-container>nav");
+        this.loadLockObj();
         this.eventHandler();
+    },
+    loadLockObj: function () {
+        if (localStorage.getItem("lockObj")) {
+            this.lockObj = JSON.parse(localStorage.getItem("lockObj"));
+            this.lockFilename = "local-storage.json";
+            $("#results").html("");
+            (this.updateTitle.bind(evaluator))();
+            (this.evaluate.bind(evaluator))();
+        } else {
+            this.lockObj = {};
+        }
     },
     eventHandler: function () {
         $("#lock-input").change(this.readSingleFile).bind(this);
+        //$("#save-eval-button").click(this.saveEvalFile.bind(this));
+    },
+    saveEvalFile: function () { //TODO: rename this function to saveToFile
+        console.log("hello");
+        return;
+        let data = JSON.stringify(this.lockObj);
+        let filename = this.lockFilename;//`lock-${app.className}-${app.subject}.json`;
+        let type = "application/json";
+        console.log(`Saving file: ${filename}`); // use string template :)
+        // from stackoverflow
+        var file = new Blob([data], { type: type });
+        if (window.navigator.msSaveOrOpenBlob) // IE10+
+            window.navigator.msSaveOrOpenBlob(file, filename);
+        else { // Others
+            var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function () {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
+        localStorage.setItem("lockObj", data);
+        return false;
     },
     idx2abc: function (n) {
         let str = String(n);
@@ -48,6 +87,7 @@ var evaluator = {
         });
         this.writeMarkList();
     },
+    //TODO: moved to stats
     computeVote: function (score, maxScore) {
         let vote = Math.round((score / maxScore) * 10);
         let voteHalf = Math.round((score / maxScore) * 10 * 2) / 2; // consider half points
@@ -77,12 +117,12 @@ var evaluator = {
                 let correctAns = this.idx2abc(item.evaluation.correctAnswerId);
                 // Create the list of student and correct answers
                 let idxElement = $('<span>').addClass("score-idx").text(`${item.idx}.`);
-                let studentElement = $('<span>').addClass("score-student").text(`${studentAns !== "null" ? studentAns : '-'}`);
+                let studentElement = $('<span>').addClass("score-student").text(`${studentAns !== "null" ? studentAns : ''}`);
                 let correctElement = $('<span>').addClass("score-correct").text(`${correctAns}`);
                 let score = $('<li>')
                     .append(idxElement)
-                    .append(studentElement)
-                    .append(correctElement);
+                    .append(correctElement)
+                    .append(studentElement);
                 switch (studentAns) {
                     case correctAns:
                         score.addClass("isCorrect");

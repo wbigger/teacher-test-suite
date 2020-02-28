@@ -41,22 +41,22 @@ ul.scores>li.isOmissis {
     font-weight: bold;
 }
 
-.score-correct::before {
+.score-student::before {
     content: "(";
 }
-.score-correct::after {
+.score-student::after {
     content: ")";
 }
 
-ul.scores>li.isOmissis .score-correct::after {
-    content: ",0p)";
+ul.scores>li.isOmissis .score-student::after {
+    content: "0p)";
 }
 
-ul.scores>li.isWrong .score-correct::after {
-    content: ",-.25p)";
+ul.scores>li.isWrong .score-student::after {
+    content: " -0.25p)";
 }
 
-ul.scores>li.isCorrect .score-correct {
+ul.scores>li.isCorrect .score-student {
     display: none;
 }
 
@@ -70,6 +70,21 @@ ul.scores>li.isCorrect .score-correct {
     background-color: beige;
     display: none;
 }
+
+.fab {
+    width: 70px;
+    height: 70px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    
+    font-size: 24px;
+    color: white;
+    text-align: center;
+  
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+ }
 
 @media print {
     #nav-container {

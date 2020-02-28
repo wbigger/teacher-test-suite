@@ -1,0 +1,50 @@
+div#results {
+    margin-top: 80px;
+}
+h2 {
+    margin: 10px 0 5px 5px;
+}
+
+.table {
+    width:70%;
+}
+
+.table-header-cell {
+    border-bottom: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: gray;
+}
+
+.table-cell,.table-header-cell {
+  float: left;
+  width: 16%;
+}
+
+.total-score {
+    font-weight: bold;
+    margin: 5px 2px 2px 8px;
+
+}
+
+@media print {
+    #nav-container {
+        display: none;
+    }
+    #controls {
+        display: none;
+    }    
+    ul.cards>li {
+        page-break-inside: avoid;
+    }
+    ul.scores>li {
+        white-space: nowrap; 
+    }
+
+    ul.scores .oa-point {
+        white-space: nowrap; 
+    }
+    
+    div#results {
+        margin-top: 0px;
+    }
+}

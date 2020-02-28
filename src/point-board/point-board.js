@@ -12,11 +12,36 @@ var pointBoard = {
         $("#nav-container").load("../index.html #nav-container>nav");
         this.loadLockObj();
         this.eventHandler();
+        //this.getFileFromParams();
     },
+    // TODO: get the file from URL
+    // we need a File object created by FileList or something similar
+    // getFileFromParams: function() {
+    //     var url_string = window.location.href
+    //     var url = new URL(url_string);
+    //     filename = url.searchParams.get("file");
+    //     file = ??? how to create a file object from filename ???
+    //     if (!file) {
+    //         console.log(`Cannot read file ${file}`);    
+    //         return;
+    //     }
+    //     console.log(`Getting file ${file}`);
+    //     this.lockFilename = file;
+    //     var reader = new FileReader();
+    //     reader.onload = function (e) {
+    //         var contents = e.target.result;
+    //         pointBoard.lockObj = JSON.parse(contents);
+    //         $("#results").html("");
+    //         (pointBoard.create.bind(pointBoard))();
+    //     };
+    //     reader.readAsText(file);
+    // },
     loadLockObj: function () {
         if (localStorage.getItem("lockObj")) {
             this.lockObj = JSON.parse(localStorage.getItem("lockObj"));
+            this.lockFilename = "local-storage.json";
             $("#results").html("");
+            (pointBoard.updateTitle.bind(pointBoard))();
             (pointBoard.create.bind(pointBoard))();
         } else {
             this.lockObj = {};
@@ -25,6 +50,9 @@ var pointBoard = {
     eventHandler: function () {
         $("#lock-input").change(this.readSingleFile.bind(this));
         $("#save-button").click(this.saveCorrections.bind(this));
+    },
+    updateTitle: function () {
+        $("title").text(`Point Board - ${this.lockFilename}`);
     },
     saveCorrections: function () {
         console.log(this);
@@ -85,6 +113,7 @@ var pointBoard = {
                 window.URL.revokeObjectURL(url);
             }, 0);
         }
+        localStorage.setItem("lockObj", data);
         return false;
     },
     create: function () {
@@ -154,7 +183,9 @@ var pointBoard = {
         reader.onload = function (e) {
             var contents = e.target.result;
             pointBoard.lockObj = JSON.parse(contents);
+            localStorage.setItem("lockObj", contents);
             $("#results").html("");
+            (pointBoard.updateTitle.bind(pointBoard))();
             (pointBoard.create.bind(pointBoard))();
         };
         reader.readAsText(file);
