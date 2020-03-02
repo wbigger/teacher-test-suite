@@ -1,4 +1,7 @@
 var app = {
+    teacherMaxVote: 10,
+    certDiscount: .13, // how much discount on max score for certified student (es. dsa)
+    isCertDiscountApplied: true, // if the cert discount is actually applied
     lockObj: {},
     lockFilename: "",
     init: function () {
@@ -22,8 +25,8 @@ var app = {
         $("#lock-input").change(this.readSingleFile).bind(this);
     },
     computeVote: function (score, maxScore) {
-        let vote = Math.round((score / maxScore) * 10);
-        let voteHalf = Math.round((score / maxScore) * 10 * 2) / 2; // consider half points
+        let vote = Math.round((score / maxScore) * this.teacherMaxVote);
+        let voteHalf = Math.round((score / maxScore) * this.teacherMaxVote * 2) / 2; // consider half points
 
         // add exceptions! :D
         // max vote only if max score
@@ -49,12 +52,13 @@ var app = {
                     return accumulator + points;
                 }
             }, 0);
-            let totalScore = `TOT: ${classwork.student.scoreMC} + ${classwork.student.scoreOA} = ${classwork.student.score} / ${maxScore}`;
+            if (this.isCertDiscountApplied) {
+                maxScore = classwork.student.cert ? Math.round(maxScore * (1-this.certDiscount)) : maxScore;
+            }
             // print the vote rounded to half decimal (6, 6.5, 7, etc)
-            console.log(`${classwork.student.name} vote: ${this.computeVote(classwork.student.score, maxScore)} (${(classwork.student.score / maxScore * 10).toFixed(2)})`); //TODO: move this in statistics or other place?
             let name = $('<div>')
                 .addClass('table-cell')
-                .text(classwork.student.name);
+                .text(classwork.student.name.substring(0,12));
             let scoreMC = $('<div>')
                 .addClass('table-cell')
                 .text(classwork.student.scoreMC);
@@ -70,18 +74,28 @@ var app = {
             let vote = $('<div>')
                 .addClass('table-cell')
                 .text(this.computeVote(classwork.student.score, maxScore));
+            let voteNotRounded = $('<div>')
+                .addClass('table-cell')
+                .text((classwork.student.score / maxScore * this.teacherMaxVote).toFixed(2));
             row
-            .append(name)
-            .append(scoreMC)
-            .append(scoreOA)
-            .append(score)
-            .append(maxScoreElem)
-            .append(vote);
+                .append(name)
+                .append(scoreMC)
+                .append(scoreOA)
+                .append(score)
+                .append(maxScoreElem)
+                .append(vote)
+                .append(voteNotRounded);
             $('#results').append(row);
         });
+        // Add last recap line
+        // add filter, if needed
+
+        // let avgScoreMC = classwork.itemList.reduce((accumulator, currentItem) => 
+        //     accumulator = (accumulator + currentItem.scoreMC)
+        // , 0) / 
     },
-    
-    updateTitle: function() {
+
+    updateTitle: function () {
         $("title").text(`stats-${this.lockFilename}`);
     },
     readSingleFile: function (e) {
@@ -96,6 +110,7 @@ var app = {
         reader.onload = function (e) {
             var contents = e.target.result;
             app.lockObj = JSON.parse(contents);
+            $("#results").text("");
             (app.updateTitle.bind(app))();
             (app.stats.bind(app))();
         };

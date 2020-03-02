@@ -19,12 +19,11 @@ var evaluator = {
         }
     },
     eventHandler: function () {
+        $("#save-button").click(this.sayHello.bind(this));
         $("#lock-input").change(this.readSingleFile).bind(this);
-        //$("#save-eval-button").click(this.saveEvalFile.bind(this));
     },
-    saveEvalFile: function () { //TODO: rename this function to saveToFile
+    sayHello: function () { //TODO: rename this function to saveToFile
         console.log("hello");
-        return;
         let data = JSON.stringify(this.lockObj);
         let filename = this.lockFilename;//`lock-${app.className}-${app.subject}.json`;
         let type = "application/json";

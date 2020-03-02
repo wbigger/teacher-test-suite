@@ -10,14 +10,25 @@ h2 {
 }
 
 .table-header-cell {
+    font-weight: bold;
+}
+
+.table-header-cell {
     border-bottom: 1px;
     border-bottom-style: solid;
     border-bottom-color: gray;
 }
 
+.table-cell {
+    border-bottom: 1px;
+    border-bottom-style: solid;
+    border-bottom-color:lightgray;
+}
+
 .table-cell,.table-header-cell {
   float: left;
-  width: 16%;
+  width: 13%;
+  height: 1.3rem;
 }
 
 .total-score {
