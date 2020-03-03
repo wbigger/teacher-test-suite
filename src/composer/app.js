@@ -136,11 +136,8 @@ var app = {
         app.updateTitle();
     },
     // Generic error
-    onError: function (e) {
-        console.log("onError!");
-        console.log("class: " + app.studentsURL)
-        console.log("classwork: " + app.classworkURL)
-        console.log(e);
+    onError: function (jqXHR, textStatus, errorThrown) {
+        console.log('getJSON request failed! ' + textStatus);
     },
     saveToFile: function () { //TODO: do not replicate, there is this function also in helper
         let data = JSON.stringify({
@@ -150,43 +147,43 @@ var app = {
             info: app.info,
             numberOfQuestions: app.itemList.length // FIXME: how to know array length?
         });
-        let filename = `lock-${app.className}-${app.subject}.json`;
-        let type = "application/json";
-        console.log(`Saving file: ${filename}`); // use string template :)
-        // from stackoverflow
-        var file = new Blob([data], { type: type });
-        if (window.navigator.msSaveOrOpenBlob) // IE10+
-            window.navigator.msSaveOrOpenBlob(file, filename);
-        else { // Others
-            var a = document.createElement("a"),
-                url = URL.createObjectURL(file);
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(function () {
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            }, 0);
-        }
-        // Save also to local storage
-        localStorage.setItem("lockObj", data);
+let filename = `lock-${app.className}-${app.subject}.json`;
+let type = "application/json";
+console.log(`Saving file: ${filename}`); // use string template :)
+// from stackoverflow
+var file = new Blob([data], { type: type });
+if (window.navigator.msSaveOrOpenBlob) // IE10+
+    window.navigator.msSaveOrOpenBlob(file, filename);
+else { // Others
+    var a = document.createElement("a"),
+        url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    }, 0);
+}
+// Save also to local storage
+localStorage.setItem("lockObj", data);
     },
-    updateTitle: function () {
-        $("title").text(`${app.className}-${app.subject}`);
-        if ($("#show-correct")[0].checked) {
-            $("title").append("-correttore")
-        }
-    },
-    composeQuestions: function () {
-
-        app.students.forEach(student => {
-            var itemList = app.itemList.slice(); // copy values
-            let ret = composer.create(itemList, student, app.className, app.subject, app.info);
-            $("#classworks").append(ret[0]);
-            app.lockList.push({ student: student, itemList: ret[1] });
-        });
+updateTitle: function () {
+    $("title").text(`${app.className}-${app.subject}`);
+    if ($("#show-correct")[0].checked) {
+        $("title").append("-correttore")
     }
+},
+composeQuestions: function () {
+
+    app.students.forEach(student => {
+        var itemList = app.itemList.slice(); // copy values
+        let ret = composer.create(itemList, student, app.className, app.subject, app.info);
+        $("#classworks").append(ret[0]);
+        app.lockList.push({ student: student, itemList: ret[1] });
+    });
+}
 };
 
 $(document).ready(app.init);

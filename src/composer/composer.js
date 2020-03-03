@@ -48,7 +48,7 @@ var composer = {
             let baseChar = "A".charCodeAt(0);
             let question = composer.md2html(itemBody.question);
 
-            let htmlQuestion = $("<p>").addClass("question").text(`${composer.currentItem}. ${question}`);
+            let htmlQuestion = $("<p>").addClass("question").html(`${composer.currentItem}. ${question}`);
             composer.currentItem++;
             let htmlAnswer = $("<p>").addClass("answers");
             itemBodyAnswers.forEach((answer, idx) => {
@@ -80,7 +80,7 @@ var composer = {
             lockItem.evaluation = {};
             lockItem.evaluation.pointList = item.evaluation.pointList.slice();
 
-            let htmlQuestion = $("<p>").addClass("question open-answer").text(`${composer.currentItem}. ${question}`);
+            let htmlQuestion = $("<p>").addClass("question open-answer").html(`${composer.currentItem}. ${question}`);
             composer.currentItem++;
 
             // Add point list
