@@ -20,7 +20,20 @@ var evaluator = {
     },
     eventHandler: function () {
         $("#save-button").click(this.sayHello.bind(this));
-        $("#lock-input").change(this.readSingleFile).bind(this);
+        $("#lock-input").change(this.readSingleFile.bind(this));
+        $("#split-pages").prop('checked', false);
+        $("#split-pages").click((e) => {
+            let isChecked = e.target.checked;
+            if (isChecked) {
+                $(".cards>li").addClass("page-break");
+                $("ul.scores>li").addClass("display-block");
+                console.log("added page-break");
+            } else {
+                $(".correct-answer").removeClass("page-break");
+                $("ul.scores>li").removeClass("display-block");
+                console.log("removed page-break");
+            }
+        });
     },
     sayHello: function () { //TODO: rename this function to saveToFile
         console.log("hello");

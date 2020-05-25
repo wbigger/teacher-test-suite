@@ -93,6 +93,9 @@ ul.scores>li.isCorrect .score-student {
     #controls {
         display: none;
     }    
+    #save-button {
+        display: none;
+    }
     ul.cards>li {
         page-break-inside: avoid;
     }
@@ -107,4 +110,11 @@ ul.scores>li.isCorrect .score-student {
     div#results {
         margin-top: 0px;
     }
+    .display-block {
+        display: block;
+    }
+    .page-break {
+        page-break-after: always;
+    }
+    
 }
