@@ -1,5 +1,6 @@
 var evaluator = {
     lockObj: {},
+    maxVote : 9,
     lockFilename: "",
     init: function () {
         console.log("evaluator init");
@@ -101,14 +102,15 @@ var evaluator = {
     },
     //TODO: moved to stats
     computeVote: function (score, maxScore) {
-        let vote = Math.round((score / maxScore) * 10);
-        let voteHalf = Math.round((score / maxScore) * 10 * 2) / 2; // consider half points
+        let maxVote = this.maxVote;
+        let vote = Math.round((score / maxScore) * maxVote);
+        let voteHalf = Math.round((score / maxScore) * maxVote * 2) / 2; // consider half points
 
         // add exceptions! :D
         // max vote only if max score
-        if ((score !== maxScore) && (vote == 10)) {
-            vote = 9.5;
-            voteHalf = 9.5;
+        if ((score !== maxScore) && (vote == maxVote)) {
+            vote = maxVote - 0.5;
+            voteHalf = vote;
         }
         // do not assign 9.5 (evil!)
         // if (vote > 9 && vote < 10) {
@@ -171,7 +173,7 @@ var evaluator = {
             }, 0);
             let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.scoreMC} + ${classwork.student.scoreOA} = ${classwork.student.score} / ${maxScore}`);
             // print the vote rounded to half decimal (6, 6.5, 7, etc)
-            console.log(`${classwork.student.name} vote: ${this.computeVote(classwork.student.score, maxScore)} (${(classwork.student.score / maxScore * 10).toFixed(2)})`); //TODO: move this in statistics or other place?
+            console.log(`${classwork.student.name} vote: ${this.computeVote(classwork.student.score, maxScore)} (${(classwork.student.score / maxScore * this.maxVote).toFixed(2)})`); //TODO: move this in statistics or other place?
             let card = $('<li>').append(name).append(scoreList).append(totalScore);
             if (hasUndefined) {
                 card.addClass("hasUndefined");
