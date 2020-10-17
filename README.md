@@ -4,7 +4,7 @@ This suite creates quizzes and other kind of test, as for example tests for eval
 
 This suite aims to resolve mainly two problems.
 
-**Problem 1**: to fully evaluate student competences, a "task of reality" (Compito di realtà, in Italian) is a recomended way of assesment. Nevertheless, task of reality in Computer Science often needs a computer with an Internet connection, and avoid copying between students is an issue. An automatically generated test for each students may allieviate the problem.
+**Problem 1**: to fully evaluate student competences, a "task of reality" (Compito di realtà, in Italian) is a recomended way of assessment. Nevertheless, task of reality in Computer Science often needs a computer with an Internet connection, and avoid copying between students is an issue. An automatically generated test for each students may alleviate the problem.
 
 **Problem 2**: most of test are evaluated in a single linear scale, eg. A-F, 0-10, etc. This evaluation doesn't reflect the real complexity of student situation. This suite will create a multi-axis, star profile for each student.
 
