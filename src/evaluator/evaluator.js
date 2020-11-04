@@ -1,9 +1,11 @@
 var evaluator = {
     lockObj: {},
-    maxVote : 9,
+    minVote : 1,
+    maxVote : 9.5,
     lockFilename: "",
     init: function () {
         console.log("evaluator init");
+        console.log(`max vote: ${this.maxVote}, min vote: ${this.minVote}`);
         $("#nav-container").load("../index.html #nav-container>nav");
         this.loadLockObj();
         this.eventHandler();
@@ -103,21 +105,19 @@ var evaluator = {
     //TODO: moved to stats
     computeVote: function (score, maxScore) {
         let maxVote = this.maxVote;
-        let vote = Math.round((score / maxScore) * maxVote);
-        let voteHalf = Math.round((score / maxScore) * maxVote * 2) / 2; // consider half points
+        let minVote = this.minVote;
+        let deltaVote = maxVote - minVote;
+        let voteDec = (score / maxScore) * deltaVote + minVote;
+        // let voteRound = Math.round(voteDec);
+        let voteHalf = Math.round(voteDec * 2) / 2; // consider half points
 
         // add exceptions! :D
         // max vote only if max score
-        if ((score !== maxScore) && (vote == maxVote)) {
-            vote = maxVote - 0.5;
-            voteHalf = vote;
+        if ((score !== maxScore) && (voteHalf == maxVote)) {
+            voteHalf = maxVote - 0.5;
         }
-        // do not assign 9.5 (evil!)
-        // if (vote > 9 && vote < 10) {
-        //     vote = 9;
-        // }
-        //return `${vote} (${voteHalf})`;
-        return voteHalf;
+        
+        return {vote: voteHalf, voteDec: voteDec};
     },
     writeMarkList() {
         let cardList = $('<ul>').addClass('cards');
@@ -173,7 +173,8 @@ var evaluator = {
             }, 0);
             let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.scoreMC} + ${classwork.student.scoreOA} = ${classwork.student.score} / ${maxScore}`);
             // print the vote rounded to half decimal (6, 6.5, 7, etc)
-            console.log(`${classwork.student.name} vote: ${this.computeVote(classwork.student.score, maxScore)} (${(classwork.student.score / maxScore * this.maxVote).toFixed(2)})`); //TODO: move this in statistics or other place?
+            const {vote,voteDec} = this.computeVote(classwork.student.score, maxScore)
+            console.log(`${classwork.student.name} vote: ${vote} (${voteDec.toFixed(2)})`); //TODO: move this in statistics or other place?
             let card = $('<li>').append(name).append(scoreList).append(totalScore);
             if (hasUndefined) {
                 card.addClass("hasUndefined");
