@@ -1,3 +1,7 @@
+* {
+  font-family: Verdana, Geneva, sans-serif;
+}
+
 #controls {
     background: lightblue;
     padding:10px;
