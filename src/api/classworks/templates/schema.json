@@ -1,0 +1,202 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "subject",
+    "info",
+    "itemList"
+  ],
+  "properties": {
+    "subject": {
+      "$id": "#/properties/subject",
+      "type": "string",
+      "title": "The Subject Schema",
+      "default": "",
+      "examples": [
+        "Sistemi e reti"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "info": {
+      "$id": "#/properties/info",
+      "type": "object",
+      "title": "The Info Schema",
+      "required": [
+        "notes",
+        "time"
+      ],
+      "properties": {
+        "notes": {
+          "$id": "#/properties/info/properties/notes",
+          "type": "string",
+          "title": "The Notes Schema",
+          "default": "",
+          "examples": [
+            "Nelle domande a risposta multipla: risposta corretta 1p, omessa 0p, errata -0.25p. Nelle domande a risposta aperta: risposte identiche ad altri compagni verranno penalizzate. Per prendere il massimo del voto si deve prendere il massimo del punteggio."
+          ],
+          "pattern": "^(.*)$"
+        },
+        "time": {
+          "$id": "#/properties/info/properties/time",
+          "type": "object",
+          "title": "The Time Schema",
+          "required": [
+            "standard",
+            "dsa"
+          ],
+          "properties": {
+            "standard": {
+              "$id": "#/properties/info/properties/time/properties/standard",
+              "type": "string",
+              "title": "The Standard Schema",
+              "default": "",
+              "examples": [
+                "50m"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "dsa": {
+              "$id": "#/properties/info/properties/time/properties/dsa",
+              "type": "string",
+              "title": "The Dsa Schema",
+              "default": "",
+              "examples": [
+                "50m"
+              ],
+              "pattern": "^(.*)$"
+            }
+          }
+        }
+      }
+    },
+    "itemList": {
+      "$id": "#/properties/itemList",
+      "type": "array",
+      "title": "The Item list Schema",
+      "items": {
+        "$id": "#/properties/itemList/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "required": [
+          "type",
+          "skills",
+          "bodies",
+          "evaluation"
+        ],
+        "properties": {
+          "type": {
+            "$id": "#/properties/itemList/items/properties/type",
+            "type": "string",
+            "title": "The Type Schema",
+            "default": "",
+            "examples": [
+              "multiple-choice"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "skills": {
+            "$id": "#/properties/itemList/items/properties/skills",
+            "type": "array",
+            "title": "The Skills Schema",
+            "items": {
+              "$id": "#/properties/itemList/items/properties/skills/items",
+              "type": "string",
+              "title": "The Items Schema",
+              "default": "",
+              "examples": [
+                "knowledge"
+              ],
+              "pattern": "^(.*)$"
+            }
+          },
+          "bodies": {
+            "$id": "#/properties/itemList/items/properties/bodies",
+            "type": "array",
+            "title": "The Bodies Schema",
+            "items": {
+              "$id": "#/properties/itemList/items/properties/bodies/items",
+              "type": "object",
+              "title": "The Items Schema",
+              "required": [
+                "question",
+                "answers"
+              ],
+              "properties": {
+                "question": {
+                  "$id": "#/properties/itemList/items/properties/bodies/items/properties/question",
+                  "type": "string",
+                  "title": "The Question Schema",
+                  "default": "",
+                  "examples": [
+                    "Come si chiama il livello 3 della pila ISO/OSI?"
+                  ],
+                  "pattern": "^(.*)$"
+                },
+                "answers": {
+                  "$id": "#/properties/itemList/items/properties/bodies/items/properties/answers",
+                  "type": "array",
+                  "title": "The Answers Schema",
+                  "items": {
+                    "$id": "#/properties/itemList/items/properties/bodies/items/properties/answers/items",
+                    "type": "string",
+                    "title": "The Items Schema",
+                    "default": "",
+                    "examples": [
+                      "network",
+                      "data-link",
+                      "transport",
+                      "application"
+                    ],
+                    "pattern": "^(.*)$"
+                  }
+                }
+              }
+            }
+          },
+          "evaluation": {
+            "$id": "#/properties/itemList/items/properties/evaluation",
+            "type": "object",
+            "title": "The Evaluation Schema",
+            "required": [
+              "correctAnswer",
+              "points",
+              "pointsWrong"
+            ],
+            "properties": {
+              "correctAnswer": {
+                "$id": "#/properties/itemList/items/properties/evaluation/properties/correctAnswer",
+                "type": "integer",
+                "title": "The Correct answer Schema",
+                "default": 0,
+                "examples": [
+                  1
+                ]
+              },
+              "points": {
+                "$id": "#/properties/itemList/items/properties/evaluation/properties/points",
+                "type": "integer",
+                "title": "The Points Schema",
+                "default": 0,
+                "examples": [
+                  1
+                ]
+              },
+              "pointsWrong": {
+                "$id": "#/properties/itemList/items/properties/evaluation/properties/pointsWrong",
+                "type": "number",
+                "title": "The Points wrong Schema",
+                "default": 0.0,
+                "examples": [
+                  -0.25
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

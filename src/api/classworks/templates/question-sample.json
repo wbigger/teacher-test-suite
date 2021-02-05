@@ -1,0 +1,22 @@
+{
+    "type": "multiple-choice",
+    "skills": [
+        "knowledge"
+    ],
+    "bodies": [
+        {
+            "question": "Testo domanda 1",
+            "answers": [
+                "corretta",
+                "sbagliata",
+                "sbagliata",
+                "sbagliata"
+            ]
+        }
+    ],
+    "evaluation": {
+        "correctAnswer": 1,
+        "points": 1,
+        "pointsWrong": -0.25
+    }
+}

@@ -1,0 +1,138 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://marconicivitavecchia.it/classworks.json",
+    "title": "Classwork schema",
+    "type": "object",
+    "required": [
+        "subject",
+        "itemList"
+    ],
+    "properties": {
+        "subject": {
+            "$id": "#/properties/subject",
+            "title": "Subject schema",
+            "type": "string",
+            "description": "The subject of this classwork",
+            "minLength": 4,
+            "default": "Informatica"
+        },
+        "info": {
+            "$id": "#/properties/info",
+            "title": "Info schema",
+            "type": "object",
+            "required": [],
+            "properties": {
+                "notes": {
+                    "$id": "#/properties/info/properties/notes",
+                    "title": "Notes schema",
+                    "type": "string",
+                    "description": "General notes for this classwork",
+                    "minLength": 4,
+                    "default": "Nelle domande a risposta multipla: risposta corretta 1p, omessa 0p, errata -0.25p. Nelle domande a risposta aperta: risposte identiche ad altri compagni verranno penalizzate. Per prendere il massimo del voto si deve prendere il massimo del punteggio."
+                },
+                "time": {
+                    "$id": "#/properties/info/properties/time",
+                    "title": "Time schema",
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "standard": {
+                            "$id": "#/properties/info/properties/time/properties/standard",
+                            "type": "string",
+                            "description": "Standard time for this classwork",
+                            "minLength": 2,
+                            "default": "50m",
+                            "examples": [
+                                "50m"
+                            ],
+                            "pattern": "^([0-9]+m)$"
+                        },
+                        "dsa": {
+                            "$id": "#/properties/info/properties/time/properties/dsa",
+                            "type": "string",
+                            "description": "Time for DSA students",
+                            "minLength": 2,
+                            "default": "50m",
+                            "examples": [
+                                "50m"
+                            ],
+                            "pattern": "^([0-9]+m)$"
+                        }
+                    }
+                }
+            }
+        },
+        "itemList": {
+            "$id": "#/properties/itemList",
+            "type": "array",
+            "title": "Item list schema",
+            "items": {
+                "$id": "#/properties/itemList/items",
+                "type": "object",
+                "title": "Classwork items schema",
+                "required": [
+                    "type",
+                    "skills",
+                    "bodies",
+                    "evaluation"
+                ],
+                "properties": {
+                    "type": {
+                        "$id": "#/properties/itemList/items/properties/type",
+                        "type": "string",
+                        "title": "Item type schema",
+                        "enum": [
+                            "multiple-choice",
+                            "open-answer"
+                        ],
+                        "default": "multiple-choice"
+                    },
+                    "skills": {
+                        "$id": "#/properties/itemList/items/properties/skills",
+                        "type": "array",
+                        "title": "The Skills Schema",
+                        "items": {
+                            "$id": "#/properties/itemList/items/properties/skills/items",
+                            "type": "string",
+                            "title": "Skills items schema",
+                            "enum": [
+                                "knowledge",
+                                "analysis",
+                                "understanding",
+                                "application",
+                                "programming"
+                            ],
+                            "default": "knowledge"
+                        }
+                    },
+                    "bodies": {
+                        "$id": "#/properties/itemList/items/properties/bodies",
+                        "type": "array",
+                        "title": "Item bodies schema",
+                        "items": {
+                            "$id": "#/properties/itemList/items/properties/bodies/items",
+                            "type": "object",
+                            "title": "Item body schema",
+                            "required": [
+                                "question",
+                                "answers"
+                            ],
+                            "properties": {}
+                        }
+                    },
+                    "evaluation": {
+                        "$id": "#/properties/itemList/items/properties/evaluation",
+                        "type": "object",
+                        "title": "Item evaluation schema",
+                        "required": [
+                            "correctAnswer",
+                            "points",
+                            "pointsWrong"
+                        ],
+                        "properties": {}
+                    }
+                }
+            }
+        }
+    }
+}
