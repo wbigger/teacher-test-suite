@@ -13,6 +13,11 @@ var app = {
     lockList: [],
     init: function () {
         $("#nav-container").load("../index.html #nav-container>nav");
+
+
+        //console.log(jsyaml.load(" - apple \n - pear"));        
+        // TODO: get a generic file, then in the .done() convert to JSON
+        // with jsyaml.load()        
         // Load classworks list
         $.getJSON(app.apiPath + "classworks.json")
             .done(app.onClassworkSuccess)
