@@ -1,7 +1,3 @@
-sayHello = function () {
-    console.log("hello");
-    return false;
-}
 var pointBoard = {
     lockObj: {},
     marksList: [],
@@ -83,15 +79,18 @@ var pointBoard = {
                     .evaluation.pointList
                     .find(p => p.short === short)
                     .studentAnswer = itemValue;
+            } else if (itemType === "notes") {
+                classwork.notes = itemValue;
+            } else {
+                console.log(`Unknown item type: ${itemType}`);
             }
 
         };
         console.log(this.lockObj);
-        this.sayHello(); // sayHello works
-        //this.saveTofile(); // TODO: why doesnt work with this function name????
+        this.saveToFile();
         return false; // do not continue the submit chain
     },
-    sayHello: function () { //TODO: rename this function to saveToFile
+    saveToFile: function () {
         console.log("hello");
         let data = JSON.stringify(this.lockObj);
         let filename = this.lockFilename;//`lock-${app.className}-${app.subject}.json`;
@@ -155,6 +154,7 @@ var pointBoard = {
                     openAnswerElement.append(checkspan);
                 });
                 fieldset.append(openAnswerElement);
+
                 let checkAll = $("<input>")
                     .attr({
                         type: "button",
@@ -163,7 +163,19 @@ var pointBoard = {
                     .on("click", (el) => {
                         console.log(`Work in progress ${el}`);
                     });
-                fieldset.append(checkAll);
+                // fieldset.append(checkAll);
+
+                let notesValue = element.notes;
+                let textnotes = $('<input>', {
+                    type: 'text',
+                    name: `notes-${element.student.id}`,
+                    id: `notes-${element.student.id}`,
+                    maxlength: 200,
+                    size: 50,
+                    title: `Notes for this work (max 200 chars)`,
+                    value: notesValue
+                });
+                fieldset.append(textnotes);
 
             });
 
