@@ -1,1 +1,7 @@
-*.json
+classworks.json
+students.json
+classworks/*.json
+classworks/*.yaml
+
+students/*.json
+students/*.yaml

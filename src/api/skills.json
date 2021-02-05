@@ -1,0 +1,30 @@
+{
+    "skills": [
+        {
+            "name": "knowledge",
+            "description": "Ability to recall memorized facts, terms, and basic concepts.",
+            "example": "What is the fundamental accounting equation?\nAssets = Liabilities + Equity\nLiabilities = Assets – Equity\nEquity = Assets – Liabilities\n    Assets = Equity – Liabilities"
+        },
+        {
+            "name": "understanding",
+            "description": "Ability to explain the meaning of facts, terms, and concepts.",
+            "example": "If total liabilities decrease and total assets remain the same, equity:     Increases\n Decreases\n Remains the same\n Becomes a liability"
+        },
+        {
+            "name": "application",
+            "description": "Ability to perform work tasks using facts, concepts, techniques, and rules.",
+            "example": "John’s assets are 7.7m and his equity is 6.3m. What are his liabilities?"
+        },
+        {
+            "name": "analysis",
+            "description": " Ability to diagnose situations and craft solutions using facts, concepts, techniques, and rules",
+            "example": "A new company has a building that costs $10,000, machinery that costs $5,000, cash of $700, and a bank loan of $7,850. How much more cash would the company need in order to have equity of $10,000?"
+        },
+        {
+            "name": "programming",
+            "description": "Ability to create a program, run and test it.",
+            "example": "Create a program in C that sum two integers"
+        }
+    ]
+}
+
