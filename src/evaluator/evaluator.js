@@ -1,7 +1,7 @@
 var evaluator = {
     lockObj: {},
     minVote : 1,
-    maxVote : 9.5,
+    maxVote : 10,
     lockFilename: "",
     init: function () {
         console.log("evaluator init");

@@ -29,7 +29,10 @@ var composer = {
 
             // shuffle answer but remember the correct answer position
             // please note that answers are 1 based
-            let correctAnswerText = itemBody.answers[item.evaluation.correctAnswer - 1];
+            const evaluationCorrectAnswer = (item.evaluation === undefined) ? 0 : item.evaluation.correctAnswer - 1;
+            const evaluationPoints = Object.is(item.evaluation, undefined) ? 1 : item.evaluation.points;
+            const evaluationPointsWrong = Object.is(item.evaluation, undefined) ? 0.25 : item.evaluation.pointsWrong;
+            let correctAnswerText = itemBody.answers[evaluationCorrectAnswer];
             let itemBodyAnswers = itemBody.answers.slice(); // do not modify original itemBody
             composer.shuffle(itemBodyAnswers);
             correctAnswerId = itemBodyAnswers.indexOf(correctAnswerText) + 1;
@@ -41,9 +44,9 @@ var composer = {
             lockItem.body.question = itemBody.question;
             lockItem.body.answers = itemBodyAnswers.slice(); // slices: copy values
             lockItem.evaluation = {};
-            lockItem.evaluation.points = item.evaluation.points;
+            lockItem.evaluation.points = evaluationPoints;
             lockItem.evaluation.correctAnswerId = correctAnswerId;
-            lockItem.evaluation.pointsWrong = item.evaluation.pointsWrong;
+            lockItem.evaluation.pointsWrong = evaluationPointsWrong;
 
             let baseChar = "A".charCodeAt(0);
             let question = composer.md2html(itemBody.question);
@@ -133,7 +136,7 @@ var composer = {
         // Put multiple choice first
         let quizArray = items.filter(item => {
             return (item.type == "multiple-choice") &&
-            ((student.cert !== item.skipCert) || (typeof student.cert === "undefined") );
+                ((student.cert !== item.skipCert) || (typeof student.cert === "undefined"));
         })
             .slice();
         composer.shuffle(quizArray);
