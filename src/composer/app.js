@@ -163,7 +163,7 @@ var app = {
             className: app.className,
             subject: app.subject,
             info: app.info,
-            numberOfQuestions: app.itemList.length // FIXME: how to know array length?
+            numberOfQuestions: app.itemList.length
         });
         let filename = `lock-${app.className}-${app.subject}.json`;
         let type = "application/json";
@@ -193,7 +193,8 @@ var app = {
             className: app.className,
             subject: app.subject,
             info: app.info,
-            numberOfQuestions: app.itemList.length // FIXME: how to know array length?
+            numberOfQuestions: app.itemList.length,
+            classworkID: app.classworkID
         });
         $.ajax({
             url: 'https://teacher-suite-303914-default-rtdb.firebaseio.com/.json',
@@ -201,6 +202,8 @@ var app = {
             dataType: "json",
             data: data,
             success: function(result) {
+            alert("Saved on firebase")
+                console.log("Saved to firebase:");
                 console.log(result);
             }
         });
