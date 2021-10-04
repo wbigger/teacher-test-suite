@@ -16,7 +16,6 @@ var app = {
         $("#nav-container").load("../index.html #nav-container>nav");
 
 
-        //console.log(jsyaml.load(" - apple \n - pear"));        
         // TODO: get a generic file, then in the .done() convert to JSON
         // with jsyaml.load()        
         // Load classworks list
