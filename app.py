@@ -7,8 +7,11 @@ import pymongo
 app = Flask(__name__)
 cache = redis.Redis(host='redis', port=6379)
 
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+
+print("hello")
+myclient = pymongo.MongoClient("mongodb://mongodb:27017/")
 mydb = myclient["mydatabase"]
+print(myclient.list_database_names())
 
 def get_hit_count():
     retries = 5
@@ -23,8 +26,11 @@ def get_hit_count():
 
 @app.route('/mongo')
 def mongo():    
-    # return myclient.list_database_names()
-    return "mongodb"
+    mycol = mydb["customers"]
+    mydict = { "name": "John", "address": "Highway 37" }
+    x = mycol.insert_one(mydict)
+    x = mycol.find_one()
+    return str(mycol.find_one())
 
 @app.route('/')
 def hello():
