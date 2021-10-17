@@ -33,23 +33,26 @@ var app = {
         var url = new URL(url_string);
         var classworkID = url.searchParams.get("classwork");
         var studentsID = url.searchParams.get("students");
-        if (classworkID && studentsID) {
+        if (classworkID) {
             app.classworkID = classworkID;
-            app.studentsID = studentsID;
-            console.log("Loading test values:");
-            console.log("- students: " + app.studentsID)
             console.log("- classwork: " + app.classworkID)
             app.classworkURL = app.apiPath + "classworks/" + app.classworkID + ".json";
             app.classworkURLYaml = app.apiPath + "classworks/" + app.classworkID + ".yaml";
-            app.studentsURL = app.apiPath + "students/" + app.studentsID + ".json";
-            if (typeof app.studentsID !== "undefined") {
-                $("#class-select").val(app.studentsID);
-            }
             if (typeof app.classworkID !== "undefined") {
                 $("#classwork-select").val(app.classworkID);
             }
         } else {
-            console.log("please select students and classwork from menu");
+            console.log("please select classwork from menu");
+        }
+        if (studentsID) {
+            app.studentsID = studentsID;
+            console.log("- students: " + app.studentsID)
+            app.studentsURL = app.apiPath + "students/" + app.studentsID + ".json";
+            if (typeof app.studentsID !== "undefined") {
+                $("#class-select").val(app.studentsID);
+            }
+        } else {
+            console.log("please select students from menu");
         }
     },
     onClassworkSuccess: function (jsonData) {
@@ -79,6 +82,10 @@ var app = {
                 str += $(this).val();
             });
             app.studentsURL = app.apiPath + "students/" + str + ".json";
+
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('students', str);
+            window.location.search = urlParams;
         });
         $("#classwork-select").change((el) => {
             let str = "";
@@ -87,6 +94,10 @@ var app = {
             });
             app.classworkURL = app.apiPath + "classworks/" + str + ".json";
             app.classworkURLYaml = app.apiPath + "classworks/" + str + ".yaml";
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('classwork', str);
+            window.location.search = urlParams;
         });
 
         $("#create-button").click(() => {
