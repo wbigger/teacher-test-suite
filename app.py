@@ -4,7 +4,11 @@ import redis
 from flask import Flask
 import pymongo
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_url_path='', 
+            static_folder='src',
+            template_folder='src')
+
 cache = redis.Redis(host='redis', port=6379)
 
 
@@ -32,7 +36,11 @@ def mongo():
     x = mycol.find_one()
     return str(mycol.find_one())
 
+# @app.route('/')
+# def hello():
+#     count = get_hit_count()
+#     return 'Hello Docker! I have been seen {} times.\n'.format(count)
+
 @app.route('/')
-def hello():
-    count = get_hit_count()
-    return 'Hello Docker! I have been seen {} times.\n'.format(count)
+def index():
+    return app.send_static_file('index.html')
