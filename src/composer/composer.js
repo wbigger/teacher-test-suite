@@ -124,7 +124,7 @@ var composer = {
         // init composer (maybe use as a class?)
         composer.currentItem = 1;
         composer.lockList = [];
-        Math.seedrandom(student.id);
+        Math.seedrandom(student.email);
 
         let htmlClasswork = $("<div>").addClass('classwork');
         let htmlTitle = $("<h1>").addClass('classwork-title').text("Verifica scritta di " + subject);
