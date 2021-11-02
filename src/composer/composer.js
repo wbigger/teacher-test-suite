@@ -126,9 +126,10 @@ var composer = {
         composer.lockList = [];
         Math.seedrandom(student.email);
 
+        let name = `${student.givenName} ${student.familyName}`;
         let htmlClasswork = $("<div>").addClass('classwork');
         let htmlTitle = $("<h1>").addClass('classwork-title').text("Verifica scritta di " + subject);
-        let htmlSubTitle = $("<h2>").addClass('classwork-subtitle').text(student.name + ", " + studentClass + ", data: ___/___/______");
+        let htmlSubTitle = $("<h2>").addClass('classwork-subtitle').text(name + ", " + studentClass + ", data: ___/___/______");
         let htmlNotes = $("<p>").addClass('classwork-notes').text(info.notes);
 
         let htmlItems = $("<div>").addClass('items');

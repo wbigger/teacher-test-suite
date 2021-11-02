@@ -12,6 +12,30 @@ var app = {
     info: undefined,
 
     lockList: [],
+    compare: function (a, b) {
+        if (a.familyName < b.familyName) {
+            return -1;
+        }
+        if (a.familyName > b.familyName) {
+            return 1;
+        }
+        return 0;
+    },
+    hashCode: function (s) {
+        /* Simple hash function. */
+        var a = 1, c = 0, h, o;
+        if (s) {
+            a = 0;
+            /*jshint plusplus:false bitwise:false*/
+            for (h = s.length - 1; h >= 0; h--) {
+                o = s.charCodeAt(h);
+                a = (a << 6 & 268435455) + o + (o << 14);
+                c = a & 266338304;
+                a = c !== 0 ? a ^ c >> 21 : a;
+            }
+        }
+        return String(a);
+    },
     init: function () {
         $("#nav-container").load("../index.html #nav-container>nav");
 
@@ -94,7 +118,7 @@ var app = {
             });
             app.classworkURL = app.apiPath + "classworks/" + str + ".json";
             app.classworkURLYaml = app.apiPath + "classworks/" + str + ".yaml";
-            
+
             const urlParams = new URLSearchParams(window.location.search);
             urlParams.set('classwork', str);
             window.location.search = urlParams;
@@ -159,6 +183,9 @@ var app = {
     },
     onStudentsSuccess: function (jsonData) {
         app.students = jsonData.studentList;
+        app.students.forEach((student) =>
+            student.id = app.hashCode(student.email)
+        );
         app.className = jsonData.className;
         app.composeQuestions();
         app.updateTitle();
@@ -197,7 +224,7 @@ var app = {
         // Save also to local storage
         localStorage.setItem("lockObj", data);
     },
-    saveToFirebase: function() {
+    saveToFirebase: function () {
         const data = JSON.stringify({
             classworks: app.lockList,
             className: app.className,
@@ -211,8 +238,8 @@ var app = {
             type: 'PUT',
             dataType: "json",
             data: data,
-            success: function(result) {
-            alert("Saved on firebase")
+            success: function (result) {
+                alert("Saved on firebase")
                 console.log("Saved to firebase:");
                 console.log(result);
             }
@@ -225,8 +252,7 @@ var app = {
         }
     },
     composeQuestions: function () {
-
-        app.students.forEach(student => {
+        app.students.sort(app.compare).forEach(student => {
             var itemList = app.itemList.slice(); // copy values
             let ret = composer.create(itemList, student, app.className, app.subject, app.info);
             $("#classworks").append(ret[0]);
