@@ -34,6 +34,9 @@ var composer = {
             const evaluationPointsWrong = Object.is(item.evaluation, undefined) ? 0.25 : item.evaluation.pointsWrong;
             let correctAnswerText = itemBody.answers[evaluationCorrectAnswer];
             let itemBodyAnswers = itemBody.answers.slice(); // do not modify original itemBody
+            if (student.cert != undefined) {
+                itemBodyAnswers.pop();
+            }
             composer.shuffle(itemBodyAnswers);
             correctAnswerId = itemBodyAnswers.indexOf(correctAnswerText) + 1;
             lockItem = {};
