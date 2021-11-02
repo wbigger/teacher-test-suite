@@ -14,5 +14,9 @@ replace:
 
 # email
 scaricando la lista dei membri della classe da google admin
-find: ^([A-Z].*),([a-z.]+@marconicloud.it),MEMBER,USER
-replace: {"name": "$1","email": "$2"},
+find: `^([A-Z].*),([a-z.]+@marconicloud.it),MEMBER,.*USER$`
+replace: `{"name": "$1","email": "$2"},`
+
+# Nome-cognome
+"name": "([\w]+) ([\w\s]+)",
+"givenName":"$1","familyName":"$2",
