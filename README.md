@@ -21,6 +21,13 @@ This suite tackle on two main problems.
 
 Not all the above feature are currently implemented, but work is in progress and continuously updated.
 
+# Screenshots
+![](screenshots/screen-0.png)
+![](screenshots/screen-1.png)
+![](screenshots/screen-2.png)
+![](screenshots/screen-3.png)
+![](screenshots/screen-4.png)
+
 # Quick start (for developers)
 This project uses Docker and Docker Compose. Just run a `docker-compose up` to get started.
 
