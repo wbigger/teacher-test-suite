@@ -1,11 +1,12 @@
 var evaluator = {
     lockObj: {},
     minVote : 1,
-    maxVote : 10,
+    maxVote : 9,
+    defaultWrongAnswer : -0.25,
     lockFilename: "",
     init: function () {
         console.log("evaluator init");
-        console.log(`max vote: ${this.maxVote}, min vote: ${this.minVote}`);
+        console.log(`max vote: ${this.maxVote}, min vote: ${this.minVote}, wrong answer: ${this.defaultWrongAnswer}`);
         $("#nav-container").load("../index.html #nav-container>nav");
         this.loadLockObj();
         this.eventHandler();
@@ -84,7 +85,7 @@ var evaluator = {
                     if (item.evaluation.studentAnswer != null) {
                         // TODO: these default should be moved to compose when assignign lock object
                         let correctScore = (item.evaluation.points !== undefined) ? item.evaluation.points : 1;
-                        let wrongScore = (item.evaluation.pointsWrong !== undefined) ? item.evaluation.pointsWrong : -0.25;
+                        let wrongScore = 0;//(item.evaluation.pointsWrong !== undefined) ? item.evaluation.pointsWrong : evaluator.defaultWrongAnswer;
                         item.evaluation.studentAnswer === item.evaluation.correctAnswerId ?
                             studentScoreMC += correctScore : studentScoreMC += wrongScore;
                     }
@@ -123,7 +124,8 @@ var evaluator = {
         let cardList = $('<ul>').addClass('cards');
         this.lockObj.classworks.forEach((classwork) => {
             let hasUndefined = false;
-            let name = $('<h2>').text(`${classwork.student.name}`);
+            let studentName = `${classwork.student.givenName} ${classwork.student.familyName} `
+            let name = $('<h2>').text(studentName);
             let scoreList = $('<ul>').addClass('scores');
             classwork.itemList.filter(it => it.type === "multiple-choice").forEach(item => {
                 // Convert numeric idx (1234) to character (ABCD)
@@ -174,11 +176,11 @@ var evaluator = {
             let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.scoreMC} + ${classwork.student.scoreOA} = ${classwork.student.score} / ${maxScore}`);
             // print the vote rounded to half decimal (6, 6.5, 7, etc)
             const {vote,voteDec} = this.computeVote(classwork.student.score, maxScore)
-            console.log(`${classwork.student.name} vote: ${vote} (${voteDec.toFixed(2)})`); //TODO: move this in statistics or other place?
+            console.log(`${classwork.student.familyName} vote: ${vote} (${voteDec.toFixed(2)})`); //TODO: move this in statistics or other place?
             let card = $('<li>').append(name).append(scoreList).append(totalScore);
             if (hasUndefined) {
                 card.addClass("hasUndefined");
-                console.log(`${classwork.student.name} has undefined answers.`);
+                console.log(`${classwork.student.familyName} has undefined answers.`);
             };
             cardList.append(card);
         });
