@@ -1,0 +1,15 @@
+{
+    "className": "5Binf",
+    "studentList": [
+        {
+            "givenName": "Mario",
+            "familyName": "Rossi",
+            "email": "mario.rossi@example.com"
+        },
+        {
+            "givenName": "Gianluca",
+            "familyName": "Bianchi",
+            "email": "gianluca.bianchi@example.com"
+        }
+    ]
+}
