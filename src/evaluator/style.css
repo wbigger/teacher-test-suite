@@ -53,7 +53,8 @@ ul.scores>li.isOmissis .score-student::after {
 }
 
 ul.scores>li.isWrong .score-student::after {
-    content: " -0.25p)";
+    /* content: " -0.25p)"; */
+    content: " -0p)";
 }
 
 ul.scores>li.isCorrect .score-student {

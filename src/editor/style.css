@@ -1,5 +1,6 @@
 .CodeMirror {
     /* Set height, width, borders, and global font properties here */
     font-size: x-large;
-    height: 30rem;
+    height: 80vh;
+    border: 1px solid gray;
 }

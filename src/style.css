@@ -2,64 +2,62 @@
   font-family: Verdana, Geneva, sans-serif;
 }
 
-#controls {
-    background: lightblue;
-    padding:10px;
-    margin-top:38px;
-    position: fixed;
-    top: 0px;
-    width:100%;
+body {
+  margin: 0;
+}
+
+/* NAV */
+nav {
+  display: flex;
+  width: 100%;
+  margin: 0;
+  border: 1px solid #e7e7e7;
+  background-color: #f3f3f3;
 }
 
 nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    border: 1px solid #e7e7e7;
-    background-color: #f3f3f3;
-  }
-  
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 nav li {
-    float: left;
-  }
-  
- nav li a {
-    display: block;
-    color: #666;
-    text-align: center;
-    padding-top: .5rem;
-    padding-right: .5rem;
-    padding-left: .5rem;
-    padding-bottom: .5rem;
-    text-decoration: none;
-  }
-  
+  float: left;
+}
+
+nav li a {
+  display: block;
+  color: #666;
+  text-align: center;
+  padding-top: .5rem;
+  padding-right: .5rem;
+  padding-left: .5rem;
+  padding-bottom: .5rem;
+  text-decoration: none;
+}
+
 nav li a:hover:not(.active) {
-    background-color: #ddd;
-  }
-  
+  background-color: #ddd;
+}
+
 nav li a.active {
-    color: white;
-    background-color: #4CAF50;
-  }
+  color: white;
+  background-color: #4CAF50;
+}
 
 nav li.nav-brand a {
-    font-size: 1.25rem;
-    padding-top: .375rem;
-    padding-bottom: .375rem;
-  }
+  font-size: 1.25rem;
+  padding-top: .375rem;
+  padding-bottom: .375rem;
+}
 
-nav {
-    position: fixed;
-    top: 0;
-    width:100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;  
-  }
-
-body {
-      margin: 0;
-      margin-top: 1rem;
-  }
+/* CONTROLS */
+#controls {
+  background: lightblue;
+  padding: 10px;
+  margin-top: 38px;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+}
