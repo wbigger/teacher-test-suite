@@ -1,6 +1,16 @@
+html, body {
+    height: 100%;
+
+}
+
 .CodeMirror {
     /* Set height, width, borders, and global font properties here */
-    font-size: x-large;
+    font-size: large;
     height: 80vh;
+    width: 100%;
     border: 1px solid gray;
+}
+
+.code-container {
+    margin-top: 1em;
 }

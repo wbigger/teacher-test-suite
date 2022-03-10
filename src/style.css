@@ -56,8 +56,5 @@ nav li.nav-brand a {
 #controls {
   background: lightblue;
   padding: 10px;
-  margin-top: 38px;
-  position: fixed;
-  top: 0px;
   width: 100%;
 }
