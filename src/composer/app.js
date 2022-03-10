@@ -233,8 +233,9 @@ var app = {
             numberOfQuestions: app.itemList.length,
             classworkID: app.classworkID
         });
+        console.log(`Saving to firebase: ${env.FIREBASE_URL}`);
         $.ajax({
-            url: 'https://teacher-suite-303914-default-rtdb.firebaseio.com/.json',
+            url: env.FIREBASE_URL,
             type: 'PUT',
             dataType: "json",
             data: data,
