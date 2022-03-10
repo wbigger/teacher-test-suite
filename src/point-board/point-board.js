@@ -118,7 +118,8 @@ var pointBoard = {
     create: function () {
         this.lockObj.classworks.forEach(element => {
             let fieldset = $('<fieldset>');
-            let legend = $('<legend>').text(element.student.name);
+            let name = `${element.student.givenName} ${element.student.familyName}`;
+            let legend = $('<legend>').text(name);
             fieldset.append(legend);
             // populate value for multiple choice questions
             let multipleChoiceArray = element.itemList.filter(item => { return item.type == "multiple-choice"; })
