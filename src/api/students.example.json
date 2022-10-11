@@ -1,0 +1,8 @@
+{
+    "studentClasses": [
+        {
+            "name": "Year and class or course",
+            "value": "filename in api/students without extension"
+        }
+    ]
+}
