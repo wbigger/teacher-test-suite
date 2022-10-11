@@ -91,3 +91,5 @@ db
 
 # python
 __pycache__
+src/api/classworks.json
+src/api/students.json
