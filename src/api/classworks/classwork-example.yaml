@@ -48,7 +48,7 @@ itemList:
   - application
   bodies:
   - question: "Descrivere come è fatto un indirizzo MAC, qual è il suo uso, da quale ente è gestito. Scrivere un esempio di un possibile indirizzo MAC valido."
-    nRows: 4
+  nRows: 4
   evaluation:
     hint: è fatto da 6 byte nella forma aa:bb:cc:dd:ee:ff, i primi 3 sono il manufacturer, gli altri id della scheda. Unico in tutto il mondo. Gestito da ICANN. Serve ad identificare in modo univoco un'interfaccia di rete.
     pointList:

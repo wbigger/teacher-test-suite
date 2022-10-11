@@ -79,6 +79,7 @@ var composer = {
 
             lockItem = {};
             lockItem.type = item.type;
+            lockItem.nRows = item.nRows;
             lockItem.idx = composer.currentItem;
             lockItem.skills = item.skills.slice();
             lockItem.body = {};
@@ -108,8 +109,12 @@ var composer = {
                     .addClass("open-answer-img");
                 htmlAnswer.append(img);
             }
-            if (typeof itemBody.nRows !== "undefined") {
-                for (let i = 0; i < itemBody.nRows; i++) {
+            
+            // nRows can be specified on the item or on each question
+            // the more specific is used
+            let nRows = itemBody.nRows || item.nRows;
+            if (nRows) {
+                for (let i = 0; i < nRows; i++) {
                     let row = $("<p>").addClass("hr");
                     htmlAnswer.append(row);
                 }
