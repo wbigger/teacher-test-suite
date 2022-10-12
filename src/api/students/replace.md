@@ -18,5 +18,5 @@ find: `^([A-Z].*),([a-z.]+@marconicloud.it),MEMBER,.*USER$`
 replace: `{"name": "$1","email": "$2"},`
 
 # Nome-cognome
-"name": "([\w]+) ([\w\s]+)",
+"name": "([\w']+) ([\w\s]+)",
 "givenName":"$1","familyName":"$2",
