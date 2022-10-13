@@ -99,6 +99,18 @@ var app = {
         );
         app.loadParams();
     },
+    createClasswork: function () {
+        console.log("using class: " + app.studentsURL);
+        console.log(`using classwork: ${app.classworkURL} (${app.classworkURLYaml})`);
+
+        if (app.studentsURL && (app.classworkURL || app.classworkURLYaml)) {
+            $("#classworks").html("");
+            app.loadQuestions();
+        } else {
+            alert("Please select class and classwork");
+        }
+        $("#show-correct").prop('checked', false);
+    },
     eventHandler: function () {
         $("#class-select").change(() => {
             let str = "";
@@ -124,18 +136,8 @@ var app = {
             window.location.search = urlParams;
         });
 
-        $("#create-button").click(() => {
-            console.log("using class: " + app.studentsURL);
-            console.log(`using classwork: ${app.classworkURL} (${app.classworkURLYaml})`);
+        $("#create-button").click(app.createClasswork);
 
-            if (app.studentsURL && (app.classworkURL || app.classworkURLYaml)) {
-                $("#classworks").html("");
-                app.loadQuestions();
-            } else {
-                alert("Please select class and classwork");
-            }
-            $("#show-correct").prop('checked', false);
-        });
         $("#show-correct").click((e) => {
             let isChecked = e.target.checked;
             if (isChecked) {
