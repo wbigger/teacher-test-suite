@@ -162,7 +162,7 @@
             "title": "The Evaluation Schema",
             "required": [
               "correctAnswer",
-              "points",
+              "pointsCorrect",
               "pointsWrong"
             ],
             "properties": {
@@ -175,10 +175,10 @@
                   1
                 ]
               },
-              "points": {
-                "$id": "#/properties/itemList/items/properties/evaluation/properties/points",
+              "pointsCorrect": {
+                "$id": "#/properties/itemList/items/properties/evaluation/properties/pointsCorrect",
                 "type": "integer",
-                "title": "The Points Schema",
+                "title": "The Points correct Schema",
                 "default": 0,
                 "examples": [
                   1

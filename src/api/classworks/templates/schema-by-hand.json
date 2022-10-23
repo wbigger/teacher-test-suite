@@ -126,7 +126,7 @@
                         "title": "Item evaluation schema",
                         "required": [
                             "correctAnswer",
-                            "points",
+                            "pointsCorrect",
                             "pointsWrong"
                         ],
                         "properties": {}
