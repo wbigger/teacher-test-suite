@@ -15,7 +15,7 @@ var app = {
         if (localStorage.getItem("lockObj")) {
             this.lockObj = JSON.parse(localStorage.getItem("lockObj"));
             this.lockFilename = "local-storage.json";
-            $("#results").html("");
+            // $("#results").html("");
             (this.updateTitle.bind(this))();
             (this.stats.bind(this))();
         } else {
@@ -24,10 +24,22 @@ var app = {
     },
     eventHandler: function () {
         $("#lock-input").change(this.readSingleFile.bind(this));
+        $("#max-vote").change(this.updateMaxVote.bind(this));
+        $("#min-vote").change(this.updateMinVote.bind(this));
+    },
+    updateMaxVote: function() {
+        console.log(`new value for max vote: ${$("#max-vote").val()}`);
+        this.teacherMaxVote = $("#max-vote").val();
+        (this.stats.bind(this))();
+    },
+    updateMinVote: function() {
+        console.log(`new value for min vote: ${$("#min-vote").val()}`);
+        this.teacherMinVote = $("#min-vote").val();
+        (this.stats.bind(this))();
     },
     computeVote: function (score, maxScore) {
-        let maxVote = this.teacherMaxVote;
-        let minVote = this.teacherMinVote;
+        let maxVote = parseFloat(this.teacherMaxVote);
+        let minVote = parseFloat(this.teacherMinVote);
         let deltaVote = maxVote - minVote;
         let voteFloat = (score / maxScore) * deltaVote + minVote;
         // let voteRound = Math.round(voteFloat);
@@ -42,8 +54,9 @@ var app = {
         return {vote: voteHalf, voteFloat: voteFloat};
     },
     stats: function () {
-        $("#max-vote").text(app.teacherMaxVote);
-        $("#min-vote").text(app.teacherMinVote);
+        $("#results").text("");
+        $("#max-vote").val(app.teacherMaxVote);
+        $("#min-vote").val(app.teacherMinVote);
         this.lockObj.classworks.forEach((classwork) => {
             let row = $('<div>').addClass('table-row');
             let maxScore = classwork.itemList.reduce((accumulator, currentItem) => {
@@ -118,7 +131,7 @@ var app = {
         reader.onload = function (e) {
             var contents = e.target.result;
             app.lockObj = JSON.parse(contents);
-            $("#results").text("");
+            // $("#results").text("");
             (app.updateTitle.bind(app))();
             (app.stats.bind(app))();
         };
