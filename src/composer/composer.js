@@ -21,7 +21,7 @@ var composer = {
         txt = txt.replace(/\*\*(.*)\*\*/, "<strong>$1</strong>");
         return txt;
     },
-    createItem: function (item, student) {
+    createItem: function (item, student, marks) {
         let lockItem = undefined;
         let htmlItem = $("<div>").addClass("item");
         if (item.type == "multiple-choice") {
@@ -30,8 +30,8 @@ var composer = {
             // shuffle answer but remember the correct answer position
             // please note that answers are 1 based
             const evaluationCorrectAnswer = (item.evaluation === undefined) ? 0 : item.evaluation.correctAnswer - 1;
-            const evaluationPoints = Object.is(item.evaluation, undefined) ? 1 : item.evaluation.points;
-            const evaluationPointsWrong = Object.is(item.evaluation, undefined) ? 0.25 : item.evaluation.pointsWrong;
+            const evaluationPointsCorrect = Object.is(item.evaluation, undefined) ? marks.correct : item.evaluation.pointsCorrect;
+            const evaluationPointsWrong = Object.is(item.evaluation, undefined) ? marks.wrong : item.evaluation.pointsWrong;
             let correctAnswerText = itemBody.answers[evaluationCorrectAnswer];
             let itemBodyAnswers = itemBody.answers.slice(); // do not modify original itemBody
             if (student.cert != undefined) {
@@ -47,7 +47,7 @@ var composer = {
             lockItem.body.question = itemBody.question;
             lockItem.body.answers = itemBodyAnswers.slice(); // slices: copy values
             lockItem.evaluation = {};
-            lockItem.evaluation.points = evaluationPoints;
+            lockItem.evaluation.pointsCorrect = evaluationPointsCorrect;
             lockItem.evaluation.correctAnswerId = correctAnswerId;
             lockItem.evaluation.pointsWrong = evaluationPointsWrong;
 
@@ -138,7 +138,9 @@ var composer = {
         let htmlClasswork = $("<div>").addClass('classwork');
         let htmlTitle = $("<h1>").addClass('classwork-title').text("Verifica scritta di " + subject);
         let htmlSubTitle = $("<h2>").addClass('classwork-subtitle').text(name + ", " + studentClass + ", data: ___/___/______");
-        let htmlNotes = $("<p>").addClass('classwork-notes').text(info.notes);
+        let notes = `Nelle domande a risposta multipla: risposta corretta ${info.marks.correct}, omessa ${info.marks.omitted} ed errata
+        ${info.marks.wrong}. ${info.notes}`
+        let htmlNotes = $("<p>").addClass('classwork-notes').text(notes);
 
         let htmlItems = $("<div>").addClass('items');
 
@@ -150,7 +152,7 @@ var composer = {
             .slice();
         composer.shuffle(quizArray);
         quizArray.forEach(item => {
-            let res = composer.createItem(item, student);
+            let res = composer.createItem(item, student, info.marks);
             htmlItems.append(res[0]);
             composer.lockList.push(res[1]);
         }

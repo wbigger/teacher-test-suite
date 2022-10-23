@@ -1,5 +1,6 @@
 var app = {
-    teacherMaxVote: 10,
+    teacherMaxVote: 9, // to be read from lock file
+    teacherMinVote: 1,
     certDiscount: .13, // how much discount on max score for certified student (es. dsa)
     isCertDiscountApplied: true, // if the cert discount is actually applied
     lockObj: {},
@@ -22,31 +23,32 @@ var app = {
         }
     },
     eventHandler: function () {
-        $("#lock-input").change(this.readSingleFile).bind(this);
+        $("#lock-input").change(this.readSingleFile.bind(this));
     },
     computeVote: function (score, maxScore) {
-        let vote = Math.round((score / maxScore) * this.teacherMaxVote);
-        let voteHalf = Math.round((score / maxScore) * this.teacherMaxVote * 2) / 2; // consider half points
+        let maxVote = this.teacherMaxVote;
+        let minVote = this.teacherMinVote;
+        let deltaVote = maxVote - minVote;
+        let voteFloat = (score / maxScore) * deltaVote + minVote;
+        // let voteRound = Math.round(voteFloat);
+        let voteHalf = Math.round(voteFloat * 2) / 2; // consider half points
 
         // add exceptions! :D
         // max vote only if max score
-        if ((score !== maxScore) && (vote == 10)) {
-            vote = 9.5;
-            voteHalf = 9.5;
+        if ((score !== maxScore) && (voteHalf == maxVote)) {
+            voteHalf = maxVote - 0.5;
         }
-        // do not assign 9.5 (evil!)
-        // if (vote > 9 && vote < 10) {
-        //     vote = 9;
-        // }
-        //return `${vote} (${voteHalf})`;
-        return voteHalf;
+        
+        return {vote: voteHalf, voteFloat: voteFloat};
     },
     stats: function () {
+        $("#max-vote").text(app.teacherMaxVote);
+        $("#min-vote").text(app.teacherMinVote);
         this.lockObj.classworks.forEach((classwork) => {
             let row = $('<div>').addClass('table-row');
             let maxScore = classwork.itemList.reduce((accumulator, currentItem) => {
-                if (typeof currentItem.evaluation.points !== "undefined") {
-                    return accumulator + currentItem.evaluation.points;
+                if (typeof currentItem.evaluation.pointsCorrect !== "undefined") {
+                    return accumulator + currentItem.evaluation.pointsCorrect;
                 } else {
                     let points = currentItem.evaluation.pointList.reduce((accumulator, pointItem) => accumulator + pointItem.points, 0);
                     return accumulator + points;
@@ -56,9 +58,14 @@ var app = {
                 maxScore = classwork.student.cert ? Math.round(maxScore * (1-this.certDiscount)) : maxScore;
             }
             // print the vote rounded to half decimal (6, 6.5, 7, etc)
+            let name_txt = classwork.student.familyName.substring(0,12);
+            if (classwork.student.cert) {
+                name_txt+=" *";
+            }
             let name = $('<div>')
                 .addClass('table-cell')
-                .text(classwork.student.name.substring(0,12));
+                .text(name_txt);
+            
             let scoreMC = $('<div>')
                 .addClass('table-cell')
                 .text(classwork.student.scoreMC);
@@ -71,12 +78,13 @@ var app = {
             let maxScoreElem = $('<div>')
                 .addClass('table-cell')
                 .text(maxScore);
+            const voteObj = this.computeVote(classwork.student.score, maxScore)
             let vote = $('<div>')
                 .addClass('table-cell')
-                .text(this.computeVote(classwork.student.score, maxScore));
+                .text(voteObj.vote);
             let voteNotRounded = $('<div>')
                 .addClass('table-cell')
-                .text((classwork.student.score / maxScore * this.teacherMaxVote).toFixed(2));
+                .text(voteObj.voteFloat.toFixed(2));
             row
                 .append(name)
                 .append(scoreMC)

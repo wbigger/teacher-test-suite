@@ -1,12 +1,10 @@
 var evaluator = {
     lockObj: {},
-    minVote : 1,
-    maxVote : 9,
-    defaultWrongAnswer : -0.25,
+    defaultCorrectAnswer : undefined,
+    defaultWrongAnswer : undefined,
     lockFilename: "",
     init: function () {
         console.log("evaluator init");
-        console.log(`max vote: ${this.maxVote}, min vote: ${this.minVote}, wrong answer: ${this.defaultWrongAnswer}`);
         $("#nav-container").load("../index.html #nav-container>nav");
         this.loadLockObj();
         this.eventHandler();
@@ -14,16 +12,21 @@ var evaluator = {
     loadLockObj: function () {
         if (localStorage.getItem("lockObj")) {
             this.lockObj = JSON.parse(localStorage.getItem("lockObj"));
+            defaultCorrectAnswer = this.lockObj.info.marks.correct;
+            defaultWrongAnswer = this.lockObj.info.marks.wrong;
+            console.log(`default correct answer: ${this.lockObj.info.marks.correct}`);
+            console.log(`default wrong answer: ${this.lockObj.info.marks.wrong}`);
             this.lockFilename = "local-storage.json";
             $("#results").html("");
             (this.updateTitle.bind(evaluator))();
             (this.evaluate.bind(evaluator))();
+            
         } else {
             this.lockObj = {};
         }
     },
     eventHandler: function () {
-        $("#save-button").click(this.sayHello.bind(this));
+        $("#save-button").click(this.saveToFile.bind(this));
         $("#lock-input").change(this.readSingleFile.bind(this));
         $("#split-pages").prop('checked', false);
         $("#split-pages").click((e) => {
@@ -39,12 +42,11 @@ var evaluator = {
             }
         });
     },
-    sayHello: function () { //TODO: rename this function to saveToFile
-        console.log("hello");
-        let data = JSON.stringify(this.lockObj);
+    saveToFile: function () {
         let filename = this.lockFilename;//`lock-${app.className}-${app.subject}.json`;
+        console.log(`Saving to ${filename}`);
+        let data = JSON.stringify(this.lockObj);
         let type = "application/json";
-        console.log(`Saving file: ${filename}`); // use string template :)
         // from stackoverflow
         var file = new Blob([data], { type: type });
         if (window.navigator.msSaveOrOpenBlob) // IE10+
@@ -84,8 +86,8 @@ var evaluator = {
                     // Check if student answer is in the range
                     if (item.evaluation.studentAnswer != null) {
                         // TODO: these default should be moved to compose when assignign lock object
-                        let correctScore = (item.evaluation.points !== undefined) ? item.evaluation.points : 1;
-                        let wrongScore = 0;//(item.evaluation.pointsWrong !== undefined) ? item.evaluation.pointsWrong : evaluator.defaultWrongAnswer;
+                        let correctScore = (item.evaluation.pointsCorrect !== undefined) ? item.evaluation.pointsCorrect : evaluator.defaultCorrectAnswer;
+                        let wrongScore = (item.evaluation.pointsWrong !== undefined) ? item.evaluation.pointsWrong : evaluator.defaultWrongAnswer;
                         item.evaluation.studentAnswer === item.evaluation.correctAnswerId ?
                             studentScoreMC += correctScore : studentScoreMC += wrongScore;
                     }
@@ -104,22 +106,22 @@ var evaluator = {
         this.writeMarkList();
     },
     //TODO: moved to stats
-    computeVote: function (score, maxScore) {
-        let maxVote = this.maxVote;
-        let minVote = this.minVote;
-        let deltaVote = maxVote - minVote;
-        let voteDec = (score / maxScore) * deltaVote + minVote;
-        // let voteRound = Math.round(voteDec);
-        let voteHalf = Math.round(voteDec * 2) / 2; // consider half points
+    // computeVote: function (score, maxScore) {
+    //     let maxVote = this.maxVote;
+    //     let minVote = this.minVote;
+    //     let deltaVote = maxVote - minVote;
+    //     let voteDec = (score / maxScore) * deltaVote + minVote;
+    //     // let voteRound = Math.round(voteDec);
+    //     let voteHalf = Math.round(voteDec * 2) / 2; // consider half points
 
-        // add exceptions! :D
-        // max vote only if max score
-        if ((score !== maxScore) && (voteHalf == maxVote)) {
-            voteHalf = maxVote - 0.5;
-        }
+    //     // add exceptions! :D
+    //     // max vote only if max score
+    //     if ((score !== maxScore) && (voteHalf == maxVote)) {
+    //         voteHalf = maxVote - 0.5;
+    //     }
         
-        return {vote: voteHalf, voteDec: voteDec};
-    },
+    //     return {vote: voteHalf, voteDec: voteDec};
+    // },
     writeMarkList() {
         let cardList = $('<ul>').addClass('cards');
         this.lockObj.classworks.forEach((classwork) => {
@@ -166,8 +168,8 @@ var evaluator = {
             });
             //let card = $('<li>').text(`${classwork.student.name}: ${classwork.student.score}`);
             let maxScore = classwork.itemList.reduce((accumulator, currentItem) => {
-                if (typeof currentItem.evaluation.points !== "undefined") {
-                    return accumulator + currentItem.evaluation.points;
+                if (typeof currentItem.evaluation.pointsCorrect !== "undefined") {
+                    return accumulator + currentItem.evaluation.pointsCorrect;
                 } else {
                     let points = currentItem.evaluation.pointList.reduce((accumulator, pointItem) => accumulator + pointItem.points, 0);
                     return accumulator + points;
@@ -175,8 +177,8 @@ var evaluator = {
             }, 0);
             let totalScore = $('<div>').addClass('total-score').text(`TOT: ${classwork.student.scoreMC} + ${classwork.student.scoreOA} = ${classwork.student.score} / ${maxScore}`);
             // print the vote rounded to half decimal (6, 6.5, 7, etc)
-            const {vote,voteDec} = this.computeVote(classwork.student.score, maxScore)
-            console.log(`${classwork.student.familyName} vote: ${vote} (${voteDec.toFixed(2)})`); //TODO: move this in statistics or other place?
+            // const {vote,voteDec} = this.computeVote(classwork.student.score, maxScore)
+            // console.log(`${classwork.student.familyName} vote: ${vote} (${voteDec.toFixed(2)})`); //TODO: move this in statistics or other place?
             let card = $('<li>').append(name).append(scoreList).append(totalScore);
             if (hasUndefined) {
                 card.addClass("hasUndefined");
