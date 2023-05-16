@@ -95,3 +95,6 @@ __pycache__
 # Actual (really used) files, now moved to examples file
 src/api/classworks.json
 src/api/students.json
+
+# MacOS X files
+.DS_Store
