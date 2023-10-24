@@ -31,7 +31,7 @@ Not all the above feature are currently implemented, but work is in progress and
 # Quick start (for developers)
 This project uses Docker and Docker Compose. Just run a `docker-compose up` to get started.
 
-Update [students](src/api/students/students-example.json) and [classworks](src/api/classworks/classwork-example.yaml) according to your needs. 
+Update [students](src/api/students/students-example.json) and [classworks](src/api/classworks/classwork-example.yaml) according to your needs.
 
 Update also [this](src/api/students.json) and [this](src/api/classworks.json) files if needed, to match you file names.
 
