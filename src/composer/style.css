@@ -1,3 +1,10 @@
+.classwork {
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 20px;
+    
+}
+
 .classwork-notes {
     font-style: italic;
     font-size: small;
@@ -68,7 +75,7 @@ pre {
 
 @media print {
     .classwork {
-        page-break-after: always;
+        page-break-after: always;        
     }
     nav, #controls {
         display: none;
