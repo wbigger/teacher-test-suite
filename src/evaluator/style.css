@@ -49,12 +49,11 @@ ul.scores>li.isOmissis {
 }
 
 ul.scores>li.isOmissis .score-student::after {
-    content: "0p)";
+    content: ")";
 }
 
 ul.scores>li.isWrong .score-student::after {
-    /* content: " -0.25p)"; */
-    content: " -0p)";
+    content: ")";
 }
 
 ul.scores>li.isCorrect .score-student {

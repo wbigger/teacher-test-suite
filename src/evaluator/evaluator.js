@@ -135,7 +135,18 @@ var evaluator = {
                 let correctAns = this.idx2abc(item.evaluation.correctAnswerId);
                 // Create the list of student and correct answers
                 let idxElement = $('<span>').addClass("score-idx").text(`${item.idx}.`);
-                let studentElement = $('<span>').addClass("score-student").text(`${studentAns !== "null" ? studentAns : ''}`);
+                let points = "";
+                switch (studentAns) {
+                    case correctAns:
+                        points = item.evaluation.pointsCorrect;
+                        break;
+                    case "null":
+                        points = 0;
+                        break;
+                    default: 
+                        points = item.evaluation.pointsWrong;
+                }
+                let studentElement = $('<span>').addClass("score-student").text(`${studentAns !== "null" ? studentAns+' '+points+'p' : '0p'}`);
                 let correctElement = $('<span>').addClass("score-correct").text(`${correctAns}`);
                 let score = $('<li>')
                     .append(idxElement)
