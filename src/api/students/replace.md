@@ -2,7 +2,7 @@
 
 ## Procedura
 
-Scaricare la lista dei membri della classe da google admin.
+Creare il foglio di calcolo con la lista dei membri della classe da google admin.
 
 Aggiungere colonne su Google Sheet in modo da dividere nome e cognome:
 
@@ -13,12 +13,16 @@ Aggiungere colonne su Google Sheet in modo da dividere nome e cognome:
 
 Rivedere a mano i nomi con spazi.
 
-Ordinare in base al cognome
+Ordinare in base al cognome.
+
+Eliminare le colonne superflue lasciando solo cognome, nome e email.
 
 Quindi scaricare il file csv e qui fare:
 
 - find: `^([A-Z].*),([A-Z].*),([a-z.]+@marconicloud.it)$`
 - replace: `{"givenName": "$1","familyName":"$2","email": "$3"},`
+
+Aggiungere eventuali DSA con `"cert": ["dsa"]`
 
 ## Altri metodi
 
