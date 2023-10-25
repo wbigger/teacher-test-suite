@@ -195,6 +195,7 @@ var app = {
     // Generic error
     onError: function (jqXHR, textStatus, errorThrown) {
         console.log('getJSON request failed! ' + textStatus);
+        console.log(errorThrown);
     },
     saveToFile: function () { //TODO: do not replicate, there is this function also in helper
         let data = JSON.stringify({

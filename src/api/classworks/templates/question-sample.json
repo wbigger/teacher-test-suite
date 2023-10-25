@@ -17,6 +17,7 @@
     "evaluation": {
         "correctAnswer": 1,
         "pointsCorrect": 1,
-        "pointsWrong": -0.25
+        "pointsWrong": -0.25,
+        "pointsOmitted": 0
     }
 }

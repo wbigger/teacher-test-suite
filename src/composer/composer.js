@@ -32,6 +32,7 @@ var composer = {
             const evaluationCorrectAnswer = (item.evaluation === undefined) ? 0 : item.evaluation.correctAnswer - 1;
             const evaluationPointsCorrect = Object.is(item.evaluation, undefined) ? marks.correct : item.evaluation.pointsCorrect;
             const evaluationPointsWrong = Object.is(item.evaluation, undefined) ? marks.wrong : item.evaluation.pointsWrong;
+            const evaluationPointsOmitted = Object.is(item.evaluation, undefined) ? marks.omitted : item.evaluation.pointsOmitted;
             let correctAnswerText = itemBody.answers[evaluationCorrectAnswer];
             let itemBodyAnswers = itemBody.answers.slice(); // do not modify original itemBody
             if (student.cert != undefined) {
@@ -50,6 +51,7 @@ var composer = {
             lockItem.evaluation.pointsCorrect = evaluationPointsCorrect;
             lockItem.evaluation.correctAnswerId = correctAnswerId;
             lockItem.evaluation.pointsWrong = evaluationPointsWrong;
+            lockItem.evaluation.pointsOmitted = evaluationPointsOmitted;
 
             let baseChar = "A".charCodeAt(0);
             let question = composer.md2html(itemBody.question);

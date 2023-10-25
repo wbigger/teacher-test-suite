@@ -1,7 +1,8 @@
 var evaluator = {
     lockObj: {},
-    defaultCorrectAnswer : undefined,
-    defaultWrongAnswer : undefined,
+    defaultCorrectAnswer: undefined,
+    defaultWrongAnswer: undefined,
+    defaultOmittedAnswer: undefined,
     lockFilename: "",
     init: function () {
         console.log("evaluator init");
@@ -14,13 +15,15 @@ var evaluator = {
             this.lockObj = JSON.parse(localStorage.getItem("lockObj"));
             defaultCorrectAnswer = this.lockObj.info.marks.correct;
             defaultWrongAnswer = this.lockObj.info.marks.wrong;
+            defaultOmittedAnswer = this.lockObj.info.marks.omitted;
             console.log(`default correct answer: ${this.lockObj.info.marks.correct}`);
             console.log(`default wrong answer: ${this.lockObj.info.marks.wrong}`);
+            console.log(`default omitted answer: ${this.lockObj.info.marks.omitted}`);
             this.lockFilename = "local-storage.json";
             $("#results").html("");
             (this.updateTitle.bind(evaluator))();
             (this.evaluate.bind(evaluator))();
-            
+
         } else {
             this.lockObj = {};
         }
@@ -83,14 +86,22 @@ var evaluator = {
             let studentScoreOA = 0; // open answer
             classwork.itemList.filter(item => item.type == "multiple-choice")
                 .forEach(item => {
-                    // Check if student answer is in the range
-                    if (item.evaluation.studentAnswer != null) {
-                        // TODO: these default should be moved to compose when assignign lock object
-                        let correctScore = (item.evaluation.pointsCorrect !== undefined) ? item.evaluation.pointsCorrect : evaluator.defaultCorrectAnswer;
-                        let wrongScore = (item.evaluation.pointsWrong !== undefined) ? item.evaluation.pointsWrong : evaluator.defaultWrongAnswer;
-                        item.evaluation.studentAnswer === item.evaluation.correctAnswerId ?
-                            studentScoreMC += correctScore : studentScoreMC += wrongScore;
+                    // TODO: these default should be moved to compose when assignign lock object
+                    let correctScore = (item.evaluation.pointsCorrect !== undefined) ? item.evaluation.pointsCorrect : evaluator.defaultCorrectAnswer;
+                    let wrongScore = (item.evaluation.pointsWrong !== undefined) ? item.evaluation.pointsWrong : evaluator.defaultWrongAnswer;
+                    let omittedScore = (item.evaluation.pointsOmitted !== undefined) ? item.evaluation.pointsOmitted : evaluator.defaultOmittedAnswer;
+                    switch (item.evaluation.studentAnswer) {
+                        case null:
+                            studentScoreMC += omittedScore;
+                            break;
+                        case item.evaluation.correctAnswerId:
+                            studentScoreMC += correctScore;
+                            break;
+                        default:
+                            studentScoreMC += wrongScore;
+                            break;
                     }
+
                 });
             classwork.itemList.filter(item => item.type == "open-answer")
                 .forEach(item => {
@@ -101,27 +112,30 @@ var evaluator = {
                 });
             classwork.student.scoreMC = studentScoreMC;
             classwork.student.scoreOA = studentScoreOA;
-            classwork.student.score = studentScoreMC+studentScoreOA;
+            classwork.student.score = studentScoreMC + studentScoreOA;
         });
         this.writeMarkList();
     },
-    //TODO: moved to stats
-    // computeVote: function (score, maxScore) {
-    //     let maxVote = this.maxVote;
-    //     let minVote = this.minVote;
-    //     let deltaVote = maxVote - minVote;
-    //     let voteDec = (score / maxScore) * deltaVote + minVote;
-    //     // let voteRound = Math.round(voteDec);
-    //     let voteHalf = Math.round(voteDec * 2) / 2; // consider half points
-
-    //     // add exceptions! :D
-    //     // max vote only if max score
-    //     if ((score !== maxScore) && (voteHalf == maxVote)) {
-    //         voteHalf = maxVote - 0.5;
-    //     }
-        
-    //     return {vote: voteHalf, voteDec: voteDec};
-    // },
+    getPoints(studentAns, correctAns, evaluation) {
+        switch (studentAns) {
+            case correctAns:
+                return evaluation.pointsCorrect;
+            case "null":
+                return evaluation.pointsOmitted;
+            default:
+                return evaluation.pointsWrong;
+        }
+    },
+    getAnswerClass(studentAns, correctAns) {
+        switch (studentAns) {
+            case correctAns:
+                return "isCorrect";
+            case "null":
+                return "isOmissis";
+            default:
+                return "isWrong";
+        }
+    },
     writeMarkList() {
         let cardList = $('<ul>').addClass('cards');
         this.lockObj.classworks.forEach((classwork) => {
@@ -135,32 +149,16 @@ var evaluator = {
                 let correctAns = this.idx2abc(item.evaluation.correctAnswerId);
                 // Create the list of student and correct answers
                 let idxElement = $('<span>').addClass("score-idx").text(`${item.idx}.`);
-                let points = "";
-                switch (studentAns) {
-                    case correctAns:
-                        points = item.evaluation.pointsCorrect;
-                        break;
-                    case "null":
-                        points = 0;
-                        break;
-                    default: 
-                        points = item.evaluation.pointsWrong;
-                }
-                let studentElement = $('<span>').addClass("score-student").text(`${studentAns !== "null" ? studentAns+' '+points+'p' : '0p'}`);
+                let points = this.getPoints(studentAns, correctAns, item.evaluation);
+
+                let studentElement = $('<span>').addClass("score-student").text(`${studentAns !== "null" ? studentAns + ' ' : ''}${points}p`);
                 let correctElement = $('<span>').addClass("score-correct").text(`${correctAns}`);
                 let score = $('<li>')
                     .append(idxElement)
                     .append(correctElement)
                     .append(studentElement);
-                switch (studentAns) {
-                    case correctAns:
-                        score.addClass("isCorrect");
-                        break;
-                    case "null":
-                        score.addClass("isOmissis");
-                        break;
-                    default: score.addClass("isWrong");
-                }
+                answerClass = this.getAnswerClass(studentAns, correctAns);
+                score.addClass(answerClass);
                 scoreList.append(score);
                 if (typeof studentAns === "undefined") { hasUndefined = true; };
             });
@@ -168,7 +166,7 @@ var evaluator = {
                 let idxElement = $('<span>').addClass("score-idx").text(`${item.idx}.`);
                 let scoreSpan = $('<span>').addClass("oa-all-points");
                 item.evaluation.pointList.forEach(p => {
-                    let shortDesc = $('<span>').addClass("score-short-desc").text(`${p.short}`.replace("-","").replace(" ",""));
+                    let shortDesc = $('<span>').addClass("score-short-desc").text(`${p.short}`.replace("-", "").replace(" ", ""));
                     let val = $('<span>').addClass("score-correct").text(`${p.studentAnswer}p`);
                     let pSpan = $('<span>').addClass("oa-point").append(shortDesc).append(val);
                     scoreSpan.append(pSpan);
