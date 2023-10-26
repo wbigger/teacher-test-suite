@@ -15,7 +15,7 @@ Rivedere a mano i nomi con spazi.
 
 Ordinare in base al cognome.
 
-Eliminare le colonne superflue lasciando solo cognome, nome e email.
+Eliminare le colonne superflue lasciando solo nome, cognome e email.
 
 Quindi scaricare il file csv e qui fare:
 
