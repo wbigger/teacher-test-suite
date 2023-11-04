@@ -60,7 +60,9 @@ var composer = {
             composer.currentItem++;
             let htmlAnswer = $("<p>").addClass("answers");
             itemBodyAnswers.forEach((answer, idx) => {
-                let htmlSpan = $("<span>").addClass("answer").text(`${String.fromCharCode(baseChar + idx)}. ${answer}`);
+                let htmlAnsCharSpan = $("<span>").addClass("answerChar").text(`${String.fromCharCode(baseChar + idx)}. `);
+                let htmlAnsSpan = $("<span>").text(`${answer}`);
+                let htmlSpan = $("<span>").addClass("answer").append(htmlAnsCharSpan,htmlAnsSpan);
                 if (idx === correctAnswerId - 1) {
                     htmlSpan.addClass("correct-answer");
                 }
@@ -143,6 +145,8 @@ var composer = {
         let notes = `Nelle domande a risposta multipla: risposta corretta ${info.marks.correct}, omessa ${info.marks.omitted} ed errata
         ${info.marks.wrong}. ${info.notes}`
         let htmlNotes = $("<p>").addClass('classwork-notes').text(notes);
+        let footer = `Verifica di ${name}`;
+        let htmlFooter = $("<p>").addClass('classwork-footer').text(footer);
 
         let htmlItems = $("<div>").addClass('items');
 
@@ -168,7 +172,7 @@ var composer = {
             htmlItems.append(res[0]);
             composer.lockList.push(res[1]);
         });
-        htmlClasswork.append(htmlTitle, htmlSubTitle, htmlNotes, htmlItems);
+        htmlClasswork.append(htmlTitle, htmlSubTitle, htmlNotes, htmlItems, htmlFooter);
 
         return [htmlClasswork, composer.lockList];
     }
