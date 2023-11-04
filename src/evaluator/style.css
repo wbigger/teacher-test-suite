@@ -7,14 +7,15 @@ h2 {
 
 ul.cards {
     margin-left: 0px;
-    padding-left: 0px;
-    width: 100%;
+    padding-left: 0px; 
+    width: 95%;
 }
 
 ul.cards>li {
-    margin: 5px 0px 3px 5px;
+    margin: 5px 5px 3px 5px;
     border-bottom: 1px solid gray;
     list-style-type: none;
+    padding: 2px 5px 2px 5px;
     width: 100%;
 }
 
@@ -102,7 +103,6 @@ ul.scores>li.isCorrect .score-student {
     ul.scores>li {
         white-space: nowrap; 
     }
-
     ul.scores .oa-point {
         white-space: nowrap; 
     }
@@ -116,5 +116,10 @@ ul.scores>li.isCorrect .score-student {
     .page-break {
         page-break-after: always;
     }
-    
+    .rotate-on-print {
+        rotate: 180deg;
+    }
+    ul.cards>li.all-border {
+        border: 1px solid gray;
+    }
 }

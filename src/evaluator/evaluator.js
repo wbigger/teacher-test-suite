@@ -4,6 +4,8 @@ var evaluator = {
     defaultWrongAnswer: undefined,
     defaultOmittedAnswer: undefined,
     lockFilename: "",
+    className:"",
+    subject:"",
     init: function () {
         console.log("evaluator init");
         $("#nav-container").load("../index.html #nav-container>nav");
@@ -13,6 +15,8 @@ var evaluator = {
     loadLockObj: function () {
         if (localStorage.getItem("lockObj")) {
             this.lockObj = JSON.parse(localStorage.getItem("lockObj"));
+            this.className = this.lockObj.className;
+            this.subject = this.lockObj.subject;
             defaultCorrectAnswer = this.lockObj.info.marks.correct;
             defaultWrongAnswer = this.lockObj.info.marks.wrong;
             defaultOmittedAnswer = this.lockObj.info.marks.omitted;
@@ -44,9 +48,23 @@ var evaluator = {
                 console.log("removed page-break");
             }
         });
+        $("#rotate-solution").click((e) => {
+            let isChecked = e.target.checked;
+            if (isChecked) {
+                $(".cards>li").addClass("rotate-on-print");
+                $("ul.scores>li").addClass("display-block");
+                $(".cards>li").addClass("all-border");
+                console.log("added rotate-on-print");
+            } else {
+                $(".correct-answer").removeClass("rotate-on-print");
+                $("ul.scores>li").removeClass("display-block");
+                $(".cards>li").removeClass("all-border");
+                console.log("removed rotate-on-print");
+            }
+        });
     },
     saveToFile: function () {
-        let filename = this.lockFilename;//`lock-${app.className}-${app.subject}.json`;
+        let filename = `eval-${this.className}-${this.subject}.json`;
         console.log(`Saving to ${filename}`);
         let data = JSON.stringify(this.lockObj);
         let type = "application/json";
@@ -212,10 +230,12 @@ var evaluator = {
         reader.onload = function (e) {
             var contents = e.target.result;
             evaluator.lockObj = JSON.parse(contents);
-            (evaluator.updateTitle.bind(evaluator))();
-            (evaluator.evaluate.bind(evaluator))();
+            localStorage.setItem("lockObj", data);
+            evaluator.loadLockObj();
+            // (evaluator.updateTitle.bind(evaluator))();
+            // (evaluator.evaluate.bind(evaluator))();
         };
-        reader.readAsText(file);
+        // reader.readAsText(file);
     },
 }
 

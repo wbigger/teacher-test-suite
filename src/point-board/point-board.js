@@ -3,6 +3,8 @@ var pointBoard = {
     marksList: [],
     idCounter: 0,
     lockFilename: "",
+    className:"",
+    subject:"",
     init: function () {
         console.log("point board init");
         $("#nav-container").load("../index.html #nav-container>nav");
@@ -35,6 +37,8 @@ var pointBoard = {
     loadLockObj: function () {
         if (localStorage.getItem("lockObj")) {
             this.lockObj = JSON.parse(localStorage.getItem("lockObj"));
+            this.className = this.lockObj.className;
+            this.subject = this.lockObj.subject;
             this.lockFilename = "local-storage.json";
             $("#results").html("");
             (pointBoard.updateTitle.bind(pointBoard))();
@@ -91,9 +95,9 @@ var pointBoard = {
         return false; // do not continue the submit chain
     },
     saveToFile: function () {
-        console.log("hello");
+        console.log("Saving to file");
         let data = JSON.stringify(this.lockObj);
-        let filename = this.lockFilename;//`lock-${app.className}-${app.subject}.json`;
+        let filename = `pointboard-${this.className}-${this.subject}.json`;
         let type = "application/json";
         console.log(`Saving file: ${filename}`); // use string template :)
         // from stackoverflow
@@ -192,16 +196,18 @@ var pointBoard = {
             return;
         }
         this.lockFilename = file.name;
+        this.updateTitle();
         var reader = new FileReader();
         reader.onload = function (e) {
             var contents = e.target.result;
             pointBoard.lockObj = JSON.parse(contents);
             localStorage.setItem("lockObj", contents);
             $("#results").html("");
+            evaluator.loadLockObj();
             (pointBoard.updateTitle.bind(pointBoard))();
             (pointBoard.create.bind(pointBoard))();
         };
-        reader.readAsText(file);
+        // reader.readAsText(file);
     },
 }
 
