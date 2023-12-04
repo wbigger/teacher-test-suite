@@ -3,8 +3,8 @@ var pointBoard = {
     marksList: [],
     idCounter: 0,
     lockFilename: "",
-    className:"",
-    subject:"",
+    className: "",
+    subject: "",
     init: function () {
         console.log("point board init");
         $("#nav-container").load("../index.html #nav-container>nav");
@@ -56,43 +56,52 @@ var pointBoard = {
     },
     saveCorrections: function () {
         console.log(this);
-        let form_data = $("#board-form").serializeArray();
-        for (var input of form_data) {
-            let inputName = input['name'];
-            let splitName = inputName.split('-');
-            let itemType = splitName[0];
-            let studentId = splitName[1];
-            let itemValue = input['value'];
-            let classwork = this.lockObj.classworks
-                .find(e => e.student.id == studentId);
-            console.log(studentId);
-            if (itemType === "mq") {
-                let answerText = itemValue.replace(/ /g, '');
-                [...answerText].forEach((c, idx) => {
-                    // if omissis, put the student Answer to null
-                    let val = RegExp("[1234]").test(c) ? parseInt(c) : null;
-                    classwork.itemList[idx]
-                        .evaluation.studentAnswer = val;
-                });
-            } else if (itemType === "oa") {
-                let oaIdx = splitName[2].trim();
-                let short = splitName[3].trim();
-                // find this element and set it to value
-                classwork.itemList
-                    .filter(e => e.type == "open-answer")[oaIdx]
-                    .evaluation.pointList
-                    .find(p => p.short === short)
-                    .studentAnswer = itemValue;
-            } else if (itemType === "notes") {
-                classwork.notes = itemValue;
-            } else {
-                console.log(`Unknown item type: ${itemType}`);
-            }
+        let form = $("#board-form");
+        form.validate();
+        // form.preventDefault();
+        if (form.valid()) {
+            let form_data = form.serializeArray();
+            for (var input of form_data) {
+                let inputName = input['name'];
+                let splitName = inputName.split('-');
+                let itemType = splitName[0];
+                let studentId = splitName[1];
+                let itemValue = input['value'];
+                let classwork = this.lockObj.classworks
+                    .find(e => e.student.id == studentId);
+                console.log(studentId);
+                if (itemType === "mq") {
+                    let answerText = itemValue.replace(/ /g, '');
+                    [...answerText].forEach((c, idx) => {
+                        // if omissis, put the student Answer to null
+                        let val = RegExp("[1234]").test(c) ? parseInt(c) : null;
+                        classwork.itemList[idx]
+                            .evaluation.studentAnswer = val;
+                    });
+                } else if (itemType === "oa") {
+                    let oaIdx = splitName[2].trim();
+                    let short = splitName[3].trim();
+                    // find this element and set it to value
+                    classwork.itemList
+                        .filter(e => e.type == "open-answer")[oaIdx]
+                        .evaluation.pointList
+                        .find(p => p.short === short)
+                        .studentAnswer = itemValue;
+                } else if (itemType === "notes") {
+                    classwork.notes = itemValue;
+                } else {
+                    console.log(`Unknown item type: ${itemType}`);
+                }
 
-        };
-        console.log(this.lockObj);
-        this.saveToFile();
-        return false; // do not continue the submit chain
+            };
+            console.log(this.lockObj);
+            
+            this.saveToFile();
+            console.log("Save corrections");
+        } else {
+            alert("Validation error");
+        }
+        return false;
     },
     saveToFile: function () {
         console.log("Saving to file");
