@@ -37,7 +37,7 @@ var app = {
         return String(a);
     },
     init: function () {
-        $("#nav-container").load("../index.html #nav-container>nav");
+        $(".nav-composer>a").addClass("active");
 
 
         // TODO: get a generic file, then in the .done() convert to JSON
@@ -109,7 +109,8 @@ var app = {
         } else {
             alert("Please select class and classwork");
         }
-        $("#show-correct").prop('checked', false);
+        // $("#show-correct").prop('checked', false);
+        // $("#show-number").prop('checked', true);
     },
     eventHandler: function () {
         $("#class-select").change(() => {
@@ -150,6 +151,14 @@ var app = {
                 $(".hr").removeClass("hide");
             }
             app.updateTitle();
+        });
+        $("#show-number").click((e) => {
+            let isChecked = e.target.checked;
+            if (isChecked) {
+                $(".student-number").removeClass("hide");
+            } else {
+                $(".student-number").addClass("hide");
+            }
         });
         $("#save-file").click(() => {
             app.saveToFile();
@@ -256,9 +265,9 @@ var app = {
         }
     },
     composeQuestions: function () {
-        app.students.sort(app.compare).forEach(student => {
+        app.students.sort(app.compare).forEach((student,index) => {
             var itemList = app.itemList.slice(); // copy values
-            let ret = composer.create(itemList, student, app.className, app.subject, app.info);
+            let ret = composer.create(itemList, student, app.className, app.subject, app.info, index);
             $("#classworks").append(ret[0]);
             app.lockList.push({ student: student, itemList: ret[1] });
         });

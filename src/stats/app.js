@@ -1,13 +1,14 @@
 var app = {
     teacherMaxVote: 9, // to be read from lock file
     teacherMinVote: 1,
-    certDiscount: .13, // how much discount on max score for certified student (es. dsa)
+    // Add this field to index
+    certDiscount: .07, // how much discount on max score for certified student (es. dsa)
     isCertDiscountApplied: true, // if the cert discount is actually applied
     lockObj: {},
     lockFilename: "",
     init: function () {
         console.log("stats init");
-        $("#nav-container").load("../index.html #nav-container>nav");
+        $(".nav-stats>a").addClass("active");
         this.loadLockObj();
         this.eventHandler();
     },

@@ -17,7 +17,7 @@ var app = {
 
     lockList: [],
     init: function () {
-        $("#nav-container").load("../index.html #nav-container>nav");
+        $(".nav-editor>a").addClass("active");
 
         // Init CodeMirror editor
         let codeTextArea = $("#yaml-code")[0];

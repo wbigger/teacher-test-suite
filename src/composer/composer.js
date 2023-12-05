@@ -132,16 +132,17 @@ var composer = {
         }
         return htmlItem;
     },
-    create: function (items, student, studentClass, subject, info) {
+    create: function (items, student, studentClass, subject, info, index) {
         // init composer (maybe use as a class?)
         composer.currentItem = 1;
         composer.lockList = [];
         Math.seedrandom(student.email);
 
+        let htmlStudentNumber = $('<span>').addClass('student-number').text(`[${index+1}]`);
         let name = `${student.givenName} ${student.familyName}`;
         let htmlClasswork = $("<div>").addClass('classwork');
         let htmlTitle = $("<h1>").addClass('classwork-title').text("Verifica scritta di " + subject);
-        let htmlSubTitle = $("<h2>").addClass('classwork-subtitle').text(name + ", " + studentClass + ", data: ___/___/______");
+        let htmlSubTitle = $("<h2>").addClass('classwork-subtitle').append(htmlStudentNumber).append(` ${name}, ${studentClass}, data: ___/___/______`);
         let notes = `Nelle domande a risposta multipla: risposta corretta ${info.marks.correct}, omessa ${info.marks.omitted} ed errata
         ${info.marks.wrong}. ${info.notes}`
         let htmlNotes = $("<p>").addClass('classwork-notes').text(notes);

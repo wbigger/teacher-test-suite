@@ -17,7 +17,18 @@
 </head>
 
 <body>
-    <div id="nav-container"></div>
+    <div id="nav-container">
+        <nav>
+            <ul>
+                <li class="nav-brand"><a href="/index.html">Teacher Test Suite</a></li>
+                <li class="nav-editor"><a href="/editor/index.html">Editor</a></li>
+                <li class="nav-composer"><a href="/composer/index.html">Composer</a></li>
+                <li class="nav-point-board"><a href="/point-board/index.html">Point Board</a></li>
+                <li class="nav-evaluator"><a href="/evaluator/index.html">Points</a></li>
+                <li class="nav-stats"><a href="/stats/index.html">Marks</a></li>
+            </ul>
+        </nav>
+    </div>
     <div id="controls">
         <select id="class-select">
             <option value="default">--Select a class--</option>
@@ -27,6 +38,7 @@
         </select>
         <button type="button" id="create-button">Create classwork</button>
         <input type="checkbox" id="show-correct">Show correct answers</button>
+        <input type="checkbox" id="show-number" checked>Show student number</button>
         <button type="button" id="save-file">Save lock file</button>
         <button type="button" id="save-firebase">Save to firebase</button>
     </div>

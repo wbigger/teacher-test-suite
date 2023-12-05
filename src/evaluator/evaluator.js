@@ -8,7 +8,7 @@ var evaluator = {
     subject:"",
     init: function () {
         console.log("evaluator init");
-        $("#nav-container").load("../index.html #nav-container>nav");
+        $(".nav-evaluator>a").addClass("active");
         this.loadLockObj();
         this.eventHandler();
     },
@@ -23,7 +23,7 @@ var evaluator = {
             console.log(`default correct answer: ${this.lockObj.info.marks.correct}`);
             console.log(`default wrong answer: ${this.lockObj.info.marks.wrong}`);
             console.log(`default omitted answer: ${this.lockObj.info.marks.omitted}`);
-            this.lockFilename = "local-storage.json";
+            this.lockFilename = `eval-${this.className}-${this.subject}.json`;
             $("#results").html("");
             (this.updateTitle.bind(evaluator))();
             (this.evaluate.bind(evaluator))();
@@ -65,6 +65,7 @@ var evaluator = {
     },
     saveToFile: function () {
         let filename = `eval-${this.className}-${this.subject}.json`;
+        this.lockFilename = filename;
         console.log(`Saving to ${filename}`);
         let data = JSON.stringify(this.lockObj);
         let type = "application/json";
@@ -216,7 +217,8 @@ var evaluator = {
         $("#results").html(cardList);
     },
     updateTitle: function () {
-        $("title").text(`evaluator-${this.lockFilename}`);
+        $("title").text(`eval-${this.className}-${this.subject}`);
+        
     },
     readSingleFile: function (e) {
         // from stackoverflow

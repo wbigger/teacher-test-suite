@@ -7,7 +7,7 @@ var pointBoard = {
     subject: "",
     init: function () {
         console.log("point board init");
-        $("#nav-container").load("../index.html #nav-container>nav");
+        $(".nav-point-board>a").addClass("active");
         this.loadLockObj();
         this.eventHandler();
         //this.getFileFromParams();
@@ -95,11 +95,12 @@ var pointBoard = {
 
             };
             console.log(this.lockObj);
-            
+
             this.saveToFile();
             console.log("Save corrections");
         } else {
             alert("Validation error");
+            return true; // get the errors from browser
         }
         return false;
     },

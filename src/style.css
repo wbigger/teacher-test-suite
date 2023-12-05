@@ -40,7 +40,10 @@ nav li a {
 nav li a:hover:not(.active) {
   background-color: #ddd;
 }
-
+/* 
+#nav-container li.nav-editor a {
+  background-color: #00FF00;
+} */
 nav li a.active {
   color: white;
   background-color: #4CAF50;
