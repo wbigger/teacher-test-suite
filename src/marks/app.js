@@ -7,8 +7,8 @@ var app = {
     lockObj: {},
     lockFilename: "",
     init: function () {
-        console.log("stats init");
-        $(".nav-stats>a").addClass("active");
+        console.log("marks app init");
+        $(".nav-marks>a").addClass("active");
         this.loadLockObj();
         this.eventHandler();
     },
@@ -18,7 +18,7 @@ var app = {
             this.lockFilename = "local-storage.json";
             // $("#results").html("");
             (this.updateTitle.bind(this))();
-            (this.stats.bind(this))();
+            (this.computeAllMarks.bind(this))();
         } else {
             this.lockObj = {};
         }
@@ -31,12 +31,12 @@ var app = {
     updateMaxVote: function() {
         console.log(`new value for max vote: ${$("#max-vote").val()}`);
         this.teacherMaxVote = $("#max-vote").val();
-        (this.stats.bind(this))();
+        (this.computeAllMarks.bind(this))();
     },
     updateMinVote: function() {
         console.log(`new value for min vote: ${$("#min-vote").val()}`);
         this.teacherMinVote = $("#min-vote").val();
-        (this.stats.bind(this))();
+        (this.computeAllMarks.bind(this))();
     },
     computeVote: function (score, maxScore) {
         let maxVote = parseFloat(this.teacherMaxVote);
@@ -54,7 +54,7 @@ var app = {
         
         return {vote: voteHalf, voteFloat: voteFloat};
     },
-    stats: function () {
+    computeAllMarks: function () {
         $("#results").text("");
         $("#max-vote").val(app.teacherMaxVote);
         $("#min-vote").val(app.teacherMinVote);
@@ -118,7 +118,7 @@ var app = {
     },
 
     updateTitle: function () {
-        $("title").text(`stats-${this.lockFilename}`);
+        $("title").text(`marks-${this.lockFilename}`);
     },
     readSingleFile: function (e) {
         // from stackoverflow
@@ -134,7 +134,7 @@ var app = {
             app.lockObj = JSON.parse(contents);
             // $("#results").text("");
             (app.updateTitle.bind(app))();
-            (app.stats.bind(app))();
+            (app.computeAllMarks.bind(app))();
         };
         reader.readAsText(file);
     },

@@ -213,7 +213,7 @@ var pointBoard = {
             pointBoard.lockObj = JSON.parse(contents);
             localStorage.setItem("lockObj", contents);
             $("#results").html("");
-            evaluator.loadLockObj();
+            pointBoard.loadLockObj();
             (pointBoard.updateTitle.bind(pointBoard))();
             (pointBoard.create.bind(pointBoard))();
         };

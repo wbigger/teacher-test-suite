@@ -1,4 +1,4 @@
-var evaluator = {
+var pointsApp = {
     lockObj: {},
     defaultCorrectAnswer: undefined,
     defaultWrongAnswer: undefined,
@@ -7,8 +7,8 @@ var evaluator = {
     className:"",
     subject:"",
     init: function () {
-        console.log("evaluator init");
-        $(".nav-evaluator>a").addClass("active");
+        console.log("pointsApp init");
+        $(".nav-points>a").addClass("active");
         this.loadLockObj();
         this.eventHandler();
     },
@@ -25,8 +25,8 @@ var evaluator = {
             console.log(`default omitted answer: ${this.lockObj.info.marks.omitted}`);
             this.lockFilename = `eval-${this.className}-${this.subject}.json`;
             $("#results").html("");
-            (this.updateTitle.bind(evaluator))();
-            (this.evaluate.bind(evaluator))();
+            (this.updateTitle.bind(pointsApp))();
+            (this.evaluate.bind(pointsApp))();
 
         } else {
             this.lockObj = {};
@@ -106,9 +106,9 @@ var evaluator = {
             classwork.itemList.filter(item => item.type == "multiple-choice")
                 .forEach(item => {
                     // TODO: these default should be moved to compose when assignign lock object
-                    let correctScore = (item.evaluation.pointsCorrect !== undefined) ? item.evaluation.pointsCorrect : evaluator.defaultCorrectAnswer;
-                    let wrongScore = (item.evaluation.pointsWrong !== undefined) ? item.evaluation.pointsWrong : evaluator.defaultWrongAnswer;
-                    let omittedScore = (item.evaluation.pointsOmitted !== undefined) ? item.evaluation.pointsOmitted : evaluator.defaultOmittedAnswer;
+                    let correctScore = (item.evaluation.pointsCorrect !== undefined) ? item.evaluation.pointsCorrect : pointsApp.defaultCorrectAnswer;
+                    let wrongScore = (item.evaluation.pointsWrong !== undefined) ? item.evaluation.pointsWrong : pointsApp.defaultWrongAnswer;
+                    let omittedScore = (item.evaluation.pointsOmitted !== undefined) ? item.evaluation.pointsOmitted : pointsApp.defaultOmittedAnswer;
                     switch (item.evaluation.studentAnswer) {
                         case null:
                             studentScoreMC += omittedScore;
@@ -227,18 +227,18 @@ var evaluator = {
         if (!file) {
             return;
         }
-        evaluator.lockFilename = file.name;
+        pointsApp.lockFilename = file.name;
         var reader = new FileReader();
         reader.onload = function (e) {
             var contents = e.target.result;
-            evaluator.lockObj = JSON.parse(contents);
+            pointsApp.lockObj = JSON.parse(contents);
             localStorage.setItem("lockObj", data);
-            evaluator.loadLockObj();
-            // (evaluator.updateTitle.bind(evaluator))();
-            // (evaluator.evaluate.bind(evaluator))();
+            pointsApp.loadLockObj();
+            // (pointsApp.updateTitle.bind(pointsApp))();
+            // (pointsApp.evaluate.bind(pointsApp))();
         };
         // reader.readAsText(file);
     },
 }
 
-$(document).ready(evaluator.init.bind(evaluator));
+$(document).ready(pointsApp.init.bind(pointsApp));
