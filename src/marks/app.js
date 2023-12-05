@@ -27,6 +27,7 @@ var app = {
         $("#lock-input").change(this.readSingleFile.bind(this));
         $("#max-vote").change(this.updateMaxVote.bind(this));
         $("#min-vote").change(this.updateMinVote.bind(this));
+        $("#cert-discount").change(this.updateCertDiscount.bind(this));
     },
     updateMaxVote: function() {
         console.log(`new value for max vote: ${$("#max-vote").val()}`);
@@ -36,6 +37,11 @@ var app = {
     updateMinVote: function() {
         console.log(`new value for min vote: ${$("#min-vote").val()}`);
         this.teacherMinVote = $("#min-vote").val();
+        (this.computeAllMarks.bind(this))();
+    },
+    updateCertDiscount: function() {
+        console.log(`new value for cert discount: ${$("#cert-discount").val()}`);
+        this.certDiscount = $("#cert-discount").val();
         (this.computeAllMarks.bind(this))();
     },
     computeVote: function (score, maxScore) {
@@ -58,6 +64,7 @@ var app = {
         $("#results").text("");
         $("#max-vote").val(app.teacherMaxVote);
         $("#min-vote").val(app.teacherMinVote);
+        $("#cert-discount").val(app.certDiscount);
         this.lockObj.classworks.forEach((classwork) => {
             let row = $('<div>').addClass('table-row');
             let maxScore = classwork.itemList.reduce((accumulator, currentItem) => {
