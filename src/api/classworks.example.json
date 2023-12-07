@@ -1,8 +1,8 @@
 {
     "classworks": [
         {
-            "name": "Classwork name",
-            "value": "filename in api/classworks without extension"
+            "name": "Classwork Example",
+            "value": "classwork-example"
         }
     ]
 }

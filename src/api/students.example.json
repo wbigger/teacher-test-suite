@@ -1,8 +1,8 @@
 {
     "studentClasses": [
         {
-            "name": "Year and class or course",
-            "value": "filename in api/students without extension"
+            "name": "Student example",
+            "value": "students-example"
         }
     ]
 }

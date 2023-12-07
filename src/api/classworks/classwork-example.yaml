@@ -2,20 +2,27 @@
 subject: Sistemi e reti
 
 info:
+  # Add in notes some useful information for students 
   notes: ''
+  # Time is only informative
   time:
     standard: 35m
     dsa: 40m
+  # Points for multiple choice questions
   marks:
     correct: 1
     wrong: -0.125
     omitted: 0.125
 itemList:
 - type: multiple-choice
+  # for the list of available skills with explanation, see api/skills.json
   skills:
   - understanding
+  # each question can have multiple bodies
+  # when a classwork is composed, a body is randomly selected
   bodies:
   - question: Quali di questi è un MAC address valido?
+    # the correct answer is always the first one
     answers:
     - "aa:bb:cc:dd:ee:ff"
     - "ab:cd:ef:gh:il:mn"
@@ -48,11 +55,15 @@ itemList:
   - application
   bodies:
   - question: "Descrivere come è fatto un indirizzo MAC, qual è il suo uso, da quale ente è gestito. Scrivere un esempio di un possibile indirizzo MAC valido."
+  # nRows is the number of lines to draw in the page to let the student write the answer
   nRows: 4
   evaluation:
+    # hint is only printed in the correction script
     hint: è fatto da 6 byte nella forma aa:bb:cc:dd:ee:ff, i primi 3 sono il manufacturer, gli altri id della scheda. Unico in tutto il mondo. Gestito da ICANN. Serve ad identificare in modo univoco un'interfaccia di rete.
     pointList:
+    # description text is used in the classwork
     - description: esempio
+      # short is used internally
       short: es
       points: 1
     - description: formato

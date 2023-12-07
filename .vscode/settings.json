@@ -1,4 +1,13 @@
 {
     "livePreview.autoRefreshPreview": "On Changes to Saved Files",
-    "livePreview.serverRoot": "/src"
+    "livePreview.serverRoot": "/src",
+    "spellright.language": [
+        "it",
+        "en"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext"
+    ]
 }
