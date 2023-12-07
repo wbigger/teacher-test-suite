@@ -36,14 +36,15 @@ Not all the above feature are currently implemented, but work is in progress and
 
 PDF created by the above example is [here](screenshots/example.pdf)
 
-## Quick start (for developers)
+## How to use
 
-This page can be run in two flavors:
+The application has to be used as a flow starting from the first item in the menù (Editor) and going on the right (Composer, Point Board, etc.).
 
-1. just launch a web server on src/ (most of the features are available, except connection with database)
-2. run a `docker-compose up`.
+### Editor
 
-Update [students](src/api/students/students-example.json) and [classworks](src/api/classworks/classwork-example.yaml) according to your needs. Documentation about these files are inside them as comments.
+At the moment is work in progress. To create a classwork, please create a new file in `src/api/classwork/` folder. User [`classwork-example.yaml`](src/api/classworks/classwork-example.yaml) as template.
+
+Create also the list of students on `src/api/students/` folder. Again, use [`students-example.json`](src/api/students/students-example.json) as template.
 
 Please note that email address is used for:
 
@@ -51,5 +52,51 @@ Please note that email address is used for:
 - to generate the random seed to deterministically shuffle questions
 - to eventually connect with other external services (ex. Google Classroom)
 
-Update also [this](src/api/students.json) and [this](src/api/classworks.json) files if needed, to match your file names.
+Update also [classworks.json](src/api/classworks.json) and [`students.json`](src/api/students.json) files with the new files you just created. Only the item listed inside these file are shown inside the application.
 
+### Composer
+
+1. Select students and classworks on the top menu
+1. Click on create classwork
+1. If everything is fine, you can go to your browser menu and print the page, or just click `ctrl-P`
+1. Remember to **click on the save lock file** before moving to the next tab
+
+### Point-board
+
+Use the text input on the left of each student to insert the answers to the multiple choice questions.
+
+The text input is designed to be easily used with a single hand, so it use numbers instead of letters, as following:
+
+- input 1 for A answer
+- input 2 for B answer
+- input 3 for C answer
+- etc...
+- input 0 for omitted answer
+
+Use the moons to insert points for open questions. A black moon is 0, an half moon is 0.5, a full yellow moon is 1 point. For answer with more than one point, you can click on the last moon to fulfill all the moons.
+
+Remember to **click on the save button** before moving to the next tab.
+
+### Points
+
+Here are listed all the students with their points.
+
+You can print this page and you have a few options:
+
+- split page when printing: each student is printed in a different page
+- rotate solution when printing: the points are rotate of 180 degree, to be easily printed on the bottom of the page (instead of the top)
+
+### Marks
+
+In this tab, you can scale the points into a mark scale, for example from 0 to 10.
+
+Set the min and max vote according to your need.
+
+You can use DSA points discount to reduce the max score value, for example if you want that the student can take the maximum mark also if he didn't answered correctly to 100% of the answer.
+
+## Quick start for developers
+
+This page can be run in two flavors:
+
+1. just launch a web server on src/ (most of the features are available, except connection with database)
+2. run a `docker-compose up`.
