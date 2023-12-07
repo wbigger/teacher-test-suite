@@ -11,13 +11,13 @@ This suite tackle on two main problems.
 
 ## Objectives
 - [X] support multiple choice questions and open answers questions with evaluation grid
-- [] propose tips to create good multiple answers
+- [ ] propose tips to create good multiple answers
 - [X] easy to print
 - [X] integrable with other tools (es. Classroom)
 - [X] create a different test for each student of the class, according to the student needs
 - [X] support specific learning disabilities, removing questions according to student disability or extending the maximum time
-- [] create a profile of the student with strengths and weaknesses, to help the teacher developing effective strategies both for students and for the whole class
-- [] provide statistics both for single questions and students, with tips for the teacher to improve the future classwork
+- [ ] create a profile of the student with strengths and weaknesses, to help the teacher developing effective strategies both for students and for the whole class
+- [ ] provide statistics both for single questions and students, with tips for the teacher to improve the future classwork
 
 Not all the above feature are currently implemented, but work is in progress and continuously updated.
 
