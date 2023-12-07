@@ -98,6 +98,3 @@ src/api/students.json
 
 # MacOS X files
 .DS_Store
-
-# VSCode
-.vscode
