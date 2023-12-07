@@ -1,15 +1,15 @@
 ---
-subject: Sistemi e Reti
-#  Ruolo di un sistemista, enti di standardizzazione, breve storia della rete internet, livello 1 fisico: mezzi trasmissivi, MAC address. 
+subject: Sistemi e reti
+
 info:
-  notes: >
-   Nelle domande a risposta multipla: risposta corretta 1p, omessa 0p ed errata
-    0. Nelle domande a risposta aperta: risposte identiche ad altri compagni
-    verranno penalizzate. Per prendere il massimo del voto si deve prendere il massimo
-    del punteggio.
+  notes: ''
   time:
-    standard: 30m
-    dsa: 30m
+    standard: 35m
+    dsa: 40m
+  marks:
+    correct: 1
+    wrong: -0.125
+    omitted: 0.125
 itemList:
 - type: multiple-choice
   skills:

@@ -27,6 +27,9 @@ Not all the above feature are currently implemented, but work is in progress and
 ![](screenshots/screen-2.png)
 ![](screenshots/screen-3.png)
 ![](screenshots/screen-4.png)
+![](screenshots/screen-5.png)
+
+PDF created by the above example is [here](screenshots/example.pdf)
 
 # Quick start (for developers)
 This page can be run in two flavours:
