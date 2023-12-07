@@ -29,9 +29,11 @@ Not all the above feature are currently implemented, but work is in progress and
 ![](screenshots/screen-4.png)
 
 # Quick start (for developers)
-This project uses Docker and Docker Compose. Just run a `docker-compose up` to get started.
+This page can be run in two flavours:
+1. just launch a web server on src/ (most of the features are available, except connection with database)
+2. run a `docker-compose up`.
 
 Update [students](src/api/students/students-example.json) and [classworks](src/api/classworks/classwork-example.yaml) according to your needs.
 
-Update also [this](src/api/students.json) and [this](src/api/classworks.json) files if needed, to match you file names.
+Update also [this](src/api/students.json) and [this](src/api/classworks.json) files if needed, to match your file names.
 
