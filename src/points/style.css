@@ -85,6 +85,8 @@ ul.scores>li.isCorrect .score-student {
     position: fixed;
     right: 50px;
     bottom: 50px;
+
+    border: none;
  }
 
 @media print {
