@@ -54,6 +54,22 @@ var pointBoard = {
     updateTitle: function () {
         $("title").text(`Point Board - ${this.lockFilename}`);
     },
+    abc2idx: function (str) {
+        if (str === "undefined") {
+            return undefined;
+        }
+        str = str.replace("A", "1");
+        str = str.replace("B", "2");
+        str = str.replace("C", "3");
+        str = str.replace("D", "4");
+        str = str.replace("O", "0");
+        str = str.replace("a", "1");
+        str = str.replace("b", "2");
+        str = str.replace("c", "3");
+        str = str.replace("d", "4");
+        str = str.replace("o", "0");
+        return str;
+    },
     saveCorrections: function () {
         console.log(this);
         let form = $("#board-form");
@@ -73,6 +89,7 @@ var pointBoard = {
                 if (itemType === "mq") {
                     let answerText = itemValue.replace(/ /g, '');
                     [...answerText].forEach((c, idx) => {
+                        c = this.abc2idx(c);
                         // if omissis, put the student Answer to null
                         let val = RegExp("[1234]").test(c) ? parseInt(c) : null;
                         classwork.itemList[idx]
@@ -149,9 +166,9 @@ var pointBoard = {
                 name: `mq-${element.student.id}`,
                 id: `mq-${element.student.id}`,
                 maxlength: `${multipleChoiceArray.length}`,
-                pattern: `[0-4]{${multipleChoiceArray.length}}`,
+                pattern: `[0-4a-dA-D]{${multipleChoiceArray.length}}`,
                 size: `${multipleChoiceArray.length}`,
-                title: `pattern: [0-4]{${multipleChoiceArray.length}}`,
+                title: `Insert A,B,C,D or 1,2,3,4; 0 for omitted; num.chars: {${multipleChoiceArray.length}}`,
                 value: textboxValue
             });
             fieldset.append(textbox);
