@@ -9,8 +9,8 @@ var app = {
     init: function () {
         console.log("marks app init");
         $(".nav-marks>a").addClass("active");
-        this.loadLockObj();
         this.eventHandler();
+        this.loadLockObj();
     },
     loadLockObj: function () {
         if (localStorage.getItem("lockObj")) {
@@ -136,6 +136,9 @@ var app = {
         }
         app.lockFilename = file.name;
         var reader = new FileReader();
+        reader.onerror = function () {
+            alert(`cannot read input file ${file.name}`)
+        };
         reader.onload = function (e) {
             var contents = e.target.result;
             app.lockObj = JSON.parse(contents);

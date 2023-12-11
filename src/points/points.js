@@ -9,8 +9,8 @@ var pointsApp = {
     init: function () {
         console.log("pointsApp init");
         $(".nav-points>a").addClass("active");
-        this.loadLockObj();
         this.eventHandler();
+        this.loadLockObj();
     },
     loadLockObj: function () {
         if (localStorage.getItem("lockObj")) {
@@ -229,15 +229,18 @@ var pointsApp = {
         }
         pointsApp.lockFilename = file.name;
         var reader = new FileReader();
+        reader.onerror = function () {
+            alert(`cannot read input file ${file.name}`)
+        };
         reader.onload = function (e) {
             var contents = e.target.result;
             pointsApp.lockObj = JSON.parse(contents);
-            localStorage.setItem("lockObj", data);
+            localStorage.setItem("lockObj", contents);
             pointsApp.loadLockObj();
-            // (pointsApp.updateTitle.bind(pointsApp))();
-            // (pointsApp.evaluate.bind(pointsApp))();
+            (pointsApp.updateTitle.bind(pointsApp))();
+            (pointsApp.evaluate.bind(pointsApp))();
         };
-        // reader.readAsText(file);
+        reader.readAsText(file);
     },
 }
 

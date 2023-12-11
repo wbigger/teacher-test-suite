@@ -8,8 +8,8 @@ var pointBoard = {
     init: function () {
         console.log("point board init");
         $(".nav-point-board>a").addClass("active");
-        this.loadLockObj();
         this.eventHandler();
+        this.loadLockObj();
         //this.getFileFromParams();
     },
     // TODO: get the file from URL
@@ -208,6 +208,9 @@ var pointBoard = {
         this.lockFilename = file.name;
         this.updateTitle();
         var reader = new FileReader();
+        reader.onerror = function () {
+            alert(`cannot read input file ${file.name}`)
+        };
         reader.onload = function (e) {
             var contents = e.target.result;
             pointBoard.lockObj = JSON.parse(contents);
@@ -217,7 +220,7 @@ var pointBoard = {
             (pointBoard.updateTitle.bind(pointBoard))();
             (pointBoard.create.bind(pointBoard))();
         };
-        // reader.readAsText(file);
+        reader.readAsText(file);
     },
 }
 
