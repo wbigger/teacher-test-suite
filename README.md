@@ -34,7 +34,7 @@ Not all the above feature are currently implemented, but work is in progress and
 ![Points](screenshots/screen-4.png)
 ![Marks](screenshots/screen-5.png)
 
-PDF created by the above example is [here](screenshots/example.pdf)
+PDF created by the above example is [here](screenshots/example.pdf).
 
 ## How to use
 
@@ -85,6 +85,8 @@ You can print this page and you have a few options:
 
 - split page when printing: each student is printed in a different page
 - rotate solution when printing: the points are rotate of 180 degree, to be easily printed on the bottom of the page (instead of the top)
+
+Remember to **click on the save button** before moving to the next tab.
 
 ### Marks
 
