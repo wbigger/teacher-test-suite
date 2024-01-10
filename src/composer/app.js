@@ -45,11 +45,11 @@ var app = {
         // Load classworks list
         $.getJSON(app.apiPath + "classworks.json")
             .done(app.onClassworkSuccess)
-            .fail(app.onError);
+            .fail(app.onClassworkError);
         // Load student classes list
         $.getJSON(app.apiPath + "students.json")
             .done(app.onStudentSuccess)
-            .fail(app.onError);
+            .fail(app.onStudentError);
         app.eventHandler();
     },
     loadParams: function () {
@@ -200,6 +200,20 @@ var app = {
         app.className = jsonData.className;
         app.composeQuestions();
         app.updateTitle();
+    },
+    onClassworkError: function (jqXHR, textStatus, errorThrown) {
+        console.log('getJSON classworks.json request failed! ' + textStatus);
+        console.log('trying classworks.example.json')
+        $.getJSON(app.apiPath + "classworks.example.json")
+            .done(app.onClassworkSuccess)
+            .fail(app.onError);
+    },
+    onStudentError: function (jqXHR, textStatus, errorThrown) {
+        console.log('getJSON students.json request failed! ' + textStatus);
+        console.log('trying students.example.json')
+        $.getJSON(app.apiPath + "students.example.json")
+            .done(app.onStudentSuccess)
+            .fail(app.onError);
     },
     // Generic error
     onError: function (jqXHR, textStatus, errorThrown) {
