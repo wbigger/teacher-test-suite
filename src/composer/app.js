@@ -139,6 +139,8 @@ var app = {
 
         $("#create-button").click(app.createClasswork);
 
+        $("#print-button").click(function() { window.print();});
+
         $("#show-correct").click((e) => {
             let isChecked = e.target.checked;
             if (isChecked) {
