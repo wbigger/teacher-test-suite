@@ -1,0 +1,41 @@
+{
+  "name": "teacher-test-suite",
+  "version": "1.0.0",
+  "description": "This suite contains tools for teacher to create printable quizzes, supporting shuffle and SLD.",
+  "main": "main.js",
+  "devDependencies": {
+    "@electron-forge/cli": "^7.2.0",
+    "@electron-forge/maker-deb": "^7.2.0",
+    "@electron-forge/maker-rpm": "^7.2.0",
+    "@electron-forge/maker-squirrel": "^7.2.0",
+    "@electron-forge/maker-zip": "^7.2.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.2.0",
+    "electron": "^28.1.3"
+  },
+  "scripts": {
+    "start": "electron-forge start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wbigger/teacher-test-suite.git"
+  },
+  "keywords": [
+    "quiz",
+    "test",
+    "sld",
+    "shuffle",
+    "printable"
+  ],
+  "author": "Claudio Capobianco",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/wbigger/teacher-test-suite/issues"
+  },
+  "homepage": "https://github.com/wbigger/teacher-test-suite#readme",
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
+  }
+}
