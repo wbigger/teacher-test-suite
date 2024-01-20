@@ -98,3 +98,7 @@ src/api/students.json
 
 # MacOS X files
 .DS_Store
+
+# electron
+out/
+rdp/
