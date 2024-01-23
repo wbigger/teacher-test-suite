@@ -5,11 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Points</title>
+    <title>Editor</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="style.css">
+    <script src="../libs/js-yaml.min.js"></script>
     <script src="../libs/jquery-3.3.1.min.js"></script>
-    <script src="points.js"></script>
+    <script src="../libs/seedrandom.js"></script>
+    <script src="../.env.js"></script>
+    <script src="app.js"></script>
 </head>
 
 <body>
@@ -28,19 +31,20 @@
     </div>
     <div id="controls">
         <form>
-            Lock file with classworks and answers:
-            <input type="file" id="lock-input" />
+            <p>
+                <label for="students-file">File with questions (.csv or .yaml): </label>
+                <input type="file" accept="application/json" id="students-file" name="students-file" />
+            </p>
+            <p>-- OR --</p>
+            <p>
+                <label for="students-generate">Select the number of students: </label>
+                <input type="number" id="students-generate" name="students-generate" min="1" max="5000"/>
+                <input type="submit" value="Generate" id="generate-button">
+            </p>
         </form>
-        <input type="checkbox" id="split-pages">Split pages when printing</button>
-        <input type="checkbox" id="rotate-solution">Rotate solution when printing</button>
     </div>
-
     <div id="results">
     </div>
-
-    <button id="save-button" class="fab" type="button">Save</button>
-
-    </form>
 
 </body>
 
