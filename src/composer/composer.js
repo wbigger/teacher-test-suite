@@ -132,6 +132,17 @@ var composer = {
         }
         return htmlItem;
     },
+    checkStudentCert: function (student,item) {
+        // return true if the question must be included in the quiz
+        // student.cert and item.skipCert are both array, the question must be included only if the intersection between them is empty
+        if (typeof student.cert === "undefined") {
+            return true;
+        }
+        if (typeof item.skipCert === "undefined") {
+            return true;
+        }
+        return student.cert.filter(value => item.skipCert.includes(value)).length == 0
+    },
     create: function (items, student, studentClass, subject, info, index) {
         // init composer (maybe use as a class?)
         composer.currentItem = 1;
@@ -153,8 +164,7 @@ var composer = {
 
         // Put multiple choice first
         let quizArray = items.filter(item => {
-            return (item.type == "multiple-choice") &&
-                ((student.cert !== item.skipCert) || (typeof student.cert === "undefined"));
+            return (item.type == "multiple-choice") && composer.checkStudentCert(student,item);
         })
             .slice();
         composer.shuffle(quizArray);
