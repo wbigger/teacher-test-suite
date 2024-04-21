@@ -31,3 +31,8 @@
     margin: 0 3px 0 3px;
 
 }
+
+span.oa-check-symbols>span {
+    display: inline-block;
+    transform: rotate(180deg);
+}
