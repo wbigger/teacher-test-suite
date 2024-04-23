@@ -59,3 +59,24 @@ h2 {
         margin-top: 0px;
     }
 }
+
+#cert-discount {
+    width:60px;
+}
+
+.fab {
+    width: 70px;
+    height: 70px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    
+    font-size: 24px;
+    color: white;
+    text-align: center;
+  
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+
+    border: none;
+ }

@@ -1,4 +1,6 @@
 var app = {
+    className: "",
+    subject: "",
     teacherMaxVote: 9, // to be read from lock file
     teacherMinVote: 1,
     // Add this field to index
@@ -15,7 +17,18 @@ var app = {
     loadLockObj: function () {
         if (localStorage.getItem("lockObj")) {
             this.lockObj = JSON.parse(localStorage.getItem("lockObj"));
+            // set local vars and default
+            if (typeof this.lockObj.marks !== "undefined") {
+                this.teacherMinVote = this.lockObj.marks.teacherMinVote || this.teacherMinVote;
+                this.teacherMaxVote = this.lockObj.marks.teacherMaxVote || this.teacherMaxVote;
+                this.certDiscount = this.lockObj.marks.certDiscount || this.certDiscount;
+                this.isCertDiscountApplied = this.lockObj.marks.isCertDiscountApplied || this.isCertDiscountApplied;
+            }
+            
+            this.className = this.lockObj.className;
+            this.subject = this.lockObj.subject;
             this.lockFilename = "local-storage.json";
+            
             // $("#results").html("");
             (this.updateTitle.bind(this))();
             (this.computeAllMarks.bind(this))();
@@ -28,6 +41,7 @@ var app = {
         $("#max-vote").change(this.updateMaxVote.bind(this));
         $("#min-vote").change(this.updateMinVote.bind(this));
         $("#cert-discount").change(this.updateCertDiscount.bind(this));
+        $("#save-button").click(this.saveMarks.bind(this));
     },
     updateMaxVote: function() {
         console.log(`new value for max vote: ${$("#max-vote").val()}`);
@@ -147,6 +161,46 @@ var app = {
             (app.computeAllMarks.bind(app))();
         };
         reader.readAsText(file);
+    },
+    saveMarks: function () {
+        console.log(this);
+        this.lockObj.marks = {};
+        this.lockObj.marks.teacherMaxVote = this.teacherMaxVote;
+        this.lockObj.marks.teacherMinVote = this.teacherMinVote;
+        this.lockObj.marks.certDiscount = this.certDiscount;
+        this.lockObj.marks.isCertDiscountApplied = this.isCertDiscountApplied;
+    
+        console.log(this.lockObj);
+
+        this.saveToFile();
+        console.log("Save marks");
+        
+        return false;
+    },
+    saveToFile: function () {
+        console.log("Saving to file");
+        let data = JSON.stringify(this.lockObj);
+        let filename = `marks-${this.className}-${this.subject}.json`;
+        let type = "application/json";
+        console.log(`Saving file: ${filename}`); // use string template :)
+        // from stackoverflow
+        var file = new Blob([data], { type: type });
+        if (window.navigator.msSaveOrOpenBlob) // IE10+
+            window.navigator.msSaveOrOpenBlob(file, filename);
+        else { // Others
+            var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function () {
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            }, 0);
+        }
+        localStorage.setItem("lockObj", data);
+        return false;
     },
 }
 
